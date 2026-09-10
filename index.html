@@ -6,7 +6,7 @@
     <title>Математика 9 Клас</title>
     <!-- Шрифт Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
-    <!-- Иконки Lucide для неоновых предметов -->
+    <!-- Иконки Lucide для неонового фона -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ВЕСЬ ЭКРАН --- */
+        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ФОНЕ (ТОЛЬКО 5 ПРЕДМЕТОВ) --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -53,12 +53,12 @@
             justify-content: center;
         }
 
-        /* Неоновые светящиеся контуры */
+        /* Неоновые контуры для фоновых предметов */
         .neon-icon {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             stroke-width: 2.2px;
-            opacity: 0.55;
+            opacity: 0.5;
         }
 
         .neon-cyan {
@@ -162,10 +162,11 @@
             transform: scale(0.98);
         }
 
-        .btn-icon {
-            width: 30px;
-            height: 30px;
-            stroke-width: 2.5px;
+        /* ОБЫЧНЫЕ НЕ-НЕОНОВЫЕ СТИКЕРЫ/ИКОНКИ В КНОПКАХ */
+        .btn-icon-normal {
+            font-size: 2rem;
+            line-height: 1;
+            filter: none !important; /* Отключает любое неоновое свечение */
         }
 
         .math-symbol {
@@ -173,6 +174,7 @@
             font-style: italic;
             font-weight: bold;
             font-size: 1.8rem;
+            filter: none !important;
         }
 
         @media (max-width: 650px) {
@@ -188,35 +190,35 @@
 </head>
 <body>
 
-    <!-- Фоновая неоновая канцелярия -->
+    <!-- Фоновые неоновые стикеры (ТОЛЬКО: Ручки, Линейки, Карандаши, Учебники/Блокноты, Калькуляторы) -->
     <div class="background-objects">
         <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-2"><i data-lucide="compass" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-3"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4"><i data-lucide="pen-tool" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-2"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-3"><i data-lucide="pen" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
         <div class="bg-item d-1"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="scissors" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2"><i data-lucide="ruler" class="neon-icon neon-pink"></i></div>
 
-        <div class="bg-item d-3"><i data-lucide="shapes" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4"><i data-lucide="sigma" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-1"><i data-lucide="file-text" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="triangle" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4"><i data-lucide="pen" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-1"><i data-lucide="book-open" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2"><i data-lucide="calculator" class="neon-icon neon-pink"></i></div>
         <div class="bg-item d-3"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
         <div class="bg-item d-4"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
 
-        <div class="bg-item d-1"><i data-lucide="pen-tool" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="compass" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-1"><i data-lucide="pen" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2"><i data-lucide="book-open" class="neon-icon neon-pink"></i></div>
         <div class="bg-item d-3"><i data-lucide="calculator" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-4"><i data-lucide="scissors" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-1"><i data-lucide="variable" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-2"><i data-lucide="shapes" class="neon-icon neon-cyan"></i></div>
-
-        <div class="bg-item d-3"><i data-lucide="triangle" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-4"><i data-lucide="file-text" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-4"><i data-lucide="ruler" class="neon-icon neon-purple"></i></div>
         <div class="bg-item d-1"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-2"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-3"><i data-lucide="compass" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-4"><i data-lucide="calculator" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2"><i data-lucide="pen" class="neon-icon neon-cyan"></i></div>
+
+        <div class="bg-item d-3"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-4"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2"><i data-lucide="pencil" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-3"><i data-lucide="pen" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-pink"></i></div>
     </div>
 
     <!-- Главное меню -->
@@ -224,16 +226,16 @@
         <h1 class="title">Оберіть предмет</h1>
         
         <div class="buttons-wrapper">
-            <!-- Кнопка Геометрия (нажимается без действий) -->
+            <!-- Кнопка Геометрия (с обычными эмодзи-стикерами) -->
             <button class="btn-subject btn-geometry">
-                <i data-lucide="ruler" class="btn-icon"></i>
+                <span class="btn-icon-normal">📏</span>
                 <span>Геометрія</span>
-                <i data-lucide="pencil" class="btn-icon"></i>
+                <span class="btn-icon-normal">✏️</span>
             </button>
 
-            <!-- Кнопка Алгебра (нажимается без действий) -->
+            <!-- Кнопка Алгебра (с обычными эмодзи-стикерами) -->
             <button class="btn-subject btn-algebra">
-                <i data-lucide="pen-tool" class="btn-icon"></i>
+                <span class="btn-icon-normal">🖊️</span>
                 <span>Алгебра</span>
                 <span class="math-symbol">√x</span>
             </button>
@@ -241,7 +243,7 @@
     </div>
 
     <script>
-        // Инициализация иконок
+        // Инициализация фоновых иконок
         lucide.createIcons();
     </script>
 
