@@ -12,41 +12,49 @@
             --neon-purple: #b500ff;
             --neon-green: #00ff66;
             --neon-red: #ff003c;
-            /* Змінено кольори фону на синьо-фіолетові */
-            --bg-color-1: #090416; /* Темно-фіолетовий */
-            --bg-color-2: #04081c; /* Темно-синій */
-            --panel-bg: rgba(13, 8, 33, 0.85);
+            --panel-bg: rgba(13, 8, 33, 0.85); /* Напівпрозорий темний фон для читабельності тексту в тестах */
         }
 
         * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body {
             margin: 0; padding: 0; 
-            background: linear-gradient(135deg, var(--bg-color-1), var(--bg-color-2));
+            /* Яскравий неоновий синьо-фіолетовий градієнт */
+            background: linear-gradient(45deg, #2b00ff, #8a2be2, #0037b8, #4a00e0);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite; /* Анімація переливання */
             color: white;
             overflow-x: hidden; height: 100vh; display: flex; flex-direction: column;
+        }
+
+        /* Анімація для фону */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Контейнери екранів */
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; }
         .screen.active { display: flex; }
 
-        /* Збільшено розмір заголовків */
-        h1 { font-size: 3.5rem; text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
-        h2 { font-size: 2.5rem; text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 3.5rem; text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-purple); text-align: center; margin-bottom: 30px; }
+        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-purple); text-align: center; margin-bottom: 30px; }
         p { font-size: 1.5rem; }
 
-        /* Збільшено кнопки та текст на них */
+        /* Кнопки */
         .btn {
-            background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-purple);
+            background: rgba(10, 5, 30, 0.6); /* Трохи темніший фон для кнопок, щоб виділялися на яскравому фоні */
+            color: var(--neon-cyan); border: 3px solid var(--neon-purple);
             padding: 20px 40px; margin: 15px; font-size: 1.5rem; font-weight: 800; border-radius: 15px;
-            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 20px rgba(181, 0, 255, 0.3);
+            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 25px rgba(181, 0, 255, 0.5);
             display: inline-flex; align-items: center; justify-content: center; gap: 15px;
-            text-shadow: 0 0 8px var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            backdrop-filter: blur(5px);
         }
         .btn:hover {
-            transform: scale(1.08); background: rgba(181, 0, 255, 0.2); border-color: var(--neon-cyan);
-            box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 20px var(--neon-purple); color: #fff;
+            transform: scale(1.08); background: rgba(181, 0, 255, 0.4); border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px var(--neon-cyan), inset 0 0 20px var(--neon-purple); color: #fff;
         }
         .btn.disabled {
             filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555;
@@ -56,33 +64,33 @@
         /* Вибір кількості та часу */
         .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
-        input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-purple); cursor: pointer; }
+        input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
         .time-inputs { display: flex; gap: 10px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
         .time-inputs input {
-            width: 80px; height: 60px; background: transparent; border: 3px solid var(--neon-purple); color: var(--neon-cyan);
-            font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(181, 0, 255, 0.3);
+            width: 80px; height: 60px; background: rgba(10, 5, 30, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
         }
-        .time-inputs input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
+        .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
         
         .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
         .bottom-nav .btn { font-size: 1.2rem; padding: 15px 30px; }
 
         /* Вікно тесту */
         .quiz-container {
-            background: var(--panel-bg); border: 2px solid var(--neon-purple); border-radius: 25px;
-            padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(181, 0, 255, 0.2), inset 0 0 25px rgba(0, 243, 255, 0.1);
-            position: relative;
+            background: var(--panel-bg); border: 3px solid var(--neon-cyan); border-radius: 25px;
+            padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 50px rgba(0, 243, 255, 0.3), inset 0 0 25px rgba(181, 0, 255, 0.2);
+            position: relative; backdrop-filter: blur(10px);
         }
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--neon-purple); padding-bottom: 15px; font-size: 1.5rem;}
-        #quiz-progress { text-shadow: 0 0 5px var(--neon-cyan); font-weight: bold; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--neon-cyan); padding-bottom: 15px; font-size: 1.5rem;}
+        #quiz-progress { text-shadow: 0 0 8px var(--neon-cyan); font-weight: bold; }
         #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
         .question-text { font-size: 2rem; margin-bottom: 30px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.4); line-height: 1.4; }
         .options-grid { display: flex; flex-direction: column; gap: 20px; }
-        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.4rem; padding: 20px 30px; }
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.4rem; padding: 20px 30px; border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);}
         .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 30px var(--neon-green); text-shadow: none; transform: scale(1.02); }
         .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); text-shadow: none; transform: scale(1.02); }
-        .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.3rem; border-left: 5px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
+        .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.3rem; border-left: 5px solid var(--neon-purple); background: rgba(181,0,255,0.15); line-height: 1.5; }
         
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
 
@@ -92,7 +100,7 @@
             display: none; align-items: center; justify-content: center; z-index: 100;
         }
         .modal-content {
-            background: var(--bg-color-1); border: 3px solid var(--neon-cyan); padding: 50px; border-radius: 20px;
+            background: #110825; border: 3px solid var(--neon-cyan); padding: 50px; border-radius: 20px;
             text-align: center; box-shadow: 0 0 60px rgba(181, 0, 255, 0.6);
         }
         .modal-btn-green { border-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
@@ -102,7 +110,7 @@
 
         /* Результати */
         #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
-        .res-item { border-bottom: 2px solid rgba(181,0,255,0.3); padding: 20px 0; }
+        .res-item { border-bottom: 2px solid rgba(0,243,255,0.3); padding: 20px 0; }
         .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 8px var(--neon-green); font-size: 1.3rem; margin: 10px 0;}
         .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); font-size: 1.3rem; margin: 10px 0;}
         .res-status-skipped { color: #f39c12; font-weight: bold; text-shadow: 0 0 8px #f39c12; font-size: 1.3rem; margin: 10px 0;}
@@ -139,7 +147,7 @@
             <button class="btn count-btn" onclick="setPresetCount(30)">30</button>
         </div>
         <div class="custom-input-area">
-            <p style="text-shadow: 0 0 8px var(--neon-cyan);">Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 15px var(--neon-purple); font-size: 2rem;">1</span></p>
+            <p style="text-shadow: 0 0 8px var(--neon-cyan);">Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); font-size: 2rem;">1</span></p>
             <input type="range" id="custom-count" min="1" max="50" value="1" oninput="setSliderCount(this.value)">
             <button class="btn" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
         </div>
@@ -166,7 +174,7 @@
                 <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="disableTimePresets()">
             </div>
             <button class="btn" onclick="startQuizWithCustomTime()" style="margin-top: 25px;">Запустити тест з цим часом</button>
-            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: #aaa; color: #aaa; text-shadow: none; box-shadow: none;">Грати без часу</button>
+            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: #ddd; color: #ddd; text-shadow: none; box-shadow: none;">Грати без часу</button>
         </div>
         <div class="bottom-nav">
             <button class="btn" onclick="switchScreen('screen-count')">⮌ Повернутися назад</button>
@@ -217,7 +225,7 @@
     <!-- Модалка кінця таймера -->
     <div class="modal-overlay" id="timer-modal">
         <div class="modal-content">
-            <h1 style="color: var(--neon-cyan); text-shadow: 0 0 25px var(--neon-cyan); font-size: 4rem;">Таймер закінчився!</h1>
+            <h1 style="color: var(--neon-cyan); text-shadow: 0 0 30px var(--neon-cyan); font-size: 4rem;">Таймер закінчився!</h1>
             <div style="font-size: 6rem; filter: drop-shadow(0 0 30px var(--neon-purple)); margin-top: 20px;">⏰</div>
         </div>
     </div>
