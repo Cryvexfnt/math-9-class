@@ -141,6 +141,18 @@
             user-select: none;
         }
 
+        .subject-icon {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 1.6rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+        }
+
         .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
         .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
@@ -515,15 +527,15 @@
         <div class="buttons-wrapper">
             <div class="subjects-row">
                 <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
-                    <span style="font-family: serif; font-style: italic; font-weight: bold; font-size: 1.8rem;">√x</span>
+                    <span class="subject-icon">√x</span>
                     <span>Алгебра</span>
                 </button>
                 <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
-                    <span>📐</span>
+                    <span class="subject-icon">∠α</span>
                     <span>Геометрія</span>
                 </button>
                 <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
-                    <span>⚡</span>
+                    <span class="subject-icon">E=mc²</span>
                     <span>Фізика</span>
                 </button>
             </div>
