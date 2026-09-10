@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математика 9 Клас — Алгебра: Нерівності (Істер НУШ)</title>
+    <title>Інтерактивний Тренажер — Математика & Фізика</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -99,9 +99,9 @@
         }
 
         .title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -110,10 +110,16 @@
 
         .buttons-wrapper {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 25px;
-            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .subjects-row {
+            display: flex;
+            gap: 20px;
             width: 100%;
         }
 
@@ -121,26 +127,29 @@
             background: rgba(15, 8, 35, 0.85);
             border: 3px solid;
             border-radius: 20px;
-            padding: 18px 35px;
-            font-size: 1.8rem;
+            padding: 18px 25px;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
             user-select: none;
+            width: 100%;
         }
 
         .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
-        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); opacity: 0.7; }
+        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
 
-        .btn-algebra:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
-        .btn-geometry:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); opacity: 1; }
+        .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
+        .btn-geometry:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
+        .btn-physics:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 127, 0.9); background: rgba(255, 0, 127, 0.2); }
 
         .count-grid {
             display: grid;
@@ -367,8 +376,8 @@
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
             background: rgba(20, 10, 40, 0.95);
-            border: 2px solid #00f3ff;
-            box-shadow: 0 0 20px #00f3ff;
+            border: 2px solid #ff007f;
+            box-shadow: 0 0 20px #ff007f;
             color: #fff;
             padding: 14px 28px;
             border-radius: 16px;
@@ -385,7 +394,8 @@
         }
 
         @media (max-width: 650px) {
-            .title { font-size: 2rem; }
+            .title { font-size: 1.8rem; }
+            .subjects-row { flex-direction: column; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
             .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 1rem; }
@@ -402,15 +412,19 @@
     <div class="screen active" id="screen-subject">
         <h1 class="title">Оберіть предмет</h1>
         <div class="buttons-wrapper">
-            <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
-                <span style="font-family: serif; font-style: italic; font-weight: bold; font-size: 2rem;">√x</span>
-                <span>Алгебра</span>
-                <span>📊</span>
-            </button>
-            <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
-                <span>📐</span>
-                <span>Геометрія</span>
-                <span>✏️</span>
+            <div class="subjects-row">
+                <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
+                    <span style="font-family: serif; font-style: italic; font-weight: bold; font-size: 1.8rem;">√x</span>
+                    <span>Алгебра</span>
+                </button>
+                <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
+                    <span>📐</span>
+                    <span>Геометрія</span>
+                </button>
+            </div>
+            <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
+                <span>⚡</span>
+                <span>Фізика</span>
             </button>
         </div>
     </div>
@@ -437,7 +451,7 @@
         <div class="quiz-card">
             <div class="quiz-header">
                 <span id="quiz-progress">Завдання 1 з 10</span>
-                <span id="quiz-topic" style="color: #00f3ff;">Тема: Нерівності (9 клас Істер)</span>
+                <span id="quiz-topic" style="color: #00f3ff;">Тема: ...</span>
             </div>
             
             <div class="question-text" id="question-text">Текст питання...</div>
@@ -467,8 +481,8 @@
     </div>
 
     <script>
-        const defaultIcons = ['calculator', 'percent', 'hash', 'binary', 'bar-chart-2', 'trending-up', 'sparkles'];
         const algebraIcons = ['calculator', 'percent', 'hash', 'binary', 'bar-chart-2', 'trending-up', 'sparkles'];
+        const geometryIcons = ['triangle', 'square', 'circle', 'box', 'compass', 'ruler', 'layers'];
 
         function renderBackground(iconsList) {
             const bgContainer = document.getElementById('bg-container');
@@ -515,10 +529,18 @@
         let userAnswers = [];
 
         function selectSubject(subject) {
-            if (subject === 'geometry') {
-                showToast('Ви переключились на Геометрію');
+            if (subject === 'physics') {
+                showToast('Тести з фізики у розробці 🛠️');
+                return;
             }
+
             currentSubject = subject;
+            if (subject === 'algebra') {
+                renderBackground(algebraIcons);
+            } else if (subject === 'geometry') {
+                renderBackground(geometryIcons);
+            }
+
             showScreen('screen-count');
         }
 
@@ -534,24 +556,17 @@
             }
         }
 
-        // --- ДИНАМІЧНІ SVG ДЛЯ ЧИСЛОВОЇ ПРЯМОЇ ТА ІНТЕРВАЛІВ ---
+        // --- ДИНАМІЧНІ SVG КРЕСЛЕННЯ ---
         function drawRaySVG(val, isClosed, directionRight) {
             const circleFill = isClosed ? "#00f3ff" : "#070414";
             const lineStartX = directionRight ? 130 : 25;
             const lineEndX = directionRight ? 255 : 130;
-            const bracket = directionRight ? (isClosed ? "[" : "(") : (isClosed ? "]" : ")");
 
             return `<svg width="290" height="90" viewBox="0 0 290 90">
-                <!-- Одинарна числова пряма -->
                 <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
                 <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
                 <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                
-                <!-- Заштрихована/підсвічена область -->
                 <line x1="${lineStartX}" y1="50" x2="${lineEndX}" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <path d="M ${lineStartX} 38 L ${lineEndX} 38" stroke="#ff007f" stroke-width="2" stroke-dasharray="4,4"/>
-
-                <!-- Точка на прямій -->
                 <circle cx="130" cy="50" r="7" fill="${circleFill}" stroke="#00f3ff" stroke-width="3"/>
                 <text x="124" y="75" fill="#00f3ff" font-weight="800" font-size="15">${val}</text>
             </svg>`;
@@ -565,51 +580,72 @@
                 <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
                 <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
                 <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                
-                <!-- Виділений інтервал між valA та valB -->
                 <line x1="85" y1="50" x2="195" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <path d="M 85 38 L 195 38" stroke="#ff007f" stroke-width="2" stroke-dasharray="4,4"/>
-
                 <circle cx="85" cy="50" r="7" fill="${fillA}" stroke="#00f3ff" stroke-width="3"/>
                 <text x="78" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valA}</text>
-
                 <circle cx="195" cy="50" r="7" fill="${fillB}" stroke="#00f3ff" stroke-width="3"/>
                 <text x="188" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valB}</text>
             </svg>`;
         }
 
-        // --- ІСТОРІЯ В LOCALSTORAGE ДЛЯ УНІКАЛЬНОСТІ ---
-        function getSeenQuestions() {
+        function drawRightTriangleSVG(a, b, c) {
+            return `<svg width="220" height="130" viewBox="0 0 220 130">
+                <polygon points="30,100 180,100 30,20" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
+                <rect x="30" y="85" width="15" height="15" fill="none" stroke="#ff007f" stroke-width="2"/>
+                <text x="100" y="118" fill="#ffffff" font-weight="800" font-size="14">${a}</text>
+                <text x="10" y="65" fill="#ffffff" font-weight="800" font-size="14">${b}</text>
+                <text x="110" y="55" fill="#00f3ff" font-weight="800" font-size="14">${c}</text>
+            </svg>`;
+        }
+
+        function drawCircleSVG(r) {
+            return `<svg width="160" height="140" viewBox="0 0 160 140">
+                <circle cx="80" cy="70" r="55" fill="rgba(191, 0, 255, 0.1)" stroke="#bf00ff" stroke-width="3"/>
+                <circle cx="80" cy="70" r="4" fill="#00f3ff"/>
+                <line x1="80" y1="70" x2="135" y2="70" stroke="#00f3ff" stroke-width="3" stroke-dasharray="4,4"/>
+                <text x="100" y="63" fill="#00f3ff" font-weight="800" font-size="14">R = ${r}</text>
+            </svg>`;
+        }
+
+        function drawVectorSVG(x, y) {
+            return `<svg width="180" height="120" viewBox="0 0 180 120">
+                <line x1="20" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                <line x1="20" y1="100" x2="20" y2="20" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                <line x1="20" y1="100" x2="130" y2="30" stroke="#00f3ff" stroke-width="4"/>
+                <polygon points="130,30 118,34 125,45" fill="#00f3ff"/>
+                <text x="70" y="50" fill="#00f3ff" font-weight="800" font-size="15">ā (${x}; ${y})</text>
+            </svg>`;
+        }
+
+        // --- ІСТОРІЯ В LOCALSTORAGE ---
+        function getSeenQuestions(key) {
             try {
-                return JSON.parse(localStorage.getItem('algebra_inequalities_seen')) || [];
+                return JSON.parse(localStorage.getItem(key)) || [];
             } catch (e) {
                 return [];
             }
         }
 
-        function saveSeenQuestions(list) {
+        function saveSeenQuestions(key, list) {
             try {
-                localStorage.setItem('algebra_inequalities_seen', JSON.stringify(list));
+                localStorage.setItem(key, JSON.stringify(list));
             } catch (e) {}
         }
 
-        // --- 20 ДИНАМІЧНИХ ГЕНЕРАТОРІВ З АЛГЕБРИ (НЕРИВНОСТІ 9 КЛАС ІСТЕР) ---
+        // --- ГЕНЕРАТОРИ ДЛЯ АЛГЕБРИ (ТЕМА: НЕРІВНОСТІ) ---
         const algebraGenerators = [
-            // 1. Лінійна нерівність ax > b (a > 0)
             () => {
                 const a = 2 + Math.floor(Math.random() * 7);
                 const val = (Math.floor(Math.random() * 15) - 7) * a;
-                const b = val;
-                const res = b / a;
+                const res = val / a;
                 return {
-                    text: `Розв'яжіть нерівність: ${a}x > ${b}`,
+                    text: `Розв'яжіть нерівність: ${a}x > ${val}`,
                     diagram: drawRaySVG(res, false, true),
                     correctVal: `x > ${res}`,
                     wrongs: [`x < ${res}`, `x > ${res * 2}`, `x < ${res - 1}`],
-                    explanation: `Поділимо обидві частини нерівності на додатне число ${a}. Знак нерівності не змінюється: x > ${b} / ${a} ⇒ x > ${res}.`
+                    explanation: `Поділимо обидві частини на ${a} > 0. Знак нерівності зберігається: x > ${val} / ${a} ⇒ x > ${res}.`
                 };
             },
-            // 2. Лінійна нерівність зі зміною знака (a < 0)
             () => {
                 const a = -(2 + Math.floor(Math.random() * 6));
                 const res = Math.floor(Math.random() * 10) - 4;
@@ -619,25 +655,9 @@
                     diagram: drawRaySVG(res, true, true),
                     correctVal: `x ≥ ${res}`,
                     wrongs: [`x ≤ ${res}`, `x ≥ ${-res}`, `x ≤ ${-res}`],
-                    explanation: `Ділимо обидві частини нерівності на від'ємне число ${a}. При цьому знак нерівності змінюється на протилежний (з ≤ на ≥): x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
+                    explanation: `При діленні на від'ємне число ${a} знак нерівності змінюється на протилежний: x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
                 };
             },
-            // 3. Порівняння виразів за їх різницею
-            () => {
-                const diff = Math.floor(Math.random() * 12) + 1;
-                const isPositive = Math.random() > 0.5;
-                const val = isPositive ? diff : -diff;
-                return {
-                    text: `Відомо, що a - b = ${val}. Порівняйте числа a i b.`,
-                    diagram: '',
-                    correctVal: isPositive ? `a > b` : `a < b`,
-                    wrongs: [isPositive ? `a < b` : `a > b`, `a = b`, `Неможливо визначити`],
-                    explanation: isPositive 
-                        ? `Оскільки різниця a - b = ${val} > 0 (додатна), то a > b.`
-                        : `Оскільки різниця a - b = ${val} < 0 (від'ємна), то a < b.`
-                };
-            },
-            // 4. Запис у вигляді числового проміжку (строга)
             () => {
                 const num = Math.floor(Math.random() * 20) - 10;
                 return {
@@ -645,10 +665,9 @@
                     diagram: drawRaySVG(num, false, true),
                     correctVal: `(${num}; +∞)`,
                     wrongs: [`[${num}; +∞)`, `(-∞; ${num})`, `(-∞; ${num}]`],
-                    explanation: `Строга нерівність (>) відповідає відкритому проміжку з круглою дужкою: (${num}; +∞). Точка ${num} не входить.`
+                    explanation: `Строга нерівність (>) відповідає відкритому проміжку з круглою дужкою: (${num}; +∞).`
                 };
             },
-            // 5. Запис у вигляді числового проміжку (нестрога)
             () => {
                 const num = Math.floor(Math.random() * 20) - 10;
                 return {
@@ -659,7 +678,6 @@
                     explanation: `Квадратна дужка біля числа ${num} та напрямок до -∞ відповідають нестрогій нерівності x ≤ ${num}.`
                 };
             },
-            // 6. Найменше ціле рішення
             () => {
                 const val = Math.floor(Math.random() * 14) - 5;
                 const correctInt = val + 1;
@@ -668,22 +686,9 @@
                     diagram: drawRaySVG(val, false, true),
                     correctVal: `${correctInt}`,
                     wrongs: [`${val}`, `${val - 1}`, `${correctInt + 1}`],
-                    explanation: `Число ${val} не входить у розв'язок, оскільки нерівність строга (x > ${val}). Найменшим цілим числом, більшим за ${val}, є ${correctInt}.`
+                    explanation: `Число ${val} не входить у розв'язок, тому найменшим цілим числом, більшим за ${val}, є ${correctInt}.`
                 };
             },
-            // 7. Найбільше ціле рішення
-            () => {
-                const val = Math.floor(Math.random() * 14) - 2;
-                const correctInt = val;
-                return {
-                    text: `Знайдіть найбільше ціле число, що задовольняє нерівність x ≤ ${val}.`,
-                    diagram: drawRaySVG(val, true, false),
-                    correctVal: `${correctInt}`,
-                    wrongs: [`${val + 1}`, `${val - 1}`, `${val + 2}`],
-                    explanation: `Нерівність нестрога (x ≤ ${val}), тому число ${val} входить до розв'язків і є найбільшим цілим розв'язком.`
-                };
-            },
-            // 8. Переріз проміжків (Система нерівностей)
             () => {
                 const a = Math.floor(Math.random() * 5) - 3;
                 const b = a + Math.floor(Math.random() * 6) + 2;
@@ -692,42 +697,9 @@
                     diagram: drawIntervalSVG(a, b, false, true),
                     correctVal: `(${a}; ${b}]`,
                     wrongs: [`[${a}; ${b})`, `(${a}; ${b})`, `[-∞; ${b}]`],
-                    explanation: `Переріз - це спільна частина обох проміжків. Елементи мають бути одночасно більшими за ${a} і не більшими за ${b}, тобто x ∈ (${a}; ${b}].`
+                    explanation: `Переріз — це спільна частина: елементи одночасно більші за ${a} та не більші за ${b}, тобто x ∈ (${a}; ${b}].`
                 };
             },
-            // 9. Оцінювання виразу (Додавання нерівностей)
-            () => {
-                const a1 = 2 + Math.floor(Math.random() * 4);
-                const b1 = a1 + 3;
-                const a2 = 1 + Math.floor(Math.random() * 5);
-                const b2 = a2 + 4;
-                const minSum = a1 + a2;
-                const maxSum = b1 + b2;
-                return {
-                    text: `Відомо, що ${a1} < x < ${b1} і ${a2} < y < ${b2}. Оцініть значення виразу x + y.`,
-                    diagram: '',
-                    correctVal: `${minSum} < x + y < ${maxSum}`,
-                    wrongs: [`${minSum - 1} < x + y < ${maxSum}`, `${a1 + b2} < x + y < ${b1 + a2}`, `${minSum} ≤ x + y ≤ ${maxSum}`],
-                    explanation: `Почленно додаємо нерівності однакові за знаком: (${a1} + ${a2}) < x + y < (${b1} + ${b2}) ⇒ ${minSum} < x + y < ${maxSum}.`
-                };
-            },
-            // 10. Оцінювання виразу (Множення нерівностей)
-            () => {
-                const a1 = 2 + Math.floor(Math.random() * 3);
-                const b1 = a1 + 2;
-                const a2 = 3 + Math.floor(Math.random() * 3);
-                const b2 = a2 + 3;
-                const minProd = a1 * a2;
-                const maxProd = b1 * b2;
-                return {
-                    text: `Відомо, що всі числа додатні: ${a1} < a < ${b1} та ${a2} < b < ${b2}. Оцініть значення добутку ab.`,
-                    diagram: '',
-                    correctVal: `${minProd} < ab < ${maxProd}`,
-                    wrongs: [`${a1 * b2} < ab < ${b1 * a2}`, `${minProd} ≤ ab ≤ ${maxProd}`, `${a1 + a2} < ab < ${b1 + b2}`],
-                    explanation: `Перемножуємо почленно нерівності з додатними членами: (${a1} · ${a2}) < ab < (${b1} · ${b2}) ⇒ ${minProd} < ab < ${maxProd}.`
-                };
-            },
-            // 11. Область визначення функції з коренем
             () => {
                 const k = 2 + Math.floor(Math.random() * 4);
                 const bVal = (Math.floor(Math.random() * 6) + 1) * k;
@@ -737,47 +709,9 @@
                     diagram: drawRaySVG(res, true, true),
                     correctVal: `[${res}; +∞)`,
                     wrongs: [`(${res}; +∞)`, `(-∞; ${res}]`, `[${-res}; +∞)`],
-                    explanation: `Підкореневий вираз має бути невід'ємним: ${k}x + ${bVal} ≥ 0 ⇒ ${k}x ≥ -${bVal} ⇒ x ≥ ${res}. Тобто x ∈ [${res}; +∞).`
+                    explanation: `Підкореневий вираз має бути невід'ємним: ${k}x + ${bVal} ≥ 0 ⇒ x ≥ ${res}. Область визначення: [${res}; +∞).`
                 };
             },
-            // 12. Подвійна нерівність
-            () => {
-                const min = 1 + Math.floor(Math.random() * 4);
-                const max = min + 6;
-                const k = 2;
-                const low = min * k;
-                const high = max * k;
-                return {
-                    text: `Розв'яжіть подвійну нерівність: ${low} < ${k}x < ${high}`,
-                    diagram: drawIntervalSVG(min, max, false, false),
-                    correctVal: `${min} < x < ${max}`,
-                    wrongs: [`${low} < x < ${high}`, `${min} ≤ x ≤ ${max}`, `${min / 2} < x < ${max / 2}`],
-                    explanation: `Поділимо всі три частини подвійної нерівності на ${k}: (${low}/${k}) < x < (${high}/${k}) ⇒ ${min} < x < ${max}.`
-                };
-            },
-            // 13. Нерівність з модулем (|x| <= a)
-            () => {
-                const a = 2 + Math.floor(Math.random() * 8);
-                return {
-                    text: `Знайдіть множину розв'язків нерівності |x| ≤ ${a}`,
-                    diagram: drawIntervalSVG(-a, a, true, true),
-                    correctVal: `[-${a}; ${a}]`,
-                    wrongs: [`(-∞; ${a}]`, `[${a}; +∞)`, `(-${a}; ${a})`],
-                    explanation: `Нерівність виду |x| ≤ a еквівалентна подвійній нерівності -a ≤ x ≤ a. Отже, розв'язком є відрізок [-${a}; ${a}].`
-                };
-            },
-            // 14. Нерівність з модулем (|x| > a)
-            () => {
-                const a = 3 + Math.floor(Math.random() * 7);
-                return {
-                    text: `Розв'яжіть нерівність: |x| > ${a}`,
-                    diagram: '',
-                    correctVal: `(-∞; -${a}) ∪ (${a}; +∞)`,
-                    wrongs: [`(-${a}; ${a})`, `[${a}; +∞)`, `(-∞; ${a})`],
-                    explanation: `Нерівність |x| > a означає, що відстань від точки x до нуля більша за ${a}. Це відповідає об'єднанню проміжків: (-∞; -${a}) ∪ (${a}; +∞).`
-                };
-            },
-            // 15. Проста квадратна нерівність (x^2 < a^2)
             () => {
                 const root = 2 + Math.floor(Math.random() * 7);
                 const sq = root * root;
@@ -786,87 +720,158 @@
                     diagram: drawIntervalSVG(-root, root, false, false),
                     correctVal: `(-${root}; ${root})`,
                     wrongs: [`(-∞; ${root})`, `[-${root}; ${root}]`, `(${root}; +∞)`],
-                    explanation: `Перенесемо ${sq} ліворуч: (x - ${root})(x + ${root}) < 0. За методом інтервалів отримуємо відкритий проміжок (-${root}; ${root}).`
+                    explanation: `(x - ${root})(x + ${root}) < 0. За методом інтервалів отримуємо проміжок (-${root}; ${root}).`
                 };
             },
-            // 16. Кількість цілих розв'язків у проміжку
             () => {
-                const a = Math.floor(Math.random() * 4) + 1;
-                const b = a + 4 + Math.floor(Math.random() * 4);
-                const count = b - a - 1;
+                const a = 2 + Math.floor(Math.random() * 8);
                 return {
-                    text: `Скільки цілих чисел містить відкритий проміжок (${a}; ${b})?`,
-                    diagram: drawIntervalSVG(a, b, false, false),
-                    correctVal: `${count}`,
-                    wrongs: [`${count + 1}`, `${count + 2}`, `${count - 1}`],
-                    explanation: `Числа ${a} і ${b} не входять у відкритий проміжок. Цілі числа всередині: від ${a + 1} до ${b - 1}. Їх кількість дорівнює ${b} - ${a} - 1 = ${count}.`
-                };
-            },
-            // 17. Нерівність зі змінною в обох частинах
-            () => {
-                const a = 5;
-                const b = 2;
-                const diff = a - b; // 3
-                const constVal = 9;
-                const res = 3;
-                return {
-                    text: `Розв'яжіть нерівність: ${a}x - 4 > ${b}x + ${constVal - 4}`,
-                    diagram: drawRaySVG(res, false, true),
-                    correctVal: `x > ${res}`,
-                    wrongs: [`x < ${res}`, `x > ${res + 2}`, `x < 1`],
-                    explanation: `Перенесемо доданки зі змінною вліво, а числа вправо: ${a}x - ${b}x > ${constVal} ⇒ ${diff}x > ${constVal} ⇒ x > ${res}.`
-                };
-            },
-            // 18. Властивості нерівностей (множення на від'ємне число)
-            () => {
-                return {
-                    text: `Якщо a > b і c < 0, то яка з наведених нерівностей є правильною?`,
-                    diagram: '',
-                    correctVal: `ac < bc`,
-                    wrongs: [`ac > bc`, `ac = bc`, `a + c < b + c`],
-                    explanation: `При множенні обох частин правильної нерівності на від'ємне число знак нерівності змінюється на протилежний: ac < bc.`
-                };
-            },
-            // 19. Об'єднання проміжків
-            () => {
-                const a = Math.floor(Math.random() * 4) - 2;
-                const b = a + 5;
-                return {
-                    text: `Який проміжок є об'єднанням проміжків (-∞; ${a}] і [${a}; ${b}]?`,
-                    diagram: '',
-                    correctVal: `(-∞; ${b}]`,
-                    wrongs: [`(-∞; ${a}]`, `[${a}; ${b}]`, `(-∞; +∞)`],
-                    explanation: `Оскільки точка ${a} належить обом проміжкам, то їхнє об'єднання повністю покриває весь проміжок від -∞ до ${b} включно.`
-                };
-            },
-            // 20. Квадратна нерівність x^2 >= a^2
-            () => {
-                const root = 3 + Math.floor(Math.random() * 6);
-                const sq = root * root;
-                return {
-                    text: `Знайдіть розв'язок нерівності: x² ≥ ${sq}`,
-                    diagram: '',
-                    correctVal: `(-∞; -${root}] ∪ [${root}; +∞)`,
-                    wrongs: [`[-${root}; ${root}]`, `(-∞; ${root}]`, `[${root}; +∞)`],
-                    explanation: `x² ≥ ${sq} ⇒ (x - ${root})(x + ${root}) ≥ 0. За методом інтервалів розв'язком є об'єднання проміжків (-∞; -${root}] ∪ [${root}; +∞).`
+                    text: `Знайдіть множину розв'язків нерівності |x| ≤ ${a}`,
+                    diagram: drawIntervalSVG(-a, a, true, true),
+                    correctVal: `[-${a}; ${a}]`,
+                    wrongs: [`(-∞; ${a}]`, `[${a}; +∞)`, `(-${a}; ${a})`],
+                    explanation: `Нерівність |x| ≤ a еквівалентна подвійній нерівності -a ≤ x ≤ a, тобто відрізку [-${a}; ${a}].`
                 };
             }
         ];
 
-        // --- СИСТЕМА ГЕНЕРАЦІЇ ТА УНІКАЛЬНОСТІ ---
-        function generateUniqueQuestions(count) {
+        // --- ГЕНЕРАТОРИ ДЛЯ ГЕОМЕТРІЇ (ТЕМА: ПОВТОРЕННЯ) ---
+        const geometryGenerators = [
+            () => {
+                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15]];
+                const triple = pyth[Math.floor(Math.random() * pyth.length)];
+                return {
+                    text: `У прямокутному трикутнику катети дорівнюють ${triple[0]} см і ${triple[1]} см. Знайдіть гіпотенузу.`,
+                    diagram: drawRightTriangleSVG(triple[0], triple[1], '?'),
+                    correctVal: `${triple[2]} см`,
+                    wrongs: [`${triple[2] + 2} см`, `${triple[2] - 1} см`, `${triple[0] + triple[1]} см`],
+                    explanation: `За теоремою Піфагора: c = √(a² + b²) = √(${triple[0]}² + ${triple[1]}²) = √(${triple[0]*triple[0] + triple[1]*triple[1]}) = ${triple[2]} см.`
+                };
+            },
+            () => {
+                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
+                const triple = pyth[Math.floor(Math.random() * pyth.length)];
+                return {
+                    text: `Знайдіть катет прямокутного трикутника, якщо його гіпотенуза дорівнює ${triple[2]} см, а інший катет — ${triple[1]} см.`,
+                    diagram: drawRightTriangleSVG('?', triple[1], triple[2]),
+                    correctVal: `${triple[0]} см`,
+                    wrongs: [`${triple[0] + 3} см`, `${triple[0] + 1} см`, `${triple[2] - triple[1]} см`],
+                    explanation: `За теоремою Піфагора: a = √(c² - b²) = √(${triple[2]}² - ${triple[1]}²) = ${triple[0]} см.`
+                };
+            },
+            () => {
+                const pyth = [[3,4,5], [6,8,10], [5,12,13]];
+                const triple = pyth[Math.floor(Math.random() * pyth.length)];
+                const area = (triple[0] * triple[1]) / 2;
+                return {
+                    text: `Обчисліть площу прямокутного трикутника з катетами ${triple[0]} см та ${triple[1]} см.`,
+                    diagram: drawRightTriangleSVG(triple[0], triple[1], triple[2]),
+                    correctVal: `${area} см²`,
+                    wrongs: [`${area * 2} см²`, `${area + 5} см²`, `${area - 3} см²`],
+                    explanation: `Площа прямокутного трикутника дорівнює півдобутку його катетів: S = (a · b) / 2 = (${triple[0]} · ${triple[1]}) / 2 = ${area} см².`
+                };
+            },
+            () => {
+                const r = Math.floor(Math.random() * 8) + 2;
+                const c = 2 * r;
+                return {
+                    text: `Знайдіть довжину кола, радіус якого дорівнює ${r} см.`,
+                    diagram: drawCircleSVG(r),
+                    correctVal: `${c}π см`,
+                    wrongs: [`${r * r}π см`, `${r}π см`, `${c + 2}π см`],
+                    explanation: `Довжина кола обчислюється за формулою C = 2πR. Отже, C = 2 · π · ${r} = ${c}π см.`
+                };
+            },
+            () => {
+                const r = Math.floor(Math.random() * 7) + 2;
+                const s = r * r;
+                return {
+                    text: `Знайдіть площу круга, радіус якого дорівнює ${r} см.`,
+                    diagram: drawCircleSVG(r),
+                    correctVal: `${s}π см²`,
+                    wrongs: [`${2 * r}π см²`, `${s * 2}π см²`, `${s + 4}π см²`],
+                    explanation: `Площа круга обчислюється за формулою S = πR². Отже, S = π · ${r}² = ${s}π см².`
+                };
+            },
+            () => {
+                const x = Math.floor(Math.random() * 8) + 1;
+                const y = Math.floor(Math.random() * 8) + 1;
+                const lenSq = x * x + y * y;
+                const len = Math.sqrt(lenSq);
+                const isInt = Number.isInteger(len);
+                const correctAns = isInt ? `${len}` : `√${lenSq}`;
+
+                return {
+                    text: `Знайдіть модуль (довжину) вектора ā(${x}; ${y}).`,
+                    diagram: drawVectorSVG(x, y),
+                    correctVal: correctAns,
+                    wrongs: [`${x + y}`, `√${x + y}`, `${x * y}`],
+                    explanation: `Модуль вектора ā(x; y) обчислюється за формулою |ā| = √(x² + y²) = √(${x}² + ${y}²) = ${correctAns}.`
+                };
+            },
+            () => {
+                const x1 = Math.floor(Math.random() * 5) + 1;
+                const y1 = Math.floor(Math.random() * 5) + 1;
+                const x2 = Math.floor(Math.random() * 5) + 1;
+                const y2 = Math.floor(Math.random() * 5) + 1;
+                const scalar = x1 * x2 + y1 * y2;
+
+                return {
+                    text: `Знайдіть скалярний добуток векторів ā(${x1}; ${y1}) та b̄(${x2}; ${y2}).`,
+                    diagram: '',
+                    correctVal: `${scalar}`,
+                    wrongs: [`${scalar + 3}`, `${x1 * y1 + x2 * y2}`, `${(x1 + x2) * (y1 + y2)}`],
+                    explanation: `Скалярний добуток векторів обчислюється як сума добутків їхніх відповідних координат: ā · b̄ = x1·x2 + y1·y2 = ${x1}·${x2} + ${y1}·${y2} = ${scalar}.`
+                };
+            },
+            () => {
+                const angles = [
+                    { name: 'sin 30°', val: '0.5' },
+                    { name: 'cos 60°', val: '0.5' },
+                    { name: 'sin 90°', val: '1' },
+                    { name: 'cos 0°', val: '1' },
+                    { name: 'tg 45°', val: '1' }
+                ];
+                const item = angles[Math.floor(Math.random() * angles.length)];
+
+                return {
+                    text: `Чому дорівнює значення виразу ${item.name}?`,
+                    diagram: '',
+                    correctVal: item.val,
+                    wrongs: ['0', '0.866', '2'],
+                    explanation: `За таблицею тригонометричних функцій стандартних кутів значення ${item.name} дорівнює ${item.val}.`
+                };
+            },
+            () => {
+                const n = Math.floor(Math.random() * 5) + 5; // 5, 6, 7, 8, 9
+                const sum = (n - 2) * 180;
+                return {
+                    text: `Знайдіть суму кутів опуклого ${n}-кутника.`,
+                    diagram: '',
+                    correctVal: `${sum}°`,
+                    wrongs: [`${sum + 180}°`, `${sum - 180}°`, `${n * 180}°`],
+                    explanation: `Сума кутів опуклого n-кутника обчислюється за формулою S = 180° · (n - 2). Для n = ${n}: S = 180° · (${n} - 2) = ${sum}°.`
+                };
+            }
+        ];
+
+        // --- ГЕНЕРАЦІЯ УНІКАЛЬНИХ ПИТАНЬ ---
+        function generateUniqueQuestions(subject, count) {
             const currentTestTexts = new Set();
             const resultList = [];
             
-            const historyList = getSeenQuestions();
+            const storageKey = subject === 'algebra' ? 'algebra_seen' : 'geometry_seen';
+            const historyList = getSeenQuestions(storageKey);
             const historySet = new Set(historyList);
 
+            const pool = subject === 'algebra' ? algebraGenerators : geometryGenerators;
+
             let attempts = 0;
-            const maxAttempts = 10000;
+            const maxAttempts = 5000;
 
             while (resultList.length < count && attempts < maxAttempts) {
                 attempts++;
-                const gen = algebraGenerators[Math.floor(Math.random() * algebraGenerators.length)];
+                const gen = pool[Math.floor(Math.random() * pool.length)];
                 const qRaw = gen();
 
                 if (!currentTestTexts.has(qRaw.text) && !historySet.has(qRaw.text)) {
@@ -889,7 +894,7 @@
             attempts = 0;
             while (resultList.length < count && attempts < maxAttempts) {
                 attempts++;
-                const gen = algebraGenerators[Math.floor(Math.random() * algebraGenerators.length)];
+                const gen = pool[Math.floor(Math.random() * pool.length)];
                 const qRaw = gen();
 
                 if (!currentTestTexts.has(qRaw.text)) {
@@ -910,11 +915,7 @@
             }
 
             const updatedHistory = Array.from(new Set([...historyList, ...Array.from(currentTestTexts)]));
-            if (updatedHistory.length > 500) {
-                saveSeenQuestions(updatedHistory.slice(-200));
-            } else {
-                saveSeenQuestions(updatedHistory);
-            }
+            saveSeenQuestions(storageKey, updatedHistory.length > 300 ? updatedHistory.slice(-150) : updatedHistory);
 
             return resultList;
         }
@@ -923,7 +924,7 @@
             totalQuestionsCount = count;
             currentQuestionIndex = 0;
             userAnswers = new Array(count).fill(null);
-            questionsData = generateUniqueQuestions(count);
+            questionsData = generateUniqueQuestions(currentSubject, count);
 
             showScreen('screen-quiz');
             loadQuestion(0);
@@ -933,6 +934,16 @@
             const q = questionsData[index];
 
             document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
+            
+            const topicElem = document.getElementById('quiz-topic');
+            if (currentSubject === 'algebra') {
+                topicElem.innerText = 'Тема: Нерівності';
+                topicElem.style.color = '#bf00ff';
+            } else {
+                topicElem.innerText = 'Тема: Повторення';
+                topicElem.style.color = '#00f3ff';
+            }
+
             document.getElementById('question-text').innerText = q.text;
 
             const diagContainer = document.getElementById('diagram-container');
