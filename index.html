@@ -110,46 +110,40 @@
 
         .buttons-wrapper {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            justify-content: center;
             width: 100%;
-            max-width: 500px;
+            max-width: 750px;
         }
 
         .subjects-row {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             width: 100%;
         }
 
         .btn-subject {
+            flex: 1;
             background: rgba(15, 8, 35, 0.85);
             border: 3px solid;
             border-radius: 20px;
-            padding: 18px 25px;
-            font-size: 1.5rem;
+            padding: 18px 15px;
+            font-size: 1.25rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
             user-select: none;
-            width: 100%;
         }
 
         .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
         .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
-        .btn-physics { 
-            border-color: #ff007f; 
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); 
-            width: 100%;
-        }
+        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
 
         .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
         .btn-geometry:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
@@ -528,11 +522,11 @@
                     <span>📐</span>
                     <span>Геометрія</span>
                 </button>
+                <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
+                    <span>⚡</span>
+                    <span>Фізика</span>
+                </button>
             </div>
-            <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
-                <span>⚡</span>
-                <span>Фізика</span>
-            </button>
         </div>
     </div>
 
