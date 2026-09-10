@@ -325,12 +325,12 @@
             right: 25px;
             z-index: 100;
             background: rgba(15, 8, 35, 0.95);
-            border: 2.5px solid #00f3ff;
-            box-shadow: 0 0 18px rgba(0, 243, 255, 0.5);
+            border: 2.5px solid #ffd700;
+            box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
             color: #ffffff;
             padding: 14px 28px;
             border-radius: 16px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             cursor: pointer;
             display: flex;
@@ -342,8 +342,8 @@
 
         .btn-next-fixed:hover {
             transform: scale(1.06);
-            box-shadow: 0 0 30px #00f3ff;
-            background: rgba(0, 243, 255, 0.25);
+            box-shadow: 0 0 30px #ffd700;
+            background: rgba(255, 215, 0, 0.25);
         }
 
         .results-list {
@@ -511,7 +511,7 @@
             .subjects-row { flex-direction: column; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
-            .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 1rem; }
+            .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -581,8 +581,8 @@
         </div>
     </div>
 
-    <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="nextQuestion()">
-        <span>Далі</span>
+    <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="skipQuestion()">
+        <span>Пропустити завдання</span>
         <span>➔</span>
     </button>
 
@@ -652,6 +652,7 @@
         let currentQuestionIndex = 0;
         let questionsData = [];
         let userAnswers = [];
+        let autoNextTimer = null;
 
         function selectSubject(subject) {
             currentSubject = subject;
@@ -687,11 +688,11 @@
         }
 
         function confirmFinishTest() {
+            clearTimeout(autoNextTimer);
             closeConfirmModal();
             finishTest();
         }
 
-        // SVG креслення для математики
         function drawRaySVG(val, isClosed, directionRight) {
             const circleFill = isClosed ? "#00f3ff" : "#070414";
             const lineStartX = directionRight ? 130 : 25;
@@ -998,7 +999,7 @@
             }
         ];
 
-        // --- ГЕНЕРАТОРИ ФІЗИКА (ЕЛЕКТРИЧНИЙ СТРУМ В ЕЛЕКТРОЛІТАХ. ЕЛЕКТРОЛІЗ) ---
+        // --- ГЕНЕРАТОРИ ФІЗИКА ---
         const physicsGenerators = [
             () => {
                 const k = 0.3; // мг/Кл
@@ -1182,6 +1183,8 @@
         }
 
         function loadQuestion(index) {
+            clearTimeout(autoNextTimer);
+
             const q = questionsData[index];
 
             document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
@@ -1243,6 +1246,8 @@
         }
 
         function handleAnswer(selectedIndex) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+
             userAnswers[currentQuestionIndex] = selectedIndex;
             const q = questionsData[currentQuestionIndex];
             const optionsGrid = document.getElementById('options-grid');
@@ -1259,9 +1264,21 @@
                 document.getElementById('explanation-text').innerText = q.explanation;
                 document.getElementById('explanation-box').classList.add('active');
             }
+
+            // Автоматичний перехід через 3 секунди
+            clearTimeout(autoNextTimer);
+            autoNextTimer = setTimeout(() => {
+                nextQuestion();
+            }, 3000);
+        }
+
+        function skipQuestion() {
+            clearTimeout(autoNextTimer);
+            nextQuestion();
         }
 
         function nextQuestion() {
+            clearTimeout(autoNextTimer);
             if (currentQuestionIndex < totalQuestionsCount - 1) {
                 currentQuestionIndex++;
                 loadQuestion(currentQuestionIndex);
@@ -1271,6 +1288,7 @@
         }
 
         function finishTest() {
+            clearTimeout(autoNextTimer);
             showScreen('screen-results');
             const resultsList = document.getElementById('results-list');
             resultsList.innerHTML = '';
@@ -1297,7 +1315,7 @@
                     ${badgeHTML}
                     <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">№${idx + 1}. ${q.text}</div>
                     <div style="font-size: 0.95rem; margin-bottom: 6px;">
-                        Ваша відповідь: <strong style="color: ${ans === q.correct ? '#00ff66' : '#ff0055'}">${ans !== null ? q.options[ans] : 'Не вибрано'}</strong>
+                        Ваша відповідь: <strong style="color: ${ans === null ? '#ffd700' : (ans === q.correct ? '#00ff66' : '#ff0055')}">${ans !== null ? q.options[ans] : 'Пропущено'}</strong>
                     </div>
                     <div style="font-size: 0.95rem; margin-bottom: 10px;">
                         Правильна відповідь: <strong style="color: #00ff66">${q.options[q.correct]}</strong>
@@ -1311,6 +1329,7 @@
         }
 
         function resetToHome() {
+            clearTimeout(autoNextTimer);
             renderBackground(algebraIcons);
             showScreen('screen-subject');
         }
