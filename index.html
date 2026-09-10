@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математика 9 Клас</title>
+    <!-- Подключаем красивый шрифт Montserrat из Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
 
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1a0933 0%, #0b071e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: #ffffff;
+        }
+
+        /* --- НЕОНОВЫЙ ФОН С ПРЕДМЕТАМИ --- */
+        .background-objects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-item {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.35;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        /* Индивидуальное неоновое свечение для фоновых иконок */
+        .item-1 { top: 10%; left: 8%; filter: drop-shadow(0 0 12px #00f3ff); animation-duration: 7s; }
+        .item-2 { top: 15%; right: 12%; filter: drop-shadow(0 0 12px #bf00ff); animation-duration: 9s; }
+        .item-3 { bottom: 15%; left: 12%; filter: drop-shadow(0 0 12px #ff007f); animation-duration: 8s; }
+        .item-4 { bottom: 20%; right: 10%; filter: drop-shadow(0 0 12px #00f3ff); animation-duration: 10s; }
+        .item-5 { top: 50%; left: 5%; filter: drop-shadow(0 0 12px #9d4edd); animation-duration: 6s; }
+        .item-6 { top: 45%; right: 6%; filter: drop-shadow(0 0 12px #00f3ff); animation-duration: 11s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-25px) rotate(15deg); }
+        }
+
+        /* --- ГЛАВНЫЙ КОНТЕЙНЕР --- */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        /* Заголовок "Оберіть предмет" */
+        .title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 50px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 10px #bf00ff,
+                0 0 20px #bf00ff,
+                0 0 40px #00f3ff;
+        }
+
+        /* --- БЛОК КНОПОК --- */
+        .buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* Общий стиль неоновых кнопок */
+        .btn-subject {
+            background: rgba(20, 10, 45, 0.75);
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 18px 35px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+            user-select: none;
+        }
+
+        /* Кнопка "Геометрія" (Слева) */
+        .btn-geometry {
+            border-color: #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        /* Кнопка "Алгебра" (Справа) */
+        .btn-algebra {
+            border-color: #bf00ff;
+            box-shadow: 0 0 15px rgba(191, 0, 255, 0.4), inset 0 0 15px rgba(191, 0, 255, 0.2);
+        }
+
+        /* Эффект наведения (Hover) - увеличение и усиление свечения */
+        .btn-geometry:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.9), inset 0 0 20px rgba(0, 243, 255, 0.5);
+            background: rgba(0, 243, 255, 0.15);
+        }
+
+        .btn-algebra:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(191, 0, 255, 0.9), inset 0 0 20px rgba(191, 0, 255, 0.5);
+            background: rgba(191, 0, 255, 0.15);
+        }
+
+        /* Эффект нажатия (Active) */
+        .btn-subject:active {
+            transform: scale(0.98);
+        }
+
+        .icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .math-symbol {
+            font-family: serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        /* Адаптив под мобильные телефоны */
+        @media (max-width: 600px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            .buttons-wrapper {
+                flex-direction: column;
+            }
+            .btn-subject {
+                width: 100%;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Фоновые плавающие неоновые предметы -->
+    <div class="background-objects">
+        <span class="bg-item item-1">📐</span>
+        <span class="bg-item item-2">📏</span>
+        <span class="bg-item item-3">✏️</span>
+        <span class="bg-item item-4">🖋️</span>
+        <span class="bg-item item-5">📊</span>
+        <span class="bg-item item-6">🧭</span>
+    </div>
+
+    <!-- Главная секция -->
+    <div class="main-container">
+        <h1 class="title">Оберіть предмет</h1>
+        
+        <div class="buttons-wrapper">
+            <!-- Кнопка Геометрія (Слева) -->
+            <button class="btn-subject btn-geometry" onclick="onSubjectClick('Геометрія')">
+                <span class="icon">📏</span>
+                <span>Геометрія</span>
+                <span class="icon">✏️</span>
+            </button>
+
+            <!-- Кнопка Алгебра (Справа) -->
+            <button class="btn-subject btn-algebra" onclick="onSubjectClick('Алгебра')">
+                <span class="icon">🖋️</span>
+                <span>Алгебра</span>
+                <span class="icon math-symbol">√x</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Заготовка под клик по кнопкам (пока ничего не происходит)
+        function onSubjectClick(subjectName) {
+            console.log("Выбран предмет: " + subjectName);
+        }
+    </script>
+
+</body>
+</html>
