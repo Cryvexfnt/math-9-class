@@ -546,17 +546,17 @@
                 <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
                     <span class="subject-icon">√x</span>
                     <span>Алгебра</span>
-                    <span class="subject-desc">Істер 9 клас НУШ — Нерівності</span>
+                    <span class="subject-desc">9 клас — Числові нерівності</span>
                 </button>
                 <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
                     <span class="subject-icon">∠α</span>
                     <span>Геометрія</span>
-                    <span class="subject-desc">Істер 8 клас НУШ — Повторення</span>
+                    <span class="subject-desc">8 клас — Повторення</span>
                 </button>
                 <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
                     <span class="subject-icon">E=mc²</span>
                     <span>Фізика</span>
-                    <span class="subject-desc">Бар'яхтар 9 клас — Струм у металах</span>
+                    <span class="subject-desc">9 клас — Струм у металах</span>
                 </button>
             </div>
         </div>
@@ -751,7 +751,7 @@
                 const res = Math.floor(Math.random() * 8) - 3;
                 const b = a * res;
                 return {
-                    topic: "Алгебра 9 клас — Нерівності (Істер)",
+                    topic: "Алгебра 9 клас — Нерівності",
                     text: `Розв'яжіть лінійну нерівність: ${a}x - ${b} ≥ 0`,
                     diagram: drawRaySVG(res, true, true),
                     correctVal: `x ≥ ${res}  (або  x ∈ [${res}; +∞))`,
@@ -768,7 +768,7 @@
                     diagram: drawDoubleIntervalSVG(min, max, true, false),
                     correctVal: `[${min}; ${max})   тобто  ${min} ≤ x < ${max}`,
                     wrongs: [`(${min}; ${max}]   тобто  ${min} < x ≤ ${max}`, `[${min}; ${max}]   тобто  ${min} ≤ x ≤ ${max}`, `(${min}; ${max})   тобто  ${min} < x < ${max}`],
-                    explanation: `Зафарбована точка утворює квадратну дужку [${min}, а виколота точка біля ${max} — круглу дужку ${max}).Отже, [${min}; ${max}).`
+                    explanation: `Зафарбована точка утворює квадратну дужку [${min}, а виколота точка біля ${max} — круглу дужку ${max}). Отже, [${min}; ${max}).`
                 };
             },
             () => {
@@ -780,7 +780,7 @@
                     diagram: "",
                     correctVal: `${minA + minB} < a + b < ${maxA + maxB}`,
                     wrongs: [`${minA * minB} < a + b < ${maxA * maxB}`, `${minA} < a + b < ${maxB}`, `${minA + maxA} < a + b < ${minB + maxB}`],
-                    explanation: `Нерівності однакового знака можна почленно додавати: (${minA}+${minB}) < a+b < (${maxA}+${maxB}) ⇒ ${minA + minB} < a + b < ${maxA + maxB}.`
+                    explanation: `Нерівності одинакового знака можна почленно додавати: (${minA}+${minB}) < a+b < (${maxA}+${maxB}) ⇒ ${minA + minB} < a + b < ${maxA + maxB}.`
                 };
             },
             () => {
@@ -801,7 +801,7 @@
                 const deg = (Math.floor(Math.random() * 8) + 4) * 10;
                 const ans = 180 - deg;
                 return {
-                    topic: "Геометрія 8 клас — Повторення: Суміжні кути",
+                    topic: "Геометрія 8 клас — Суміжні кути",
                     text: `Один із суміжних кутів дорівнює ${deg}°. Знайдіть градусну міру іншого кута.`,
                     diagram: drawAdjacentAnglesSVG(deg),
                     correctVal: `${ans}°`,
@@ -813,7 +813,7 @@
                 const hyp = (Math.floor(Math.random() * 6) + 2) * 2;
                 const leg = hyp / 2;
                 return {
-                    topic: "Геометрія 8 клас — Повторення: Прямокутний трикутник",
+                    topic: "Геометрія 8 клас — Прямокутний трикутник",
                     text: `У прямокутному трикутнику гіпотенуза c = ${hyp} см, а один із гострих кутів дорівнює 30°. Знайдіть катет, що лежить проти цього кута.`,
                     diagram: drawRightTriangleSVG(hyp),
                     correctVal: `${leg} см`,
@@ -826,7 +826,7 @@
                 const part = 180 / ratioSum;
                 const maxAngle = 4 * part;
                 return {
-                    topic: "Геометрія 8 клас — Повторення: Сума кутів трикутника",
+                    topic: "Геометрія 8 клас — Сума кутів трикутника",
                     text: `Кути трикутника відносяться як 2 : 3 : 4. Знайдіть градусну міру найбільшого кута.`,
                     diagram: "",
                     correctVal: `${maxAngle}°`,
@@ -839,7 +839,7 @@
         const physicsGenerators = [
             () => {
                 return {
-                    topic: "Фізика 9 клас (Бар'яхтар) — Струм у металах",
+                    topic: "Фізика 9 клас — Електричний струм у металах",
                     text: `Які частинки є носіями електричного заряду в металевих провідниках?`,
                     diagram: "",
                     correctVal: `Вільні електрони ("електронний газ")`,
@@ -849,7 +849,7 @@
             },
             () => {
                 return {
-                    topic: "Фізика 9 клас (Бар'яхтар) — Струм у металах",
+                    topic: "Фізика 9 клас — Електричний струм у металах",
                     text: `Як змінюється електричний опір металевого провідника під час його нагрівання?`,
                     diagram: "",
                     correctVal: `Збільшується`,
@@ -859,7 +859,7 @@
             },
             () => {
                 return {
-                    topic: "Фізика 9 клас (Бар'яхтар) — Надпровідність",
+                    topic: "Фізика 9 клас — Надпровідність",
                     text: `У чому полягає сутність явища надпровідності?`,
                     diagram: "",
                     correctVal: `Повна втрата електричного опору при охолодженні до критичної температури`,
@@ -873,7 +873,7 @@
             },
             () => {
                 return {
-                    topic: "Фізика 9 клас (Бар'яхтар) — Надпровідність",
+                    topic: "Фізика 9 клас — Надпровідність",
                     text: `Хто і коли вперше відкрив явище надпровідності (на прикладі ртуті, охолодженої рідким гелієм)?`,
                     diagram: "",
                     correctVal: `Гейке Камерлінг-Оннес (1911 р.)`,
