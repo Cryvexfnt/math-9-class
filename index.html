@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Математика 9 Клас</title>
-    <!-- Подключение шрифта Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,6 +15,7 @@
 
         body {
             min-height: 100vh;
+            width: 100vw;
             background: radial-gradient(circle at center, #1a0933 0%, #0b071e 100%);
             display: flex;
             justify-content: center;
@@ -25,7 +25,7 @@
             color: #ffffff;
         }
 
-        /* --- НЕОНОВАЯ КАНЦЕЛЯРИЯ НА ВЕСЬ ФОН --- */
+        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ВЕСЬ ЭКРАН --- */
         .background-objects {
             position: absolute;
             top: 0;
@@ -35,37 +35,37 @@
             pointer-events: none;
             z-index: 1;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             grid-template-rows: repeat(4, 1fr);
+            align-items: center;
+            justify-items: center;
             padding: 20px;
         }
 
         .bg-item {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             opacity: 0.35;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            user-select: none;
             animation: float 6s ease-in-out infinite alternate;
         }
 
-        /* Неоновые цвета свечения для канцелярии на фоне */
-        .neon-cyan { filter: drop-shadow(0 0 15px #00f3ff); }
-        .neon-purple { filter: drop-shadow(0 0 15px #bf00ff); }
-        .neon-pink { filter: drop-shadow(0 0 15px #ff007f); }
+        /* Неоновое свечение предметов на фоне */
+        .neon-cyan { filter: drop-shadow(0 0 12px #00f3ff); }
+        .neon-purple { filter: drop-shadow(0 0 12px #bf00ff); }
+        .neon-pink { filter: drop-shadow(0 0 12px #ff007f); }
 
-        /* Разная скорость анимации, чтобы движение казалось хаотичным */
-        .delay-1 { animation-duration: 5s; animation-delay: 0s; }
-        .delay-2 { animation-duration: 7s; animation-delay: 1s; }
-        .delay-3 { animation-duration: 6s; animation-delay: 2s; }
-        .delay-4 { animation-duration: 8s; animation-delay: 0.5s; }
+        /* Разные фазы анимации для эффекта хаоса */
+        .d-1 { animation-duration: 5s; animation-delay: 0s; }
+        .d-2 { animation-duration: 7s; animation-delay: 1s; }
+        .d-3 { animation-duration: 6s; animation-delay: 2s; }
+        .d-4 { animation-duration: 8s; animation-delay: 0.5s; }
 
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg) scale(1); }
-            100% { transform: translateY(-20px) rotate(12deg) scale(1.05); }
+            100% { transform: translateY(-18px) rotate(15deg) scale(1.08); }
         }
 
-        /* --- ГЛАВНЫЙ КОНТЕЙНЕР --- */
+        /* --- ЦЕНТРАЛЬНЫЙ БЛОК --- */
         .main-container {
             position: relative;
             z-index: 2;
@@ -75,11 +75,10 @@
             padding: 20px;
         }
 
-        /* Заголовок "Оберіть предмет" */
         .title {
             font-size: 3.2rem;
             font-weight: 900;
-            margin-bottom: 50px;
+            margin-bottom: 45px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -89,7 +88,7 @@
                 0 0 40px #00f3ff;
         }
 
-        /* --- БЛОК КНОПОК --- */
+        /* --- КНОПКИ --- */
         .buttons-wrapper {
             display: flex;
             justify-content: center;
@@ -99,7 +98,7 @@
         }
 
         .btn-subject {
-            background: rgba(20, 10, 45, 0.85);
+            background: rgba(15, 8, 35, 0.85);
             border: 3px solid;
             border-radius: 20px;
             padding: 18px 35px;
@@ -117,19 +116,16 @@
             user-select: none;
         }
 
-        /* Кнопка "Геометрія" (Слева) */
         .btn-geometry {
             border-color: #00f3ff;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(0, 243, 255, 0.2);
         }
 
-        /* Кнопка "Алгебра" (Справа) */
         .btn-algebra {
             border-color: #bf00ff;
             box-shadow: 0 0 15px rgba(191, 0, 255, 0.4), inset 0 0 15px rgba(191, 0, 255, 0.2);
         }
 
-        /* Увеличение при наведении курсора */
         .btn-geometry:hover {
             transform: scale(1.08);
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.9), inset 0 0 20px rgba(0, 243, 255, 0.5);
@@ -157,55 +153,62 @@
             font-weight: bold;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             .title { font-size: 2.2rem; }
             .buttons-wrapper { flex-direction: column; }
             .btn-subject { width: 100%; font-size: 1.5rem; }
+            .background-objects {
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Фоновая канцелярия на ВЕСЬ экран -->
+    <!-- Канцуха на весь экран (24 предмета) -->
     <div class="background-objects">
-        <span class="bg-item neon-cyan delay-1">📐</span>
-        <span class="bg-item neon-purple delay-2">📏</span>
-        <span class="bg-item neon-pink delay-3">✏️</span>
-        <span class="bg-item neon-cyan delay-4">🖊️</span>
-        <span class="bg-item neon-purple delay-1">🧭</span>
-        
-        <span class="bg-item neon-pink delay-2">📊</span>
-        <span class="bg-item neon-cyan delay-3">✂️</span>
-        <span class="bg-item neon-purple delay-4">🧮</span>
-        <span class="bg-item neon-pink delay-1">📝</span>
-        <span class="bg-item neon-cyan delay-2">📐</span>
+        <span class="bg-item neon-cyan d-1">📐</span>
+        <span class="bg-item neon-purple d-2">📏</span>
+        <span class="bg-item neon-pink d-3">✏️</span>
+        <span class="bg-item neon-cyan d-4">🖊️</span>
+        <span class="bg-item neon-purple d-1">🧭</span>
+        <span class="bg-item neon-pink d-2">📊</span>
 
-        <span class="bg-item neon-purple delay-3">🖊️</span>
-        <span class="bg-item neon-pink delay-4">📏</span>
-        <span class="bg-item neon-cyan delay-1">🧭</span>
-        <span class="bg-item neon-purple delay-2">✏️</span>
-        <span class="bg-item neon-pink delay-3">📊</span>
+        <span class="bg-item neon-pink d-3">✂️</span>
+        <span class="bg-item neon-cyan d-4">🧮</span>
+        <span class="bg-item neon-purple d-1">📝</span>
+        <span class="bg-item neon-pink d-2">📐</span>
+        <span class="bg-item neon-cyan d-3">🖊️</span>
+        <span class="bg-item neon-purple d-4">📏</span>
 
-        <span class="bg-item neon-cyan delay-4">🧮</span>
-        <span class="bg-item neon-purple delay-1">📐</span>
-        <span class="bg-item neon-pink delay-2">🖊️</span>
-        <span class="bg-item neon-cyan delay-3">📏</span>
-        <span class="bg-item neon-purple delay-4">✂️</span>
+        <span class="bg-item neon-purple d-1">🧭</span>
+        <span class="bg-item neon-pink d-2">✏️</span>
+        <span class="bg-item neon-cyan d-3">📊</span>
+        <span class="bg-item neon-purple d-4">🧮</span>
+        <span class="bg-item neon-pink d-1">📐</span>
+        <span class="bg-item neon-cyan d-2">🖊️</span>
+
+        <span class="bg-item neon-cyan d-3">📏</span>
+        <span class="bg-item neon-purple d-4">✂️</span>
+        <span class="bg-item neon-pink d-1">✏️</span>
+        <span class="bg-item neon-cyan d-2">🧭</span>
+        <span class="bg-item neon-purple d-3">📝</span>
+        <span class="bg-item neon-pink d-4">🧮</span>
     </div>
 
-    <!-- Главный контейнер -->
     <div class="main-container">
         <h1 class="title">Оберіть предмет</h1>
         
         <div class="buttons-wrapper">
-            <!-- Кнопка Геометрія (Слева) -->
+            <!-- Геометрия -->
             <button class="btn-subject btn-geometry" onclick="onSubjectClick('Геометрія')">
                 <span class="icon">📏</span>
                 <span>Геометрія</span>
                 <span class="icon">✏️</span>
             </button>
 
-            <!-- Кнопка Алгебра (Справа): Шариковая ручка 🖊️ слева и √x справа -->
+            <!-- Алгебра (Шариковая ручка 🖊️) -->
             <button class="btn-subject btn-algebra" onclick="onSubjectClick('Алгебра')">
                 <span class="icon">🖊️</span>
                 <span>Алгебра</span>
@@ -216,7 +219,7 @@
 
     <script>
         function onSubjectClick(subjectName) {
-            console.log("Выбран предмет: " + subjectName);
+            console.log("Вибрано предмет: " + subjectName);
         }
     </script>
 
