@@ -40,7 +40,6 @@
         .bg-item {
             position: absolute;
             user-select: none;
-            /* Базовий поворот застосовується миттєво до запуску анімації */
             transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
             animation: float 6s infinite alternate ease-in-out;
             display: flex;
@@ -83,6 +82,18 @@
             100% { transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06); }
         }
 
+        /* АНИМАЦИЯ ПЕРЕХОДА ЭКРАНОВ */
+        @keyframes screenIn {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         .screen {
             display: none;
             position: relative;
@@ -97,6 +108,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            animation: screenIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .title {
@@ -188,6 +200,32 @@
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 0 25px #bf00ff;
             background: rgba(191, 0, 255, 0.25);
+        }
+
+        /* КНОПКА ВОЗВРАТА */
+        .btn-back {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.25s ease;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            border-color: #00f3ff;
+            box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
+            background: rgba(0, 243, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         .quiz-card {
@@ -306,6 +344,7 @@
             font-size: 1.05rem;
             line-height: 1.5;
             color: #ffe6ee;
+            animation: screenIn 0.3s ease-out;
         }
 
         .explanation-box.active {
@@ -449,6 +488,7 @@
 
         .modal-overlay.active {
             display: flex;
+            animation: screenIn 0.25s ease-out;
         }
 
         .modal-card {
@@ -567,6 +607,9 @@
             <button class="btn-count" onclick="startTest(45)">45</button>
             <button class="btn-count" onclick="startTest(50)">50</button>
         </div>
+        <button class="btn-back" onclick="resetToHome()">
+            <span>← Повернутися в меню</span>
+        </button>
     </div>
 
     <!-- 3. ТЕСТУВАННЯ -->
