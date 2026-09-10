@@ -12,14 +12,18 @@
             --neon-purple: #b500ff;
             --neon-green: #00ff66;
             --neon-red: #ff003c;
-            --bg-color: #070314;
-            --panel-bg: rgba(10, 5, 25, 0.85);
+            /* Змінено кольори фону на синьо-фіолетові */
+            --bg-color-1: #090416; /* Темно-фіолетовий */
+            --bg-color-2: #04081c; /* Темно-синій */
+            --panel-bg: rgba(13, 8, 33, 0.85);
         }
 
         * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body {
-            margin: 0; padding: 0; background-color: var(--bg-color); color: white;
+            margin: 0; padding: 0; 
+            background: linear-gradient(135deg, var(--bg-color-1), var(--bg-color-2));
+            color: white;
             overflow-x: hidden; height: 100vh; display: flex; flex-direction: column;
         }
 
@@ -27,19 +31,22 @@
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; }
         .screen.active { display: flex; }
 
-        h1, h2 { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
+        /* Збільшено розмір заголовків */
+        h1 { font-size: 3.5rem; text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
+        h2 { font-size: 2.5rem; text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
+        p { font-size: 1.5rem; }
 
-        /* Кнопки */
+        /* Збільшено кнопки та текст на них */
         .btn {
             background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-purple);
-            padding: 15px 30px; margin: 10px; font-size: 1.2rem; font-weight: 600; border-radius: 10px;
-            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(181, 0, 255, 0.3);
-            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            text-shadow: 0 0 5px var(--neon-cyan);
+            padding: 20px 40px; margin: 15px; font-size: 1.5rem; font-weight: 800; border-radius: 15px;
+            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 20px rgba(181, 0, 255, 0.3);
+            display: inline-flex; align-items: center; justify-content: center; gap: 15px;
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
         .btn:hover {
-            transform: scale(1.1); background: rgba(181, 0, 255, 0.2); border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 15px var(--neon-purple); color: #fff;
+            transform: scale(1.08); background: rgba(181, 0, 255, 0.2); border-color: var(--neon-cyan);
+            box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 20px var(--neon-purple); color: #fff;
         }
         .btn.disabled {
             filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555;
@@ -47,37 +54,37 @@
         }
 
         /* Вибір кількості та часу */
-        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
-        input[type="range"] { width: 300px; accent-color: var(--neon-purple); }
-        .time-inputs { display: flex; gap: 5px; align-items: center; font-size: 1.5rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
+        input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-purple); cursor: pointer; }
+        .time-inputs { display: flex; gap: 10px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
         .time-inputs input {
-            width: 60px; background: transparent; border: 2px solid var(--neon-purple); color: var(--neon-cyan);
-            font-size: 1.5rem; text-align: center; border-radius: 5px; box-shadow: 0 0 10px rgba(181, 0, 255, 0.3);
+            width: 80px; height: 60px; background: transparent; border: 3px solid var(--neon-purple); color: var(--neon-cyan);
+            font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(181, 0, 255, 0.3);
         }
-        .time-inputs input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+        .time-inputs input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
         
-        .bottom-nav { position: absolute; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .bottom-nav .btn { font-size: 1rem; padding: 10px 20px; }
+        .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
+        .bottom-nav .btn { font-size: 1.2rem; padding: 15px 30px; }
 
         /* Вікно тесту */
         .quiz-container {
-            background: var(--panel-bg); border: 2px solid var(--neon-purple); border-radius: 20px;
-            padding: 30px; width: 80%; max-width: 800px; box-shadow: 0 0 30px rgba(181, 0, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            background: var(--panel-bg); border: 2px solid var(--neon-purple); border-radius: 25px;
+            padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(181, 0, 255, 0.2), inset 0 0 25px rgba(0, 243, 255, 0.1);
             position: relative;
         }
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--neon-purple); padding-bottom: 10px; }
-        #quiz-progress { text-shadow: 0 0 5px var(--neon-cyan); }
-        #timer-display { font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
-        .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 15px var(--neon-red) !important; }
-        .question-text { font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-        .options-grid { display: flex; flex-direction: column; gap: 15px; }
-        .option-btn { width: 100%; text-align: left; justify-content: flex-start; }
-        .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); text-shadow: none; }
-        .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px var(--neon-red); text-shadow: none; }
-        .explanation { display: none; margin-top: 15px; padding: 15px; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--neon-purple); padding-bottom: 15px; font-size: 1.5rem;}
+        #quiz-progress { text-shadow: 0 0 5px var(--neon-cyan); font-weight: bold; }
+        #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
+        .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
+        .question-text { font-size: 2rem; margin-bottom: 30px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.4); line-height: 1.4; }
+        .options-grid { display: flex; flex-direction: column; gap: 20px; }
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.4rem; padding: 20px 30px; }
+        .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 30px var(--neon-green); text-shadow: none; transform: scale(1.02); }
+        .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); text-shadow: none; transform: scale(1.02); }
+        .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.3rem; border-left: 5px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
         
-        .quiz-controls { display: flex; justify-content: space-between; margin-top: 30px; }
+        .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
 
         /* Модальні вікна */
         .modal-overlay {
@@ -85,25 +92,25 @@
             display: none; align-items: center; justify-content: center; z-index: 100;
         }
         .modal-content {
-            background: var(--bg-color); border: 2px solid var(--neon-cyan); padding: 40px; border-radius: 15px;
-            text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.5);
+            background: var(--bg-color-1); border: 3px solid var(--neon-cyan); padding: 50px; border-radius: 20px;
+            text-align: center; box-shadow: 0 0 60px rgba(181, 0, 255, 0.6);
         }
-        .modal-btn-green { border-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        .modal-btn-green:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green); text-shadow: none; }
-        .modal-btn-red { border-color: var(--neon-red); color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); }
-        .modal-btn-red:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 20px var(--neon-red); text-shadow: none; }
+        .modal-btn-green { border-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        .modal-btn-green:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); text-shadow: none; }
+        .modal-btn-red { border-color: var(--neon-red); color: var(--neon-red); text-shadow: 0 0 8px var(--neon-red); }
+        .modal-btn-red:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 30px var(--neon-red); text-shadow: none; }
 
         /* Результати */
-        #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 10px; }
-        .res-item { border-bottom: 1px solid rgba(181,0,255,0.3); padding: 15px 0; }
-        .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 5px var(--neon-green); }
-        .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
-        .res-status-skipped { color: #f39c12; font-weight: bold; text-shadow: 0 0 5px #f39c12; }
-        .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
+        #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
+        .res-item { border-bottom: 2px solid rgba(181,0,255,0.3); padding: 20px 0; }
+        .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 8px var(--neon-green); font-size: 1.3rem; margin: 10px 0;}
+        .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); font-size: 1.3rem; margin: 10px 0;}
+        .res-status-skipped { color: #f39c12; font-weight: bold; text-shadow: 0 0 8px #f39c12; font-size: 1.3rem; margin: 10px 0;}
+        .res-status-unanswered { color: #7f8c8d; font-weight: bold; font-size: 1.3rem; margin: 10px 0;}
         
         /* Скролбар */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
         ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
     </style>
@@ -132,9 +139,9 @@
             <button class="btn count-btn" onclick="setPresetCount(30)">30</button>
         </div>
         <div class="custom-input-area">
-            <p style="text-shadow: 0 0 5px var(--neon-cyan);">Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 10px var(--neon-purple);">1</span></p>
+            <p style="text-shadow: 0 0 8px var(--neon-cyan);">Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 15px var(--neon-purple); font-size: 2rem;">1</span></p>
             <input type="range" id="custom-count" min="1" max="50" value="1" oninput="setSliderCount(this.value)">
-            <button class="btn" style="margin-top:20px;" onclick="goToTimeSelection()">Далі ➔</button>
+            <button class="btn" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
         </div>
         <div class="bottom-nav">
             <button class="btn" onclick="switchScreen('screen-menu')">↩ Повернутися в меню</button>
@@ -153,12 +160,12 @@
             <button class="btn time-btn" onclick="setPresetTime(1200)">20:00</button>
         </div>
         <div class="custom-input-area">
-            <p style="text-shadow: 0 0 5px var(--neon-cyan);">Або напишіть свій час</p>
+            <p style="text-shadow: 0 0 8px var(--neon-cyan);">Або напишіть свій час</p>
             <div class="time-inputs">
                 <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="checkMinInput()"> : 
                 <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="disableTimePresets()">
             </div>
-            <button class="btn" onclick="startQuizWithCustomTime()" style="margin-top: 15px;">Запустити тест з цим часом</button>
+            <button class="btn" onclick="startQuizWithCustomTime()" style="margin-top: 25px;">Запустити тест з цим часом</button>
             <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: #aaa; color: #aaa; text-shadow: none; box-shadow: none;">Грати без часу</button>
         </div>
         <div class="bottom-nav">
@@ -179,37 +186,39 @@
             <div id="explanation" class="explanation"></div>
             
             <div class="quiz-controls">
-                <button class="btn modal-btn-red" style="padding: 10px 15px;" onclick="showEndModal()">Закінчити тест</button>
-                <button class="btn" style="padding: 10px 15px;" onclick="skipQuestion()" id="btn-skip">Пропустити завдання ➔</button>
-                <button class="btn" style="padding: 10px 15px; display:none;" onclick="nextQuestion()" id="btn-next">Наступне завдання ➔</button>
+                <button class="btn modal-btn-red" style="padding: 15px 25px; font-size: 1.2rem;" onclick="showEndModal()">Закінчити тест</button>
+                <button class="btn" style="padding: 15px 25px; font-size: 1.2rem;" onclick="skipQuestion()" id="btn-skip">Пропустити завдання ➔</button>
+                <button class="btn" style="padding: 15px 25px; font-size: 1.2rem; display:none;" onclick="nextQuestion()" id="btn-next">Наступне завдання ➔</button>
             </div>
         </div>
     </div>
 
     <!-- ЕКРАН 5: Результати -->
     <div id="screen-results" class="screen">
-        <div class="quiz-container" style="max-width: 900px; text-align: center;">
-            <h2>Результати тесту</h2>
-            <h1 id="score-display">Виконано: ? / ?</h1>
+        <div class="quiz-container" style="max-width: 1000px; text-align: center;">
+            <h2 style="font-size: 3rem;">Результати тесту</h2>
+            <h1 id="score-display" style="font-size: 3.5rem; margin-bottom: 40px;">Виконано: ? / ?</h1>
             <div id="results-list"></div>
-            <button class="btn" style="margin-top: 20px;" onclick="switchScreen('screen-menu')">↩ Повернутися в меню</button>
+            <button class="btn" style="margin-top: 40px;" onclick="switchScreen('screen-menu')">↩ Повернутися в меню</button>
         </div>
     </div>
 
     <!-- Модалка підтвердження виходу -->
     <div class="modal-overlay" id="end-modal">
         <div class="modal-content">
-            <h2>Ви дійсно хочете закінчити тест?</h2>
-            <button class="btn modal-btn-green" onclick="forceEndQuiz()">Так</button>
-            <button class="btn modal-btn-red" onclick="closeEndModal()">Ні</button>
+            <h2 style="font-size: 2.5rem;">Ви дійсно хочете закінчити тест?</h2>
+            <div style="margin-top: 30px;">
+                <button class="btn modal-btn-green" onclick="forceEndQuiz()">Так</button>
+                <button class="btn modal-btn-red" onclick="closeEndModal()">Ні</button>
+            </div>
         </div>
     </div>
 
     <!-- Модалка кінця таймера -->
     <div class="modal-overlay" id="timer-modal">
         <div class="modal-content">
-            <h1 style="color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan);">Таймер закінчився!</h1>
-            <div style="font-size: 4rem; filter: drop-shadow(0 0 20px var(--neon-purple));">⏰</div>
+            <h1 style="color: var(--neon-cyan); text-shadow: 0 0 25px var(--neon-cyan); font-size: 4rem;">Таймер закінчився!</h1>
+            <div style="font-size: 6rem; filter: drop-shadow(0 0 30px var(--neon-purple)); margin-top: 20px;">⏰</div>
         </div>
     </div>
 
@@ -507,9 +516,9 @@
                 }
 
                 div.innerHTML = `
-                    <div style="font-size: 1.1rem; margin-bottom: 5px;"><b>${i+1}.</b> ${res.q}</div>
+                    <div style="font-size: 1.4rem; margin-bottom: 10px;"><b>${i+1}.</b> ${res.q}</div>
                     <div class="${statusClass}">Статус: ${statusText}</div>
-                    <div style="margin-top: 5px; font-size: 0.9rem; color: #aaa;"><i>Пояснення: ${res.exp}</i></div>
+                    <div style="margin-top: 10px; font-size: 1.1rem; color: #ccc;"><i>Пояснення: ${res.exp}</i></div>
                 `;
                 listDiv.appendChild(div);
             });
