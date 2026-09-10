@@ -8,11 +8,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
 
         :root {
-            --neon-blue: #00f3ff;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #b500ff;
             --neon-green: #00ff66;
             --neon-red: #ff003c;
-            --bg-color: #050510;
-            --panel-bg: rgba(5, 5, 16, 0.85);
+            --bg-color: #070314;
+            --panel-bg: rgba(10, 5, 25, 0.85);
         }
 
         * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
@@ -22,105 +23,92 @@
             overflow-x: hidden; height: 100vh; display: flex; flex-direction: column;
         }
 
-        /* Неонові стікери на фоні */
-        #background-stickers {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
-        }
-        .sticker {
-            position: absolute; font-size: 3rem; opacity: 0.15;
-            filter: drop-shadow(0 0 10px var(--neon-blue));
-            animation: float 10s infinite alternate ease-in-out;
-        }
-        @keyframes float {
-            0% { transform: translateY(0) scale(1) var(--rot); }
-            100% { transform: translateY(-30px) scale(1.1) var(--rot); }
-        }
-
         /* Контейнери екранів */
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; }
         .screen.active { display: flex; }
 
-        h1, h2 { text-shadow: 0 0 15px var(--neon-blue); text-align: center; margin-bottom: 30px; }
+        h1, h2 { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-purple); text-align: center; margin-bottom: 30px; }
 
         /* Кнопки */
         .btn {
-            background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
+            background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-purple);
             padding: 15px 30px; margin: 10px; font-size: 1.2rem; font-weight: 600; border-radius: 10px;
-            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            cursor: pointer; transition: all 0.3s; box-shadow: 0 0 15px rgba(181, 0, 255, 0.3);
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            text-shadow: 0 0 5px var(--neon-cyan);
         }
         .btn:hover {
-            transform: scale(1.1); background: var(--neon-blue); color: #000;
-            box-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+            transform: scale(1.1); background: rgba(181, 0, 255, 0.2); border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 15px var(--neon-purple); color: #fff;
         }
         .btn.disabled {
             filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555;
-            box-shadow: none;
+            box-shadow: none; text-shadow: none;
         }
 
         /* Вибір кількості та часу */
         .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
-        input[type="range"] { width: 300px; accent-color: var(--neon-blue); }
-        .time-inputs { display: flex; gap: 5px; align-items: center; font-size: 1.5rem; text-shadow: 0 0 10px var(--neon-blue); }
+        input[type="range"] { width: 300px; accent-color: var(--neon-purple); }
+        .time-inputs { display: flex; gap: 5px; align-items: center; font-size: 1.5rem; text-shadow: 0 0 10px var(--neon-cyan); }
         .time-inputs input {
-            width: 60px; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue);
-            font-size: 1.5rem; text-align: center; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+            width: 60px; background: transparent; border: 2px solid var(--neon-purple); color: var(--neon-cyan);
+            font-size: 1.5rem; text-align: center; border-radius: 5px; box-shadow: 0 0 10px rgba(181, 0, 255, 0.3);
         }
+        .time-inputs input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
         
         .bottom-nav { position: absolute; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; }
         .bottom-nav .btn { font-size: 1rem; padding: 10px 20px; }
 
         /* Вікно тесту */
         .quiz-container {
-            background: var(--panel-bg); border: 2px solid var(--neon-blue); border-radius: 20px;
-            padding: 30px; width: 80%; max-width: 800px; box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            background: var(--panel-bg); border: 2px solid var(--neon-purple); border-radius: 20px;
+            padding: 30px; width: 80%; max-width: 800px; box-shadow: 0 0 30px rgba(181, 0, 255, 0.2), inset 0 0 20px rgba(0, 243, 255, 0.1);
             position: relative;
         }
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--neon-blue); padding-bottom: 10px; }
-        #timer-display { font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 10px var(--neon-blue); color: var(--neon-blue); transition: color 0.3s; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--neon-purple); padding-bottom: 10px; }
+        #quiz-progress { text-shadow: 0 0 5px var(--neon-cyan); }
+        #timer-display { font-size: 1.5rem; font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 15px var(--neon-red) !important; }
-        .question-text { font-size: 1.5rem; margin-bottom: 20px; }
+        .question-text { font-size: 1.5rem; margin-bottom: 20px; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
         .options-grid { display: flex; flex-direction: column; gap: 15px; }
         .option-btn { width: 100%; text-align: left; justify-content: flex-start; }
-        .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
-        .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px var(--neon-red); }
-        .explanation { display: none; margin-top: 15px; padding: 15px; border-left: 4px solid var(--neon-blue); background: rgba(0,243,255,0.1); }
+        .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); text-shadow: none; }
+        .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px var(--neon-red); text-shadow: none; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); }
         
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 30px; }
 
         /* Модальні вікна */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85);
             display: none; align-items: center; justify-content: center; z-index: 100;
         }
         .modal-content {
-            background: var(--bg-color); border: 2px solid var(--neon-blue); padding: 40px; border-radius: 15px;
-            text-align: center; box-shadow: 0 0 50px var(--neon-blue);
+            background: var(--bg-color); border: 2px solid var(--neon-cyan); padding: 40px; border-radius: 15px;
+            text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.5);
         }
         .modal-btn-green { border-color: var(--neon-green); color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
-        .modal-btn-green:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green); }
+        .modal-btn-green:hover { background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green); text-shadow: none; }
         .modal-btn-red { border-color: var(--neon-red); color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); }
-        .modal-btn-red:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 20px var(--neon-red); }
+        .modal-btn-red:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 20px var(--neon-red); text-shadow: none; }
 
         /* Результати */
         #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 10px; }
-        .res-item { border-bottom: 1px solid rgba(255,255,255,0.2); padding: 15px 0; }
-        .res-status-correct { color: var(--neon-green); font-weight: bold; }
-        .res-status-wrong { color: var(--neon-red); font-weight: bold; }
-        .res-status-skipped { color: #f39c12; font-weight: bold; }
+        .res-item { border-bottom: 1px solid rgba(181,0,255,0.3); padding: 15px 0; }
+        .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 5px var(--neon-green); }
+        .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
+        .res-status-skipped { color: #f39c12; font-weight: bold; text-shadow: 0 0 5px #f39c12; }
         .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
         
         /* Скролбар */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
     </style>
 </head>
 <body>
-
-    <!-- Фоновий контейнер -->
-    <div id="background-stickers"></div>
 
     <!-- ЕКРАН 1: Меню предметів -->
     <div id="screen-menu" class="screen active">
@@ -144,7 +132,7 @@
             <button class="btn count-btn" onclick="setPresetCount(30)">30</button>
         </div>
         <div class="custom-input-area">
-            <p>Або виберіть свою кількість завдань: <span id="slider-val">1</span></p>
+            <p style="text-shadow: 0 0 5px var(--neon-cyan);">Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-purple); font-weight: bold; text-shadow: 0 0 10px var(--neon-purple);">1</span></p>
             <input type="range" id="custom-count" min="1" max="50" value="1" oninput="setSliderCount(this.value)">
             <button class="btn" style="margin-top:20px;" onclick="goToTimeSelection()">Далі ➔</button>
         </div>
@@ -165,13 +153,13 @@
             <button class="btn time-btn" onclick="setPresetTime(1200)">20:00</button>
         </div>
         <div class="custom-input-area">
-            <p>Або напишіть свій час</p>
+            <p style="text-shadow: 0 0 5px var(--neon-cyan);">Або напишіть свій час</p>
             <div class="time-inputs">
                 <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="checkMinInput()"> : 
                 <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="disableTimePresets()">
             </div>
             <button class="btn" onclick="startQuizWithCustomTime()" style="margin-top: 15px;">Запустити тест з цим часом</button>
-            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: #fff; color: #fff;">Грати без часу</button>
+            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: #aaa; color: #aaa; text-shadow: none; box-shadow: none;">Грати без часу</button>
         </div>
         <div class="bottom-nav">
             <button class="btn" onclick="switchScreen('screen-count')">⮌ Повернутися назад</button>
@@ -187,9 +175,7 @@
                 <div id="timer-display" style="display:none;">00:00</div>
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
-            <div class="options-grid" id="options-grid">
-                <!-- Кнопки відповідей генеруються JS -->
-            </div>
+            <div class="options-grid" id="options-grid"></div>
             <div id="explanation" class="explanation"></div>
             
             <div class="quiz-controls">
@@ -205,9 +191,7 @@
         <div class="quiz-container" style="max-width: 900px; text-align: center;">
             <h2>Результати тесту</h2>
             <h1 id="score-display">Виконано: ? / ?</h1>
-            <div id="results-list">
-                <!-- Результати генеруються JS -->
-            </div>
+            <div id="results-list"></div>
             <button class="btn" style="margin-top: 20px;" onclick="switchScreen('screen-menu')">↩ Повернутися в меню</button>
         </div>
     </div>
@@ -224,13 +208,12 @@
     <!-- Модалка кінця таймера -->
     <div class="modal-overlay" id="timer-modal">
         <div class="modal-content">
-            <h1>Таймер закінчився!</h1>
-            <div style="font-size: 4rem;">⏰</div>
+            <h1 style="color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan);">Таймер закінчився!</h1>
+            <div style="font-size: 4rem; filter: drop-shadow(0 0 20px var(--neon-purple));">⏰</div>
         </div>
     </div>
 
     <script>
-        // База питань
         const db = {
             geometry: [
                 { q: "Сума кутів опуклого чотирикутника дорівнює:", opts: ["180°", "360°", "540°", "90°"], ans: 1, exp: "За теоремою про суму кутів опуклого чотирикутника вона завжди дорівнює 360°." },
@@ -263,34 +246,15 @@
             ]
         };
 
-        // Генерація фону
-        const stickers = ['📐','📏','✏️','📚','🔬','💡','📝','✖️','➗','🔋'];
-        const bgContainer = document.getElementById('background-stickers');
-        for(let i=0; i<40; i++) {
-            let el = document.createElement('div');
-            el.className = 'sticker';
-            el.innerText = stickers[Math.floor(Math.random() * stickers.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.top = Math.random() * 100 + 'vh';
-            // Відразу повернуті (як просив автор)
-            let rot = `rotate(${Math.random() * 360}deg)`;
-            el.style.setProperty('--rot', rot); 
-            // Додаткова затримка анімації для рандомності
-            el.style.animationDelay = (Math.random() * 5) + 's';
-            bgContainer.appendChild(el);
-        }
-
-        // Змінні стану
         let currentSubject = '';
         let targetQuestionsCount = 5;
-        let selectedTime = 0; // в секундах
+        let selectedTime = 0;
         let timerInterval;
         let currentQuestions = [];
         let currentIndex = 0;
-        let results = []; // Зберігає об'єкти з інфою про проходження
+        let results = [];
         let answeredCurrent = false;
 
-        // Навігація
         function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -302,7 +266,6 @@
             switchScreen('screen-count');
         }
 
-        // Логіка вибору кількості завдань
         const presetBtns = document.querySelectorAll('.count-btn');
         const customCountInput = document.getElementById('custom-count');
         const sliderVal = document.getElementById('slider-val');
@@ -312,7 +275,7 @@
             customCountInput.classList.remove('disabled');
             customCountInput.value = 1;
             sliderVal.innerText = 1;
-            targetQuestionsCount = 5; // default
+            targetQuestionsCount = 5;
         }
 
         function setPresetCount(num) {
@@ -333,7 +296,6 @@
             switchScreen('screen-time');
         }
 
-        // Логіка вибору часу
         function setPresetTime(sec) {
             selectedTime = sec;
             document.getElementById('custom-min').value = '';
@@ -361,21 +323,18 @@
             else alert("Введіть коректний час!");
         }
 
-        // Ініціалізація тесту
         function startQuiz(timeSec) {
             selectedTime = timeSec;
             
-            // Підготовка пулу питань (перемішуємо і дублюємо якщо треба)
             let baseArray = [...db[currentSubject]];
-            baseArray.sort(() => Math.random() - 0.5); // перемішка
+            baseArray.sort(() => Math.random() - 0.5);
             
             currentQuestions = [];
-            // Якщо замовлено більше питань, ніж є в базі, повторюємо їх (знову перемішаними)
             while(currentQuestions.length < targetQuestionsCount) {
                 let batch = [...db[currentSubject]].sort(() => Math.random() - 0.5);
                 currentQuestions = currentQuestions.concat(batch);
             }
-            currentQuestions = currentQuestions.slice(0, targetQuestionsCount); // обрізаємо до потрібної кількості
+            currentQuestions = currentQuestions.slice(0, targetQuestionsCount);
 
             currentIndex = 0;
             results = [];
@@ -418,7 +377,6 @@
                 (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
         }
 
-        // Логіка питань
         function loadQuestion() {
             answeredCurrent = false;
             let qData = currentQuestions[currentIndex];
@@ -446,7 +404,7 @@
             answeredCurrent = true;
 
             let allBtns = document.getElementById('options-grid').children;
-            for(let b of allBtns) b.style.pointerEvents = 'none'; // блокуємо кліки
+            for(let b of allBtns) b.style.pointerEvents = 'none';
 
             let isCorrect = (selectedIndex === qData.ans);
             let resultObj = {
@@ -460,7 +418,7 @@
                 btnElement.classList.add('correct');
             } else {
                 btnElement.classList.add('wrong');
-                allBtns[qData.ans].classList.add('correct'); // показуємо правильну
+                allBtns[qData.ans].classList.add('correct');
                 
                 let expDiv = document.getElementById('explanation');
                 expDiv.innerText = "Пояснення: " + qData.exp;
@@ -494,13 +452,12 @@
             }
         }
 
-        // Завершення тесту
         function showEndModal() { document.getElementById('end-modal').style.display = 'flex'; }
         function closeEndModal() { document.getElementById('end-modal').style.display = 'none'; }
         
         function forceEndQuiz() {
             closeEndModal();
-            finishQuiz(true); // true = дострокове завершення
+            finishQuiz(true);
         }
 
         function showTimerEnd() {
@@ -514,7 +471,6 @@
         function finishQuiz(endedEarly = false) {
             clearInterval(timerInterval);
             
-            // Дозаповнюємо незроблені питання
             if(endedEarly && currentIndex < targetQuestionsCount) {
                 for(let i = currentIndex; i < targetQuestionsCount; i++) {
                     results.push({
