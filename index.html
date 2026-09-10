@@ -658,7 +658,6 @@
     </div>
 
     <script>
-        // Іконки школьного приладдя для фону
         const schoolSuppliesIcons = [
             'pencil', 
             'book-open', 
@@ -718,6 +717,7 @@
         let questionsData = [];
         let userAnswers = [];
         let autoNextTimer = null;
+        let isAnswered = false;
 
         function selectSubject(subject) {
             currentSubject = subject;
@@ -866,129 +866,134 @@
                 const min = Math.floor(Math.random() * 5) - 4;
                 const max = min + Math.floor(Math.random() * 5) + 2;
                 return {
-                    topic: "Алгебра 9 клас — Подвійні нерівності (Істер)",
-                    text: `Укажіть подвійну нерівність, що відповідає відрізку від ${min} до ${max}:`,
-                    diagram: drawDoubleIntervalSVG(min, max, true, true),
-                    correctVal: `${min} ≤ x ≤ ${max}`,
-                    wrongs: [`${min} < x < ${max}`, `${min} ≤ x < ${max}`, `${min} < x ≤ ${max}`],
-                    explanation: `Обидві точки зафарбовані, тому обидва знаки нерівності є нестрогими (≤): ${min} ≤ x ≤ ${max}.`
-                };
-            },
-            () => {
-                const x1 = Math.floor(Math.random() * 5) + 1;
-                const x2 = x1 + Math.floor(Math.random() * 6) + 2;
-                return {
-                    topic: "Алгебра — Теорема Вієта",
-                    text: `Знайдіть корені рівняння: x² - ${x1 + x2}x + ${x1 * x2} = 0`,
-                    diagram: "",
-                    correctVal: `x₁ = ${x1}, x₂ = ${x2}`,
-                    wrongs: [`x₁ = ${-x1}, x₂ = ${x2}`, `x₁ = ${x1}, x₂ = ${-x2}`, `x₁ = ${-x1}, x₂ = ${-x2}`],
-                    explanation: `За теоремою Вієта: сума коренів = ${x1 + x2}, добуток = ${x1 * x2}. Отже, корені: ${x1} та ${x2}.`
+                    topic: "Алгебра 9 клас — Подвійні нерівності",
+                    text: `Якому числовому проміжку відповідає заштрихований відрізок на малюнку?`,
+                    diagram: drawDoubleIntervalSVG(min, max, true, false),
+                    correctVal: `[${min}; ${max})`,
+                    wrongs: [`(${min}; ${max}]`, `[${min}; ${max}]`, `(${min}; ${max})`],
+                    explanation: `Зафарбована точка біля ${min} дає квадратну дужку, а виколота біля ${max} — круглу дужку: [${min}; ${max}).`
                 };
             }
         ];
 
         const geometryGenerators = [
             () => {
-                const triplets = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15]];
-                const t = triplets[Math.floor(Math.random() * triplets.length)];
+                const a = 3 * (Math.floor(Math.random() * 3) + 1);
+                const b = 4 * (Math.floor(Math.random() * 3) + 1);
+                const c = Math.sqrt(a * a + b * b);
                 return {
-                    topic: "Геометрія — Прямокутний трикутник",
-                    text: `У прямокутному трикутнику катети дорівнюють ${t[0]} см і ${t[1]} см. Знайдіть гіпотенузу c.`,
-                    diagram: drawRightTriangleSVG(t[0], t[1], "c = ?"),
-                    correctVal: `${t[2]} см`,
-                    wrongs: [`${t[2] + 2} см`, `${t[2] - 1} см`, `${t[0] + t[1]} см`],
-                    explanation: `За теоремою Піфагора: c² = a² + b² = ${t[0]}² + ${t[1]}² = ${t[0]*t[0]} + ${t[1]*t[1]} = ${t[2]*t[2]} ⇒ c = ${t[2]} см.`
+                    topic: "Геометрія 8-9 клас — Теорема Піфагора",
+                    text: `Знайдіть гіпотенузу прямокутного трикутника з катетами a = ${a} см та b = ${b} см.`,
+                    diagram: drawRightTriangleSVG(a, b, "?"),
+                    correctVal: `${c} см`,
+                    wrongs: [`${c + 2} см`, `${c - 1} см`, `${a + b} см`],
+                    explanation: `За теоремою Піфагора: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, c = ${c} см.`
                 };
             },
             () => {
-                const r = Math.floor(Math.random() * 8) + 2;
+                const r = (Math.floor(Math.random() * 5) + 2) * 2;
                 const area = r * r;
                 return {
-                    topic: "Геометрія — Коло та круг",
-                    text: `Знайдіть площу круга радиуса R = ${r} см.`,
+                    topic: "Геометрія 9 клас — Довжина кола та площа круга",
+                    text: `Обчисліть площу круга радіуса R = ${r} см.`,
                     diagram: drawCircleSVG(r),
                     correctVal: `${area}π см²`,
-                    wrongs: [`${r * 2}π см²`, `${area * 2}π см²`, `${r * 3}π см²`],
-                    explanation: `Формула площі круга: S = π·R². Підставляємо R = ${r}: S = π·${r}² = ${area}π см².`
+                    wrongs: [`${2*r}π см²`, `${area*2}π см²`, `${r}π см²`],
+                    explanation: `Площа круга обчислюється за формулою S = πR² = π · ${r}² = ${area}π см².`
                 };
             },
             () => {
-                const a = Math.floor(Math.random() * 10) + 4;
-                const h = Math.floor(Math.random() * 8) + 3;
-                const S = a * h;
+                const a = Math.floor(Math.random() * 6) + 4;
+                const h = Math.floor(Math.random() * 5) + 3;
+                const s = a * h;
                 return {
-                    topic: "Геометрія — Паралелограм",
-                    text: `Обчисліть площу паралелограма зі стороною a = ${a} см та висотою h = ${h} см, проведеною до неї.`,
+                    topic: "Геометрія 8 клас — Площа паралелограма",
+                    text: `Знайдіть площу паралелограма, сторона якого a = ${a} см, а висота h = ${h} см.`,
                     diagram: drawParallelogramSVG(a, h),
-                    correctVal: `${S} см²`,
-                    wrongs: [`${S / 2} см²`, `${(a + h) * 2} см²`, `${S + 5} см²`],
-                    explanation: `Формула площі паралелограма: S = a·h = ${a} · ${h} = ${S} см².`
+                    correctVal: `${s} см²`,
+                    wrongs: [`${s + 4} см²`, `${2 * (a + h)} см²`, `${Math.round(s / 2)} см²`],
+                    explanation: `Площа паралелограма S = a · h = ${a} · ${h} = ${s} см².`
                 };
             },
             () => {
-                const x = 3 + Math.floor(Math.random() * 4) * 2;
-                const y = 4 + Math.floor(Math.random() * 3) * 2;
-                const lenSq = x * x + y * y;
-                const len = Math.sqrt(lenSq);
-                const isInt = Number.isInteger(len);
-                const ans = isInt ? `${len}` : `√${lenSq}`;
-
+                const x = Math.floor(Math.random() * 5) + 3;
+                const y = Math.floor(Math.random() * 5) + 3;
+                const sumSq = x*x + y*y;
+                const len = Math.sqrt(sumSq);
+                const correctStr = Number.isInteger(len) ? `${len}` : `√${sumSq}`;
                 return {
-                    topic: "Геометрія — Вектори",
-                    text: `Знайдіть модуль вектора ā (${x}; ${y}).`,
+                    topic: "Геометрія 9 клас — Вектори на площині",
+                    text: `Знайдіть модуль (довжину) вектора ā(${x}; ${y}).`,
                     diagram: drawVectorSVG(x, y),
-                    correctVal: ans,
-                    wrongs: [`${x + y}`, `${Math.abs(x - y)}`, `${lenSq}`],
-                    explanation: `Модуль вектора обчислюється за формулою: |ā| = √(x² + y²) = √(${x}² + ${y}²) = √${lenSq} = ${ans}.`
+                    correctVal: correctStr,
+                    wrongs: [`${x + y}`, `${Math.abs(x - y)}`, `√${x + y}`],
+                    explanation: `Модуль вектора |ā| = √(x² + y²) = √(${x}² + ${y}²) = √${sumSq} = ${correctStr}.`
                 };
             }
         ];
 
         const physicsGenerators = [
             () => {
-                const R = (Math.floor(Math.random() * 8) + 2) * 2;
-                const I = Math.floor(Math.random() * 5) + 1;
-                const U = I * R;
+                const v = (Math.floor(Math.random() * 6) + 2) * 10;
+                const t = Math.floor(Math.random() * 4) + 2;
+                const s = v * t;
                 return {
-                    topic: "Фізика — Закон Ома",
-                    text: `Яка напруга U на ділянці кола з опором R = ${R} Ом при силі струму I = ${I} А?`,
+                    topic: "Фізика 7 клас — Рівномірний прямолінійний рух",
+                    text: `Автомобіль рухається зі швидкістю ${v} км/год протягом ${t} годин. Який шлях він подолає?`,
                     diagram: "",
-                    correctVal: `${U} В`,
-                    wrongs: [`${R / I} В`, `${U + 4} В`, `${R + I} В`],
-                    explanation: `За законом Ома для ділянки кола: U = I·R = ${I} А · ${R} Ом = ${U} В.`
+                    correctVal: `${s} км`,
+                    wrongs: [`${s + 20} км`, `${Math.round(v / t)} км`, `${s - 15} км`],
+                    explanation: `Шлях s = v · t = ${v} км/год · ${t} год = ${s} км.`
+                };
+            },
+            () => {
+                const u = (Math.floor(Math.random() * 5) + 1) * 12;
+                const r = Math.floor(Math.random() * 4) + 2;
+                const i = u / r;
+                return {
+                    topic: "Фізика 8 клас — Закон Ома для ділянки кола",
+                    text: `Яка сила струму в провіднику опором ${r} Ом, якщо напруга на його кінцях дорівнює ${u} В?`,
+                    diagram: "",
+                    correctVal: `${i} А`,
+                    wrongs: [`${u * r} А`, `${i + 2} А`, `${(u / r / 2).toFixed(1)} А`],
+                    explanation: `За законом Ома I = U / R = ${u} В / ${r} Ом = ${i} А.`
+                };
+            },
+            () => {
+                const m = (Math.floor(Math.random() * 5) + 1) * 2;
+                const v = Math.floor(Math.random() * 5) + 2;
+                const ek = (m * v * v) / 2;
+                return {
+                    topic: "Фізика 7 клас — Кінетична енергія",
+                    text: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с.`,
+                    diagram: "",
+                    correctVal: `${ek} Дж`,
+                    wrongs: [`${m * v} Дж`, `${ek * 2} Дж`, `${ek + 10} Дж`],
+                    explanation: `Кінетична енергия Eₖ = (m · v²) / 2 = (${m} · ${v*v}) / 2 = ${ek} Дж.`
                 };
             },
             () => {
                 const m = Math.floor(Math.random() * 10) + 2;
-                const a = Math.floor(Math.random() * 6) + 2;
-                const F = m * a;
+                const a = Math.floor(Math.random() * 5) + 1;
+                const f = m * a;
                 return {
-                    topic: "Фізика — Динаміка",
-                    text: `Знайдіть силу F, яка надає тілу масою ${m} кг прискорення ${a} м/с².`,
+                    topic: "Фізика 9 клас — Другий закон Ньютона",
+                    text: `Яка сила надає тілу масою ${m} кг прискорення ${a} м/с²?`,
                     diagram: "",
-                    correctVal: `${F} Н`,
-                    wrongs: [`${m + a} Н`, `${(m / a).toFixed(1)} Н`, `${F * 2} Н`],
-                    explanation: `За II законом Ньютона: F = m·a = ${m} кг · ${a} м/с² = ${F} Н.`
-                };
-            },
-            () => {
-                const m = (Math.floor(Math.random() * 6) + 1) * 2;
-                const v = Math.floor(Math.random() * 5) + 2;
-                const Ek = (m * v * v) / 2;
-                return {
-                    topic: "Фізика — Кінетична енергія",
-                    text: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с.`,
-                    diagram: "",
-                    correctVal: `${Ek} Дж`,
-                    wrongs: [`${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 10} Дж`],
-                    explanation: `Формула кінетичної енергії: Eₖ = (m·v²)/2 = (${m} · ${v}²)/2 = (${m} · ${v * v})/2 = ${Ek} Дж.`
+                    correctVal: `${f} Н`,
+                    wrongs: [`${m + a} Н`, `${(m / a).toFixed(1)} Н`, `${f + 5} Н`],
+                    explanation: `За другим законом Ньютона F = m · a = ${m} кг · ${a} м/с² = ${f} Н.`
                 };
             }
         ];
 
-        function shuffle(arr) {
-            return arr.sort(() => Math.random() - 0.5);
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
         }
 
         function startTest(count) {
@@ -996,27 +1001,28 @@
             currentQuestionIndex = 0;
             userAnswers = [];
 
-            let genList = [];
-            if (currentSubject === 'algebra') genList = algebraGenerators;
-            else if (currentSubject === 'geometry') genList = geometryGenerators;
-            else if (currentSubject === 'physics') genList = physicsGenerators;
+            let pool = algebraGenerators;
+            if (currentSubject === 'geometry') pool = geometryGenerators;
+            if (currentSubject === 'physics') pool = physicsGenerators;
 
             questionsData = [];
-            for (let i = 0; i < totalQuestionsCount; i++) {
-                const gen = genList[i % genList.length];
+            for (let i = 0; i < count; i++) {
+                const gen = pool[i % pool.length];
                 questionsData.push(gen());
             }
 
             showScreen('screen-quiz');
-            loadQuestion();
+            renderQuestion();
         }
 
-        function loadQuestion() {
+        function renderQuestion() {
+            isAnswered = false;
             clearTimeout(autoNextTimer);
+
             const q = questionsData[currentQuestionIndex];
 
             document.getElementById('quiz-progress').innerText = `Завдання ${currentQuestionIndex + 1} з ${totalQuestionsCount}`;
-            document.getElementById('quiz-topic').innerText = q.topic;
+            document.getElementById('quiz-topic').innerText = `Тема: ${q.topic}`;
             document.getElementById('question-text').innerText = q.text;
 
             const diagBox = document.getElementById('diagram-container');
@@ -1028,28 +1034,30 @@
                 diagBox.innerHTML = '';
             }
 
-            const expBox = document.getElementById('explanation-box');
-            expBox.classList.remove('active');
+            const optionsBox = document.getElementById('options-grid');
+            optionsBox.innerHTML = '';
 
-            const optionsGrid = document.getElementById('options-grid');
-            optionsGrid.innerHTML = '';
-
-            const allOpts = shuffle([q.correctVal, ...q.wrongs]);
-
-            allOpts.forEach((optText) => {
+            const allOptions = shuffleArray([q.correctVal, ...q.wrongs]);
+            allOptions.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-option';
-                btn.innerText = optText;
-                btn.onclick = () => selectOption(btn, optText, q.correctVal, q.explanation);
-                optionsGrid.appendChild(btn);
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(btn, opt, q.correctVal, q.explanation);
+                optionsBox.appendChild(btn);
             });
 
+            const expBox = document.getElementById('explanation-box');
+            expBox.classList.remove('active');
+            expBox.style.display = 'none';
+
             const btnNext = document.getElementById('btn-next');
-            btnNext.innerHTML = `<span>Пропустити завдання</span><span>➔</span>`;
-            btnNext.onclick = skipQuestion;
+            btnNext.innerHTML = '<span>Пропустити завдання</span> <span>➔</span>';
         }
 
-        function selectOption(selectedBtn, selectedVal, correctVal, explanation) {
+        function handleAnswer(selectedBtn, selectedVal, correctVal, explanation) {
+            if (isAnswered) return;
+            isAnswered = true;
+
             const allBtns = document.querySelectorAll('.btn-option');
             allBtns.forEach(b => b.disabled = true);
 
@@ -1057,83 +1065,100 @@
 
             if (isCorrect) {
                 selectedBtn.classList.add('correct');
+                userAnswers.push({
+                    status: 'correct',
+                    question: questionsData[currentQuestionIndex],
+                    userAns: selectedVal,
+                    correctAns: correctVal
+                });
             } else {
                 selectedBtn.classList.add('incorrect');
                 allBtns.forEach(b => {
-                    if (b.innerText === correctVal) b.classList.add('correct');
+                    if (b.innerText === correctVal) {
+                        b.classList.add('correct');
+                    }
                 });
 
+                const expBox = document.getElementById('explanation-box');
                 document.getElementById('explanation-text').innerText = explanation;
-                document.getElementById('explanation-box').classList.add('active');
+                expBox.style.display = 'block';
+                expBox.classList.add('active');
+
+                userAnswers.push({
+                    status: 'incorrect',
+                    question: questionsData[currentQuestionIndex],
+                    userAns: selectedVal,
+                    correctAns: correctVal
+                });
             }
 
-            userAnswers.push({
-                question: questionsData[currentQuestionIndex].text,
-                userAns: selectedVal,
-                correctAns: correctVal,
-                status: isCorrect ? 'correct' : 'incorrect',
-                explanation: explanation
-            });
-
             const btnNext = document.getElementById('btn-next');
-            btnNext.innerHTML = `<span>Далі</span><span>➔</span>`;
-            btnNext.onclick = nextQuestion;
+            btnNext.innerHTML = '<span>Далі</span> <span>➔</span>';
+
+            autoNextTimer = setTimeout(() => {
+                skipQuestion(true);
+            }, 3500);
         }
 
-        function skipQuestion() {
-            const q = questionsData[currentQuestionIndex];
-            userAnswers.push({
-                question: q.text,
-                userAns: 'Пропущено',
-                correctAns: q.correctVal,
-                status: 'skipped',
-                explanation: q.explanation
-            });
+        function skipQuestion(fromAuto = false) {
+            clearTimeout(autoNextTimer);
 
-            nextQuestion();
-        }
+            if (!isAnswered && !fromAuto) {
+                userAnswers.push({
+                    status: 'skipped',
+                    question: questionsData[currentQuestionIndex],
+                    userAns: 'Пропущено',
+                    correctAns: questionsData[currentQuestionIndex].correctVal
+                });
+            }
 
-        function nextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < totalQuestionsCount) {
-                loadQuestion();
+                renderQuestion();
             } else {
                 finishTest();
             }
         }
 
         function finishTest() {
+            clearTimeout(autoNextTimer);
             showScreen('screen-results');
-            const listContainer = document.getElementById('results-list');
-            listContainer.innerHTML = '';
 
-            let correctCount = userAnswers.filter(a => a.status === 'correct').length;
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';
+
+            let correctCount = 0;
 
             userAnswers.forEach((ans, idx) => {
                 const card = document.createElement('div');
                 card.className = `result-item-card is-${ans.status}`;
 
-                let badgeText = 'Правильно';
-                let badgeClass = 'badge-correct';
-                if (ans.status === 'incorrect') {
-                    badgeText = 'Помилка';
+                let badgeText = '';
+                let badgeClass = '';
+
+                if (ans.status === 'correct') {
+                    badgeText = 'Правильно';
+                    badgeClass = 'badge-correct';
+                    correctCount++;
+                } else if (ans.status === 'incorrect') {
+                    badgeText = 'Неправильно';
                     badgeClass = 'badge-incorrect';
-                } else if (ans.status === 'skipped') {
+                } else {
                     badgeText = 'Пропущено';
                     badgeClass = 'badge-skipped';
                 }
 
                 card.innerHTML = `
                     <span class="status-badge ${badgeClass}">${badgeText}</span>
-                    <div style="font-weight:700; margin-bottom:8px;">#${idx + 1}. ${ans.question}</div>
-                    <div style="font-size:0.95rem; opacity:0.9;">Ваша відповідь: <b>${ans.userAns}</b></div>
-                    <div style="font-size:0.95rem; color:#00ff66;">Правильно: <b>${ans.correctAns}</b></div>
-                    ${ans.status !== 'correct' ? `<div style="margin-top:8px; font-size:0.88rem; color:#ffb3c6;">${ans.explanation}</div>` : ''}
+                    <div style="font-weight: 700; margin-bottom: 8px;">№${idx + 1}. ${ans.question.text}</div>
+                    <div style="font-size: 0.95rem; opacity: 0.9;">Ваша відповідь: <b>${ans.userAns}</b></div>
+                    <div style="font-size: 0.95rem; opacity: 0.9;">Правильна відповідь: <b style="color: #00ff66;">${ans.correctAns}</b></div>
+                    ${ans.status !== 'correct' ? `<div style="font-size: 0.9rem; margin-top: 8px; color: #ffe6ee;"><b>Пояснення:</b> ${ans.question.explanation}</div>` : ''}
                 `;
-                listContainer.appendChild(card);
+                resultsList.appendChild(card);
             });
 
-            showToast(`Тест завершено! Результат: ${correctCount} з ${totalQuestionsCount}`);
+            showToast(`Тест завершено! Результат: ${correctCount} з ${userAnswers.length}`);
         }
 
         function resetToHome() {
