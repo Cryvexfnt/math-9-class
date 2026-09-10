@@ -543,7 +543,7 @@
             parallelogram: `<svg width="160" height="90" viewBox="0 0 160 90"><polygon points="35,15 145,15 125,75 15,75" fill="none" stroke="#bf00ff" stroke-width="3"/><line x1="35" y1="15" x2="35" y2="75" stroke="#00f3ff" stroke-width="2" stroke-dasharray="4,4"/><text x="70" y="87" fill="#00f3ff">a</text><text x="40" y="50" fill="#ff007f">h</text></svg>`
         };
 
-        // --- ИСТОРИЯ В СЕССИИ И LOCALSTORAGE ---
+        // --- ИСТОРИЯ В LOCALSTORAGE ---
         function getSeenQuestions() {
             try {
                 return JSON.parse(localStorage.getItem('geometry_seen_questions')) || [];
@@ -552,43 +552,48 @@
             }
         }
 
-        function markQuestionAsSeen(questionText) {
-            const seen = getSeenQuestions();
-            if (!seen.includes(questionText)) {
-                seen.push(questionText);
-                localStorage.setItem('geometry_seen_questions', JSON.stringify(seen));
-            }
+        function saveSeenQuestions(list) {
+            try {
+                localStorage.setItem('geometry_seen_questions', JSON.stringify(list));
+            } catch (e) {}
         }
 
-        // --- 15 ТЕМАТИЧЕСКИХ ГЕНЕРАТОРОВ С ТЫСЯЧАМИ УНИКАЛЬНЫХ ВАРИАЦИЙ ---
+        function getTriangleName() {
+            const names = ['ABC', 'KLM', 'MNK', 'PQR', 'CDE', 'STU', 'XYZ', 'FGH', 'KMN'];
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        function getQuadName() {
+            const names = ['ABCD', 'KLMN', 'PQRS', 'EFGH', 'AVCD'];
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        // --- 20 ДИНАМИЧЕСКИХ ГЕНЕРАТОРОВ ЗАДАЧ ---
         const questionGenerators = [
-            // 1. Теорема Пифагора (Поиск гипотенузы)
+            // 1. Гипотенуза
             () => {
-                const pythagoreanTriples = [
-                    [3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20], [15,20,25], [7,24,25], [10,24,26], [20,21,29], [12,35,37], [9,40,41]
-                ];
-                const mult = Math.floor(Math.random() * 3) + 1;
-                const base = pythagoreanTriples[Math.floor(Math.random() * pythagoreanTriples.length)];
-                const a = base[0] * mult, b = base[1] * mult, c = base[2] * mult;
-                const letters = [['A','B','C'], ['K','L','M'], ['P','Q','R']][Math.floor(Math.random() * 3)];
+                const triples = [[3,4,5], [5,12,13], [8,15,17], [7,24,25], [9,40,41], [12,35,37], [20,21,29], [11,60,61]];
+                const mult = Math.floor(Math.random() * 5) + 1;
+                const t = triples[Math.floor(Math.random() * triples.length)];
+                const a = t[0] * mult, b = t[1] * mult, c = t[2] * mult;
+                const name = getTriangleName();
                 return {
-                    text: `У прямокутному трикутнику ${letters[0]}${letters[1]}${letters[2]} катети дорівнюють ${a} см і ${b} см. Знайдіть довжину гіпотенузи.`,
+                    text: `У прямокутному трикутнику ${name} катети дорівнюють ${a} см і ${b} см. Знайдіть довжину гіпотенузи.`,
                     diagram: SVGS.rightTriangle,
                     correctVal: `${c} см`,
                     wrongs: [`${c + 2} см`, `${c - 1} см`, `${a + b} см`, `${c + 4} см`],
                     explanation: `За теоремою Піфагора: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, гіпотенуза дорівнює √${c*c} = ${c} см.`
                 };
             },
-            // 2. Теорема Пифагора (Поиск катета)
+            // 2. Катет
             () => {
-                const pythagoreanTriples = [
-                    [3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20], [7,24,25], [10,24,26], [16,30,34]
-                ];
-                const mult = Math.floor(Math.random() * 3) + 1;
-                const base = pythagoreanTriples[Math.floor(Math.random() * pythagoreanTriples.length)];
-                const a = base[0] * mult, b = base[1] * mult, c = base[2] * mult;
+                const triples = [[3,4,5], [5,12,13], [8,15,17], [7,24,25], [9,40,41], [12,35,37], [20,21,29]];
+                const mult = Math.floor(Math.random() * 4) + 1;
+                const t = triples[Math.floor(Math.random() * triples.length)];
+                const a = t[0] * mult, b = t[1] * mult, c = t[2] * mult;
+                const name = getTriangleName();
                 return {
-                    text: `Гіпотенуза прямокутного трикутника дорівнює ${c} см, а один із його катетів — ${a} см. Знайдіть другий катет.`,
+                    text: `Гіпотенуза прямокутного трикутника ${name} дорівнює ${c} см, а один із катетів — ${a} см. Знайдіть другий катет.`,
                     diagram: SVGS.rightTriangle,
                     correctVal: `${b} см`,
                     wrongs: [`${b + 2} см`, `${b - 1} см`, `${c - a} см`, `${b + 3} см`],
@@ -609,7 +614,7 @@
                     explanation: `Середня лінія трапеції дорівнює півсумі її основ: m = (a + b) / 2 = (${baseA} + ${baseB}) / 2 = ${m} см.`
                 };
             },
-            // 4. Нахождение основания трапеции по средней линии
+            // 4. Поиск основания трапеции
             () => {
                 const baseA = 4 + Math.floor(Math.random() * 12) * 2;
                 const m = baseA + 3 + Math.floor(Math.random() * 8);
@@ -624,20 +629,20 @@
             },
             // 5. Углы параллелограмма
             () => {
-                const acute = 20 + Math.floor(Math.random() * 14) * 5;
+                const acute = 15 + Math.floor(Math.random() * 15) * 5;
                 const obtuse = 180 - acute;
-                const names = ["ABCD", "KLMN", "PQRS"][Math.floor(Math.random() * 3)];
+                const name = getQuadName();
                 return {
-                    text: `Один із кутів паралелограма ${names} дорівнює ${acute}°. Знайдіть градусну міру тупого кута цього паралелограма.`,
+                    text: `Один із кутів паралелограма ${name} дорівнює ${acute}°. Знайдіть градусну міру тупого кута цього паралелограма.`,
                     diagram: SVGS.parallelogram,
                     correctVal: `${obtuse}°`,
                     wrongs: [`${acute}°`, `${180 - acute + 10}°`, `90°`, `${obtuse - 15}°`],
-                    explanation: `Сума двох сусідніх кутів паралелограма дорівнює 180°. Отже, шуканий кут = 180° - ${acute}° = ${obtuse}°.`
+                    explanation: `Сума двох сусідніх кутів паралелограма дорівнює 180°. Отже, тупий кут = 180° - ${acute}° = ${obtuse}°.`
                 };
             },
-            // 6. Вписанный и центральный углы
+            // 6. Центральный угол по вписанному
             () => {
-                const inscribed = 15 + Math.floor(Math.random() * 25) * 3;
+                const inscribed = 10 + Math.floor(Math.random() * 35) * 2;
                 const central = inscribed * 2;
                 return {
                     text: `Вписаний кут спирається на дугу кола і дорівнює ${inscribed}°. Знайдіть центральний кут, що спирається на ту саму дугу.`,
@@ -647,9 +652,9 @@
                     explanation: `Центральний кут у два рази більший за вписаний кут, який спирається на ту саму дугу: 2 · ${inscribed}° = ${central}°.`
                 };
             },
-            // 7. Поиск вписанного угла по центральному
+            // 7. Вписанный угол по центральному
             () => {
-                const central = 40 + Math.floor(Math.random() * 25) * 4;
+                const central = 20 + Math.floor(Math.random() * 35) * 4;
                 const inscribed = central / 2;
                 return {
                     text: `Центральний кут дорівнює ${central}°. Знайдіть вписаний кут, що спирається на ту саму дугу кола.`,
@@ -661,11 +666,12 @@
             },
             // 8. Площадь треугольника
             () => {
-                const base = 4 + Math.floor(Math.random() * 10) * 2;
-                const height = 3 + Math.floor(Math.random() * 10);
+                const base = 4 + Math.floor(Math.random() * 12) * 2;
+                const height = 3 + Math.floor(Math.random() * 12);
                 const area = (base * height) / 2;
+                const name = getTriangleName();
                 return {
-                    text: `Обчисліть площу трикутника, якщо його сторона дорівнює ${base} см, а висота, проведена до цієї сторони — ${height} см.`,
+                    text: `Обчисліть площу трикутника ${name}, якщо його сторона дорівнює ${base} см, а висота, проведена до цієї сторони — ${height} см.`,
                     diagram: '',
                     correctVal: `${area} см²`,
                     wrongs: [`${base * height} см²`, `${area + 4} см²`, `${area - 2} см²`, `${area + 6} см²`],
@@ -674,8 +680,8 @@
             },
             // 9. Площадь ромба
             () => {
-                const d1 = 4 + Math.floor(Math.random() * 8) * 2;
-                const d2 = 6 + Math.floor(Math.random() * 8) * 2;
+                const d1 = 4 + Math.floor(Math.random() * 10) * 2;
+                const d2 = 6 + Math.floor(Math.random() * 10) * 2;
                 const area = (d1 * d2) / 2;
                 return {
                     text: `Діагоналі ромба дорівнюють ${d1} см і ${d2} см. Знайдіть його площу.`,
@@ -687,11 +693,12 @@
             },
             // 10. Площадь параллелограмма
             () => {
-                const side = 5 + Math.floor(Math.random() * 10);
-                const height = 3 + Math.floor(Math.random() * 8);
+                const side = 4 + Math.floor(Math.random() * 15);
+                const height = 3 + Math.floor(Math.random() * 10);
                 const area = side * height;
+                const name = getQuadName();
                 return {
-                    text: `Сторона паралелограма дорівнює ${side} см, а висота, проведена до неї — ${height} см. Знайдіть площу паралелограма.`,
+                    text: `Сторона паралелограма ${name} дорівнює ${side} см, а висота, проведена до неї — ${height} см. Знайдіть площу паралелограма.`,
                     diagram: SVGS.parallelogram,
                     correctVal: `${area} см²`,
                     wrongs: [`${area / 2} см²`, `${area + 4} см²`, `${(side + height) * 2} см²`, `${area - 5} см²`],
@@ -700,7 +707,7 @@
             },
             // 11. Отношение площадей подобных треугольников
             () => {
-                const k = 2 + Math.floor(Math.random() * 4);
+                const k = 2 + Math.floor(Math.random() * 6);
                 const kSquared = k * k;
                 return {
                     text: `Коефіцієнт подібності двох трикутників дорівнює k = ${k}. Знайдіть відношення їхніх площ.`,
@@ -710,9 +717,9 @@
                     explanation: `Відношення площ двох подібних трикутників дорівнює квадрату коефіцієнта подібності: S₁ / S₂ = k² = ${k}² = ${kSquared}.`
                 };
             },
-            // 12. Сумма углов выпуклого n-угольника
+            // 12. Сумма углов n-угольника
             () => {
-                const n = 5 + Math.floor(Math.random() * 6); // 5 .. 10
+                const n = 5 + Math.floor(Math.random() * 8);
                 const sum = (n - 2) * 180;
                 return {
                     text: `Знайдіть суму внутрішніх кутів опуклого ${n}-кутника.`,
@@ -722,9 +729,9 @@
                     explanation: `Сума кутів опуклого n-кутника обчислюється за формулою S = (n - 2) · 180°. Для n = ${n}: (${n} - 2) · 180° = ${n-2} · 180° = ${sum}°.`
                 };
             },
-            // 13. Периметр и сторона квадрата
+            // 13. Периметр квадрата по площади
             () => {
-                const a = 4 + Math.floor(Math.random() * 12);
+                const a = 3 + Math.floor(Math.random() * 15);
                 const area = a * a;
                 const perimeter = 4 * a;
                 return {
@@ -737,19 +744,20 @@
             },
             // 14. Средняя линия треугольника
             () => {
-                const side = 6 + Math.floor(Math.random() * 12) * 2;
+                const side = 6 + Math.floor(Math.random() * 16) * 2;
                 const mid = side / 2;
+                const name = getTriangleName();
                 return {
-                    text: `Сторона трикутника дорівнює ${side} см. Знайдіть довжину середньої лінії трикутника, що паралельна цій стороні.`,
+                    text: `Сторона трикутника ${name} дорівнює ${side} см. Знайдіть довжину середньої лінії трикутника, що паралельна цій стороні.`,
                     diagram: '',
                     correctVal: `${mid} см`,
                     wrongs: [`${side} см`, `${mid + 2} см`, `${mid - 1} см`, `${mid * 2} см`],
                     explanation: `Середня лінія трикутника паралельна одній з його сторін і дорівнює її половині: m = ${side} / 2 = ${mid} см.`
                 };
             },
-            // 15. Синус острого угла в прямоугольном треугольнике
+            // 15. Синус острого угла
             () => {
-                const triples = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
+                const triples = [[3,4,5], [5,12,13], [8,15,17], [7,24,25]];
                 const t = triples[Math.floor(Math.random() * triples.length)];
                 const a = t[0], c = t[2];
                 return {
@@ -759,27 +767,100 @@
                     wrongs: [`${t[1]}/${c}`, `${c}/${a}`, `${a}/${t[1]}`, `${t[1]}/${a}`],
                     explanation: `Синус гострого кута прямокутного трикутника дорівнює відношенню протилежного катета до гіпотенузи: sin α = ${a}/${c}.`
                 };
+            },
+            // 16. Косинус острого угла
+            () => {
+                const triples = [[3,4,5], [5,12,13], [8,15,17], [7,24,25]];
+                const t = triples[Math.floor(Math.random() * triples.length)];
+                const b = t[1], c = t[2];
+                return {
+                    text: `У прямокутному трикутнику прилеглий катет дорівнює ${b} см, а гіпотенуза — ${c} см. Чому дорівнює косинус цього кута?`,
+                    diagram: SVGS.rightTriangle,
+                    correctVal: `${b}/${c}`,
+                    wrongs: [`${t[0]}/${c}`, `${c}/${b}`, `${b}/${t[0]}`, `${t[0]}/${b}`],
+                    explanation: `Косинус гострого кута прямокутного трикутника дорівнює відношенню прилеглого катета до гіпотенузи: cos α = ${b}/${c}.`
+                };
+            },
+            // 17. Площадь прямоугольника
+            () => {
+                const a = 3 + Math.floor(Math.random() * 15);
+                const b = 4 + Math.floor(Math.random() * 15);
+                const area = a * b;
+                const name = getQuadName();
+                return {
+                    text: `Сторони прямокутника ${name} дорівнюють ${a} см і ${b} см. Знайдіть його площу.`,
+                    diagram: '',
+                    correctVal: `${area} см²`,
+                    wrongs: [`${(a + b) * 2} см²`, `${area + 5} см²`, `${a + b} см²`, `${area - 3} см²`],
+                    explanation: `Площа прямокутника обчислюється за формулою S = a · b = ${a} · ${b} = ${area} см².`
+                };
+            },
+            // 18. Периметр ромба
+            () => {
+                const a = 4 + Math.floor(Math.random() * 20);
+                const p = 4 * a;
+                return {
+                    text: `Сторона ромба дорівнює ${a} см. Знайдіть його периметр.`,
+                    diagram: '',
+                    correctVal: `${p} см`,
+                    wrongs: [`${a * a} см`, `${p + 4} см`, `${p - 2} см`, `${a * 2} см`],
+                    explanation: `Усі 4 сторони ромба рівні. Його периметр P = 4 · a = 4 · ${a} = ${p} см.`
+                };
+            },
+            // 19. Площадь прямоугольного треугольника по катетам
+            () => {
+                const a = 4 + Math.floor(Math.random() * 10) * 2;
+                const b = 3 + Math.floor(Math.random() * 12);
+                const area = (a * b) / 2;
+                const name = getTriangleName();
+                return {
+                    text: `Катети прямокутного трикутника ${name} дорівнюють ${a} см і ${b} см. Знайдіть його площу.`,
+                    diagram: SVGS.rightTriangle,
+                    correctVal: `${area} см²`,
+                    wrongs: [`${a * b} см²`, `${area + 4} см²`, `${area - 2} см²`, `${a + b} см²`],
+                    explanation: `Площа прямокутного трикутника дорівнює півдобутку його катетів: S = ½ · a · b = ½ · ${a} · ${b} = ${area} см².`
+                };
+            },
+            // 20. Периметр равностороннего треугольника
+            () => {
+                const a = 5 + Math.floor(Math.random() * 25);
+                const p = 3 * a;
+                const name = getTriangleName();
+                return {
+                    text: `Сторона рівностороннього трикутника ${name} дорівнює ${a} см. Знайдіть його периметр.`,
+                    diagram: '',
+                    correctVal: `${p} см`,
+                    wrongs: [`${p + 3} см`, `${a * 4} см`, `${p - 3} см`, `${a * a} см`],
+                    explanation: `У рівностороннього трикутника всі 3 сторони рівні: P = 3 · a = 3 · ${a} = ${p} см.`
+                };
             }
         ];
 
+        // --- ГАРАНТИРОВАННАЯ СИСТЕМА УНИКАЛЬНОСТИ ---
         function generateUniqueQuestions(count) {
-            let list = [];
-            let seen = getSeenQuestions();
-            let attempts = 0;
-            const maxAttempts = count * 200;
+            const currentTestTexts = new Set();
+            const resultList = [];
+            
+            const historyList = getSeenQuestions();
+            const historySet = new Set(historyList);
 
-            while (list.length < count && attempts < maxAttempts) {
+            let attempts = 0;
+            const maxAttempts = 10000;
+
+            // ФАЗА 1: Ищем абсолютно новые задачи (которых нет ни в текущем тесте, ни в истории)
+            while (resultList.length < count && attempts < maxAttempts) {
                 attempts++;
                 const gen = questionGenerators[Math.floor(Math.random() * questionGenerators.length)];
                 const qRaw = gen();
 
-                // Проверка: вопрос не должен встречаться ни в текущей сессии, ни в localStorage
-                if (!seen.includes(qRaw.text) && !list.some(item => item.text === qRaw.text)) {
+                if (!currentTestTexts.has(qRaw.text) && !historySet.has(qRaw.text)) {
+                    currentTestTexts.add(qRaw.text);
+
                     let allOptions = [qRaw.correctVal, ...qRaw.wrongs.slice(0, 3)];
                     allOptions.sort(() => Math.random() - 0.5);
                     const correctIdx = allOptions.indexOf(qRaw.correctVal);
 
-                    list.push({
+                    resultList.push({
                         text: qRaw.text,
                         diagram: qRaw.diagram,
                         options: allOptions,
@@ -789,13 +870,40 @@
                 }
             }
 
-            // Если пользователь решил так много вопросов, что уникальные исчерпаны, очищаем историю
-            if (list.length < count) {
-                localStorage.removeItem('geometry_seen_questions');
-                return generateUniqueQuestions(count);
+            // ФАЗА 2: Если история заполнена, добираем задачи, но СТРОГО УНИКАЛЬНЫЕ ДЛЯ ТЕКУЩЕГО ТЕСТА
+            attempts = 0;
+            while (resultList.length < count && attempts < maxAttempts) {
+                attempts++;
+                const gen = questionGenerators[Math.floor(Math.random() * questionGenerators.length)];
+                const qRaw = gen();
+
+                if (!currentTestTexts.has(qRaw.text)) {
+                    currentTestTexts.add(qRaw.text);
+
+                    let allOptions = [qRaw.correctVal, ...qRaw.wrongs.slice(0, 3)];
+                    allOptions.sort(() => Math.random() - 0.5);
+                    const correctIdx = allOptions.indexOf(qRaw.correctVal);
+
+                    resultList.push({
+                        text: qRaw.text,
+                        diagram: qRaw.diagram,
+                        options: allOptions,
+                        correct: correctIdx,
+                        explanation: qRaw.explanation
+                    });
+                }
             }
 
-            return list;
+            // Обновляем историю в localStorage
+            const updatedHistory = Array.from(new Set([...historyList, ...Array.from(currentTestTexts)]));
+            // Если история превышает 500 вопросов, оставляем последние 200
+            if (updatedHistory.length > 500) {
+                saveSeenQuestions(updatedHistory.slice(-200));
+            } else {
+                saveSeenQuestions(updatedHistory);
+            }
+
+            return resultList;
         }
 
         function startTest(count) {
@@ -810,7 +918,6 @@
 
         function loadQuestion(index) {
             const q = questionsData[index];
-            markQuestionAsSeen(q.text);
 
             document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
             document.getElementById('question-text').innerText = q.text;
