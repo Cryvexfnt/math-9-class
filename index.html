@@ -658,9 +658,19 @@
     </div>
 
     <script>
-        const algebraIcons = ['calculator', 'percent', 'hash', 'binary', 'bar-chart-2', 'trending-up', 'sparkles'];
-        const geometryIcons = ['triangle', 'square', 'circle', 'box', 'compass', 'ruler', 'layers'];
-        const physicsIcons = ['zap', 'battery-charging', 'cpu', 'thermometer', 'activity', 'magnet', 'flame'];
+        // Іконки школьного приладдя для фону
+        const schoolSuppliesIcons = [
+            'pencil', 
+            'book-open', 
+            'ruler', 
+            'scissors', 
+            'backpack', 
+            'calculator', 
+            'paperclip', 
+            'bookmark', 
+            'file-text', 
+            'graduation-cap'
+        ];
 
         function renderBackground(iconsList) {
             const bgContainer = document.getElementById('bg-container');
@@ -693,7 +703,7 @@
             lucide.createIcons();
         }
 
-        renderBackground(algebraIcons);
+        renderBackground(schoolSuppliesIcons);
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -711,14 +721,7 @@
 
         function selectSubject(subject) {
             currentSubject = subject;
-            if (subject === 'algebra') {
-                renderBackground(algebraIcons);
-            } else if (subject === 'geometry') {
-                renderBackground(geometryIcons);
-            } else if (subject === 'physics') {
-                renderBackground(physicsIcons);
-            }
-
+            renderBackground(schoolSuppliesIcons);
             showScreen('screen-count');
         }
 
@@ -810,12 +813,6 @@
             </svg>`;
         }
 
-        /* 
-          ГЕНЕРАТОРИ ЗАВДАНЬ ПО АЛГЕБРІ ВІДПОВІДНО ДО ПІДРУЧНИКА
-          "Алгебра 9 клас" (О. С. Істер): Розділ 1 "НЕРІВНОСТІ".
-          Усі варіанти відповідей подано у формі числових нерівностей
-          без використання символів нескінченності (∞).
-        */
         const algebraGenerators = [
             () => {
                 const a = 2 + Math.floor(Math.random() * 5);
