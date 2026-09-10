@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        /* --- ФОН С РАВНОМЕРНЫМ ЗАПОЛНЕНИЕМ --- */
+        /* --- ФОН С ФИКСИРОВАННЫМИ ПОЗИЦИЯМИ (БЕЗ ДЁРГАНИЙ) --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -43,14 +43,14 @@
         .bg-item {
             position: absolute;
             user-select: none;
-            transform: translate(-50%, -50%); /* Точная центровка для сохранения дистанции */
-            animation: float infinite alternate ease-in-out;
+            transform: translate(-50%, -50%);
+            animation: float 6s infinite alternate ease-in-out;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Неоновое свечение стикеров */
+        /* Неоновые иконки */
         .neon-icon {
             width: 44px;
             height: 44px;
@@ -76,13 +76,18 @@
             filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
         }
 
-        /* Анимация движения */
+        /* Разная скорость парения */
+        .d-1 { animation-duration: 5.2s; animation-delay: 0s; }
+        .d-2 { animation-duration: 6.8s; animation-delay: 1.2s; }
+        .d-3 { animation-duration: 5.8s; animation-delay: 2.1s; }
+        .d-4 { animation-duration: 7.4s; animation-delay: 0.6s; }
+
         @keyframes float {
             0% {
-                transform: translate(-50%, -50%) translateY(0px) rotate(var(--base-rotate)) scale(1);
+                transform: translate(-50%, -50%) translateY(0px) rotate(var(--rot, 0deg)) scale(1);
             }
             100% {
-                transform: translate(-50%, -50%) translateY(-18px) rotate(calc(var(--base-rotate) + 12deg)) scale(1.06);
+                transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06);
             }
         }
 
@@ -182,8 +187,37 @@
 </head>
 <body>
 
-    <!-- Контейнер для фоновых предметов -->
-    <div class="background-objects" id="bg-container"></div>
+    <!-- Зафиксированные позиции стикеров по всему экрану без наложений и прыжков -->
+    <div class="background-objects">
+        <!-- Строка 1 -->
+        <div class="bg-item d-1" style="left: 7%; top: 10%; --rot: -25deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-2" style="left: 22%; top: 14%; --rot: 18deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-3" style="left: 38%; top: 8%; --rot: -12deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4" style="left: 54%; top: 12%; --rot: 30deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-1" style="left: 72%; top: 9%; --rot: -15deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2" style="left: 90%; top: 13%; --rot: 22deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
+
+        <!-- Строка 2 -->
+        <div class="bg-item d-3" style="left: 12%; top: 32%; --rot: 35deg;"><i data-lucide="scissors" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4" style="left: 28%; top: 35%; --rot: -20deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-1" style="left: 45%; top: 28%; --rot: 15deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2" style="left: 62%; top: 33%; --rot: -30deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3" style="left: 82%; top: 30%; --rot: 10deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
+
+        <!-- Строка 3 -->
+        <div class="bg-item d-4" style="left: 6%; top: 58%; --rot: -18deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-1" style="left: 20%; top: 62%; --rot: 25deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2" style="left: 80%; top: 55%; --rot: -22deg;"><i data-lucide="scissors" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-3" style="left: 94%; top: 60%; --rot: 16deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
+
+        <!-- Строка 4 -->
+        <div class="bg-item d-2" style="left: 10%; top: 85%; --rot: 20deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-3" style="left: 26%; top: 88%; --rot: -28deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4" style="left: 42%; top: 82%; --rot: 14deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-1" style="left: 58%; top: 89%; --rot: -18deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2" style="left: 74%; top: 84%; --rot: 32deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3" style="left: 90%; top: 87%; --rot: -10deg;"><i data-lucide="scissors" class="neon-icon neon-cyan"></i></div>
+    </div>
 
     <!-- Главное меню -->
     <div class="main-container">
@@ -205,47 +239,6 @@
     </div>
 
     <script>
-        const itemsList = ['ruler', 'pencil', 'eraser', 'book-open', 'calculator', 'backpack', 'scissors'];
-        const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
-        const bgContainer = document.getElementById('bg-container');
-
-        // Сетка 5 строк на 8 колонок — обеспечивает 100% покрытие экрана без пустот
-        const rows = 5;
-        const cols = 8;
-
-        const cellWidth = 100 / cols;
-        const cellHeight = 100 / rows;
-
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                const item = document.createElement('div');
-                item.className = 'bg-item';
-
-                // Центр ячейки + контролируемый сдвиг (до ±35% размера ячейки), чтобы иконки не накладывались
-                const offsetX = (Math.random() - 0.5) * (cellWidth * 0.7);
-                const offsetY = (Math.random() - 0.5) * (cellHeight * 0.7);
-
-                const posX = (c + 0.5) * cellWidth + offsetX;
-                const posY = (r + 0.5) * cellHeight + offsetY;
-
-                const randomRotate = Math.floor(Math.random() * 90) - 45; // Поворот от -45° до 45°
-                const randomDuration = (4.5 + Math.random() * 3.5).toFixed(1);
-                const randomDelay = (Math.random() * 3).toFixed(1);
-
-                const randomIcon = itemsList[Math.floor(Math.random() * itemsList.length)];
-                const randomColor = colorClasses[Math.floor(Math.random() * colorClasses.length)];
-
-                item.style.left = `${posX}%`;
-                item.style.top = `${posY}%`;
-                item.style.setProperty('--base-rotate', `${randomRotate}deg`);
-                item.style.animationDuration = `${randomDuration}s`;
-                item.style.animationDelay = `${randomDelay}s`;
-
-                item.innerHTML = `<i data-lucide="${randomIcon}" class="neon-icon ${randomColor}"></i>`;
-                bgContainer.appendChild(item);
-            }
-        }
-
         lucide.createIcons();
     </script>
 
