@@ -87,7 +87,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 850px;
+            max-width: 1000px;
             padding: 20px;
             text-align: center;
         }
@@ -189,12 +189,13 @@
             background: rgba(191, 0, 255, 0.25);
         }
 
+        /* ЗБІЛЬШЕНА РАМКА ЗАВДАНЬ */
         .quiz-card {
             background: rgba(18, 9, 38, 0.9);
-            border: 2px solid #00f3ff;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-            border-radius: 24px;
-            padding: 30px;
+            border: 2.5px solid #00f3ff;
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.35);
+            border-radius: 26px;
+            padding: 35px 40px;
             width: 100%;
             backdrop-filter: blur(15px);
             text-align: left;
@@ -205,11 +206,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-weight: 800;
             color: #00f3ff;
-            font-size: 1.1rem;
-            gap: 10px;
+            font-size: 1.15rem;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
@@ -217,27 +218,27 @@
             background: rgba(255, 0, 85, 0.15);
             border: 2px solid #ff0055;
             color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.9rem;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.2);
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
             outline: none;
         }
 
         .btn-finish-top:hover {
             background: rgba(255, 0, 85, 0.4);
-            box-shadow: 0 0 20px #ff0055;
+            box-shadow: 0 0 25px #ff0055;
             transform: scale(1.05);
         }
 
         .question-text {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 700;
             line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             color: #ffffff;
         }
 
@@ -255,16 +256,16 @@
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 18px;
+            margin-bottom: 25px;
         }
 
         .btn-option {
             background: rgba(30, 15, 60, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            padding: 16px 20px;
-            font-size: 1.1rem;
+            border-radius: 16px;
+            padding: 18px 22px;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #ffffff;
             cursor: pointer;
@@ -276,7 +277,7 @@
         .btn-option:hover:not(:disabled) {
             border-color: #00f3ff;
             background: rgba(0, 243, 255, 0.15);
-            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
         }
 
         .btn-option.correct {
@@ -298,11 +299,11 @@
             background: rgba(255, 0, 85, 0.1);
             border: 2px solid #ff0055;
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
-            border-radius: 14px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 20px;
             margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1rem;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
             line-height: 1.5;
             color: #ffe6ee;
         }
@@ -316,16 +317,19 @@
             color: #ff0055;
             margin-bottom: 6px;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             letter-spacing: 1px;
         }
 
+        /* ОНОВЛЕНИЙ НИЖНІЙ БЛОК З КНОПКАМИ ПО КУТАХ */
         .quiz-footer {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 15px;
-            padding-top: 15px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
         }
 
         .btn-next {
@@ -516,8 +520,9 @@
             .subjects-row { flex-direction: column; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
-            .quiz-footer { justify-content: center; }
-            .btn-next { width: 100%; justify-content: center; }
+            .quiz-footer { flex-direction: column-reverse; gap: 15px; }
+            .btn-next, .btn-finish-top { width: 100%; justify-content: center; }
+            .quiz-card { padding: 25px 20px; }
         }
     </style>
 </head>
@@ -571,7 +576,6 @@
             <div class="quiz-header">
                 <span id="quiz-progress">Завдання 1 з 10</span>
                 <span id="quiz-topic" style="color: #00f3ff;">Тема: ...</span>
-                <button class="btn-finish-top" onclick="showConfirmModal()">Завершити тест</button>
             </div>
             
             <div class="question-text" id="question-text">Текст питання...</div>
@@ -585,7 +589,9 @@
                 <div id="explanation-text">...</div>
             </div>
 
+            <!-- НИЖНЯ ПАНЕЛЬ З КНОПКАМИ ЗЛІВА І СТРАВА -->
             <div class="quiz-footer">
+                <button class="btn-finish-top" onclick="showConfirmModal()">Завершити тест</button>
                 <button class="btn-next" id="btn-next" onclick="skipQuestion()">
                     <span>Пропустити завдання</span>
                     <span>➔</span>
@@ -1258,7 +1264,6 @@
                 document.getElementById('explanation-box').classList.add('active');
             }
 
-            // Автоматичний перехід через 3 секунди
             clearTimeout(autoNextTimer);
             autoNextTimer = setTimeout(() => {
                 nextQuestion();
