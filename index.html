@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ФОНЕ (ТОЛЬКО 5 ПРЕДМЕТОВ) --- */
+        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ФОНЕ --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -53,10 +53,10 @@
             justify-content: center;
         }
 
-        /* Неоновые контуры для фоновых предметов */
+        /* Неоновые контурные иконки */
         .neon-icon {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             stroke-width: 2.2px;
             opacity: 0.5;
         }
@@ -162,11 +162,11 @@
             transform: scale(0.98);
         }
 
-        /* ОБЫЧНЫЕ НЕ-НЕОНОВЫЕ СТИКЕРЫ/ИКОНКИ В КНОПКАХ */
+        /* ОБЫЧНЫЕ СТИКЕРЫ (БЕЗ НЕОНА) В КНОПКАХ */
         .btn-icon-normal {
             font-size: 2rem;
             line-height: 1;
-            filter: none !important; /* Отключает любое неоновое свечение */
+            filter: none !important;
         }
 
         .math-symbol {
@@ -190,35 +190,35 @@
 </head>
 <body>
 
-    <!-- Фоновые неоновые стикеры (ТОЛЬКО: Ручки, Линейки, Карандаши, Учебники/Блокноты, Калькуляторы) -->
+    <!-- Фоновые неоновые предметы: Линейка, Карандаш, Блокнот, Калькулятор, Ластик, Рюкзак, Циркуль, Ножницы -->
     <div class="background-objects">
         <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
         <div class="bg-item d-2"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-3"><i data-lucide="pen" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
         <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
         <div class="bg-item d-1"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="ruler" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
 
-        <div class="bg-item d-3"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4"><i data-lucide="pen" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-1"><i data-lucide="book-open" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="calculator" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-3"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-4"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-3"><i data-lucide="compass" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-4"><i data-lucide="scissors" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3"><i data-lucide="eraser" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-purple"></i></div>
 
-        <div class="bg-item d-1"><i data-lucide="pen" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2"><i data-lucide="book-open" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-3"><i data-lucide="calculator" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-4"><i data-lucide="ruler" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-1"><i data-lucide="pencil" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-2"><i data-lucide="pen" class="neon-icon neon-cyan"></i></div>
-
-        <div class="bg-item d-3"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-4"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-1"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-2"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-3"><i data-lucide="compass" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-4"><i data-lucide="scissors" class="neon-icon neon-purple"></i></div>
         <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-pink"></i></div>
         <div class="bg-item d-2"><i data-lucide="pencil" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-3"><i data-lucide="pen" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-pink"></i></div>
+
+        <div class="bg-item d-3"><i data-lucide="eraser" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-4"><i data-lucide="book-open" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-1"><i data-lucide="calculator" class="neon-icon neon-pink"></i></div>
+        <div class="bg-item d-2"><i data-lucide="backpack" class="neon-icon neon-cyan"></i></div>
+        <div class="bg-item d-3"><i data-lucide="compass" class="neon-icon neon-purple"></i></div>
+        <div class="bg-item d-4"><i data-lucide="scissors" class="neon-icon neon-pink"></i></div>
     </div>
 
     <!-- Главное меню -->
@@ -226,16 +226,16 @@
         <h1 class="title">Оберіть предмет</h1>
         
         <div class="buttons-wrapper">
-            <!-- Кнопка Геометрия (с обычными эмодзи-стикерами) -->
+            <!-- Кнопка Геометрия -->
             <button class="btn-subject btn-geometry">
-                <span class="btn-icon-normal">📏</span>
+                <span class="btn-icon-normal">📐</span>
                 <span>Геометрія</span>
                 <span class="btn-icon-normal">✏️</span>
             </button>
 
-            <!-- Кнопка Алгебра (с обычными эмодзи-стикерами) -->
+            <!-- Кнопка Алгебра -->
             <button class="btn-subject btn-algebra">
-                <span class="btn-icon-normal">🖊️</span>
+                <span class="btn-icon-normal">✏️</span>
                 <span>Алгебра</span>
                 <span class="math-symbol">√x</span>
             </button>
@@ -243,7 +243,7 @@
     </div>
 
     <script>
-        // Инициализация фоновых иконок
+        // Инициализация иконок
         lucide.createIcons();
     </script>
 
