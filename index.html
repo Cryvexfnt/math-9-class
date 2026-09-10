@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Інтерактивний Тренажер — Математика & Фізика</title>
+    <title>Інтерактивний Тренажер — Математика & Фізика НУШ</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -51,25 +51,25 @@
             width: 44px;
             height: 44px;
             stroke-width: 2.2px;
-            opacity: 0.55;
+            opacity: 0.45;
         }
 
         .neon-cyan {
             stroke: #00f3ff;
             color: #00f3ff;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #00f3ff) drop-shadow(0 0 14px #00f3ff);
+            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #00f3ff);
         }
 
         .neon-purple {
             stroke: #bf00ff;
             color: #bf00ff;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #bf00ff) drop-shadow(0 0 14px #bf00ff);
+            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #bf00ff);
         }
 
         .neon-pink {
             stroke: #ff007f;
             color: #ff007f;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
+            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f);
         }
 
         .d-1 { animation-duration: 5.2s; animation-delay: 0s; }
@@ -79,18 +79,12 @@
 
         @keyframes float {
             0% { transform: translate(-50%, -50%) translateY(0px) rotate(var(--rot, 0deg)) scale(1); }
-            100% { transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06); }
+            100% { transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.05); }
         }
 
         @keyframes screenIn {
-            0% {
-                opacity: 0;
-                transform: translateY(25px) scale(0.96);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .screen {
@@ -107,24 +101,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: screenIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: screenIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .title {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 900;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff, 0 0 40px #00f3ff;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px #bf00ff, 0 0 25px #00f3ff;
         }
 
         .buttons-wrapper {
             display: flex;
             justify-content: center;
             width: 100%;
-            max-width: 750px;
+            max-width: 800px;
         }
 
         .subjects-row {
@@ -138,40 +132,42 @@
             background: rgba(15, 8, 35, 0.85);
             border: 3px solid;
             border-radius: 20px;
-            padding: 18px 15px;
-            font-size: 1.25rem;
+            padding: 20px 15px;
+            font-size: 1.15rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
-            user-select: none;
         }
 
         .subject-icon {
             font-family: 'Times New Roman', Times, serif;
             font-style: italic;
             font-weight: bold;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 45px;
         }
 
-        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
-        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
-        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
+        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.3); }
+        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
+        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.3); }
 
-        .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
-        .btn-geometry:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
-        .btn-physics:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 127, 0.9); background: rgba(255, 0, 127, 0.2); }
+        .btn-algebra:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 0 30px rgba(191, 0, 255, 0.8); background: rgba(191, 0, 255, 0.2); }
+        .btn-geometry:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 0 30px rgba(0, 243, 255, 0.8); background: rgba(0, 243, 255, 0.2); }
+        .btn-physics:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 0 30px rgba(255, 0, 127, 0.8); background: rgba(255, 0, 127, 0.2); }
+
+        .subject-desc {
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0.75;
+        }
 
         .count-grid {
             display: grid;
@@ -186,7 +182,7 @@
             border: 2.5px solid #bf00ff;
             border-radius: 16px;
             padding: 15px 0;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: #ffffff;
             cursor: pointer;
@@ -202,18 +198,17 @@
         }
 
         .btn-back {
-            margin-top: 30px;
+            margin-top: 25px;
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
             padding: 12px 28px;
             border-radius: 16px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             backdrop-filter: blur(8px);
             transition: all 0.25s ease;
-            outline: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -223,29 +218,27 @@
             border-color: #00f3ff;
             box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
             background: rgba(0, 243, 255, 0.15);
-            transform: translateY(-2px);
         }
 
         .quiz-card {
             background: rgba(18, 9, 38, 0.9);
             border: 2.5px solid #00f3ff;
-            box-shadow: 0 0 35px rgba(0, 243, 255, 0.35);
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.3);
             border-radius: 26px;
-            padding: 35px 40px;
+            padding: 30px 35px;
             width: 100%;
             backdrop-filter: blur(15px);
             text-align: left;
-            position: relative;
         }
 
         .quiz-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: 800;
             color: #00f3ff;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -254,27 +247,24 @@
             background: rgba(255, 0, 85, 0.15);
             border: 2px solid #ff0055;
             color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 16px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-size: 0.9rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.25s ease;
-            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
-            outline: none;
         }
 
         .btn-finish-top:hover {
             background: rgba(255, 0, 85, 0.4);
-            box-shadow: 0 0 25px #ff0055;
-            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff0055;
         }
 
         .question-text {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             line-height: 1.5;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #ffffff;
         }
 
@@ -292,16 +282,16 @@
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 25px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .btn-option {
             background: rgba(30, 15, 60, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 16px;
-            padding: 18px 22px;
-            font-size: 1.15rem;
+            padding: 16px 20px;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
             cursor: pointer;
@@ -320,14 +310,12 @@
             border-color: #00ff66 !important;
             background: rgba(0, 255, 102, 0.25) !important;
             box-shadow: 0 0 20px #00ff66 !important;
-            color: #ffffff !important;
         }
 
         .btn-option.incorrect {
             border-color: #ff0055 !important;
             background: rgba(255, 0, 85, 0.25) !important;
             box-shadow: 0 0 20px #ff0055 !important;
-            color: #ffffff !important;
         }
 
         .explanation-box {
@@ -336,36 +324,31 @@
             border: 2px solid #ff0055;
             box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             margin-top: 15px;
-            margin-bottom: 25px;
-            font-size: 1.05rem;
+            margin-bottom: 20px;
+            font-size: 1rem;
             line-height: 1.5;
             color: #ffe6ee;
             animation: screenIn 0.3s ease-out;
         }
 
-        .explanation-box.active {
-            display: block;
-        }
+        .explanation-box.active { display: block; }
 
         .explanation-title {
             font-weight: 800;
             color: #ff0055;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
         }
 
         .quiz-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 25px;
-            padding-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
         }
 
         .btn-next {
@@ -381,12 +364,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            backdrop-filter: blur(10px);
             transition: all 0.25s ease;
+            margin-left: auto;
         }
 
         .btn-next:hover {
-            transform: scale(1.05);
+            transform: scale(1.04);
             box-shadow: 0 0 25px #ffd700;
             background: rgba(255, 215, 0, 0.25);
         }
@@ -406,7 +389,7 @@
             background: rgba(20, 10, 45, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             text-align: left;
         }
 
@@ -416,11 +399,11 @@
 
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 8px;
             font-weight: 800;
-            font-size: 0.85rem;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
@@ -433,36 +416,36 @@
             border: 2.5px solid #bf00ff;
             box-shadow: 0 0 20px rgba(191, 0, 255, 0.5);
             color: #ffffff;
-            padding: 15px 40px;
+            padding: 14px 36px;
             border-radius: 18px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .btn-restart:hover {
-            transform: scale(1.06);
+            transform: scale(1.05);
             box-shadow: 0 0 35px #bf00ff;
             background: rgba(191, 0, 255, 0.4);
         }
 
         .toast {
             position: fixed;
-            top: 30px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
             background: rgba(20, 10, 40, 0.95);
             border: 2px solid #ff007f;
             box-shadow: 0 0 20px #ff007f;
             color: #fff;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 16px;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             z-index: 1000;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
         }
 
         .toast.show {
@@ -494,79 +477,65 @@
             border: 2.5px solid #ff007f;
             box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
             border-radius: 22px;
-            padding: 30px;
-            max-width: 420px;
+            padding: 28px;
+            max-width: 400px;
             width: 90%;
             text-align: center;
         }
 
         .modal-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: #ffffff;
             line-height: 1.4;
         }
 
         .modal-buttons {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
         }
 
         .btn-modal {
             flex: 1;
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 14px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
             border: 2.5px solid;
             transition: all 0.25s ease;
-            outline: none;
         }
 
         .btn-modal-yes {
             background: rgba(0, 255, 102, 0.2);
             border-color: #00ff66;
             color: #ffffff;
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
         }
 
-        .btn-modal-yes:hover {
-            background: rgba(0, 255, 102, 0.45);
-            box-shadow: 0 0 25px #00ff66;
-            transform: scale(1.05);
-        }
+        .btn-modal-yes:hover { background: rgba(0, 255, 102, 0.45); box-shadow: 0 0 20px #00ff66; }
 
         .btn-modal-no {
             background: rgba(255, 0, 85, 0.2);
             border-color: #ff0055;
             color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
         }
 
-        .btn-modal-no:hover {
-            background: rgba(255, 0, 85, 0.45);
-            box-shadow: 0 0 25px #ff0055;
-            transform: scale(1.05);
-        }
+        .btn-modal-no:hover { background: rgba(255, 0, 85, 0.45); box-shadow: 0 0 20px #ff0055; }
 
         @media (max-width: 650px) {
-            .title { font-size: 1.8rem; }
+            .title { font-size: 1.6rem; }
             .subjects-row { flex-direction: column; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
-            .quiz-footer { flex-direction: column-reverse; gap: 15px; }
-            .btn-next, .btn-finish-top { width: 100%; justify-content: center; }
-            .quiz-card { padding: 25px 20px; }
+            .quiz-card { padding: 20px 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="toast" id="toast">Повідомлення</div>
-
     <div class="background-objects" id="bg-container"></div>
 
     <!-- 1. ВИБІР ПРЕДМЕТА -->
@@ -577,14 +546,17 @@
                 <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
                     <span class="subject-icon">√x</span>
                     <span>Алгебра</span>
+                    <span class="subject-desc">Істер 9 клас НУШ — Нерівності</span>
                 </button>
                 <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
                     <span class="subject-icon">∠α</span>
                     <span>Геометрія</span>
+                    <span class="subject-desc">Істер 8 клас НУШ — Повторення</span>
                 </button>
                 <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
                     <span class="subject-icon">E=mc²</span>
                     <span>Фізика</span>
+                    <span class="subject-desc">Бар'яхтар 9 клас — Струм у металах</span>
                 </button>
             </div>
         </div>
@@ -606,7 +578,7 @@
             <button class="btn-count" onclick="startTest(50)">50</button>
         </div>
         <button class="btn-back" onclick="resetToHome()">
-            <span>← Повернутися в меню</span>
+            <span>← На головне меню</span>
         </button>
     </div>
 
@@ -619,9 +591,7 @@
             </div>
             
             <div class="question-text" id="question-text">Текст питання...</div>
-            
             <div class="diagram-container" id="diagram-container"></div>
-
             <div class="options-grid" id="options-grid"></div>
 
             <div class="explanation-box" id="explanation-box">
@@ -632,24 +602,24 @@
             <div class="quiz-footer">
                 <button class="btn-finish-top" onclick="showConfirmModal()">Завершити тест</button>
                 <button class="btn-next" id="btn-next" onclick="skipQuestion()">
-                    <span>Пропустити завдання</span>
+                    <span>Пропустити</span>
                     <span>➔</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 4. ФІНІШ -->
+    <!-- 4. РЕЗУЛЬТАТИ -->
     <div class="screen" id="screen-results">
         <h1 class="title">Результати тесту</h1>
         <div class="results-list" id="results-list"></div>
         <button class="btn-restart" onclick="resetToHome()">На головну</button>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ -->
+    <!-- МОДАЛЬНЕ ВІКНО -->
     <div class="modal-overlay" id="confirm-modal">
         <div class="modal-card">
-            <div class="modal-title">Ви впевнені, що хочете завершити тест?</div>
+            <div class="modal-title">Ви дійсно бажаєте достроково завершити тест?</div>
             <div class="modal-buttons">
                 <button class="btn-modal btn-modal-yes" onclick="confirmFinishTest()">Так</button>
                 <button class="btn-modal btn-modal-no" onclick="closeConfirmModal()">Ні</button>
@@ -658,23 +628,11 @@
     </div>
 
     <script>
-        const schoolSuppliesIcons = [
-            'pencil', 
-            'book-open', 
-            'ruler', 
-            'scissors', 
-            'backpack', 
-            'calculator', 
-            'paperclip', 
-            'bookmark', 
-            'file-text', 
-            'graduation-cap'
-        ];
+        const schoolSuppliesIcons = ['pencil', 'book-open', 'ruler', 'scissors', 'backpack', 'calculator', 'paperclip', 'bookmark', 'file-text', 'graduation-cap'];
 
         function renderBackground(iconsList) {
             const bgContainer = document.getElementById('bg-container');
             bgContainer.innerHTML = '';
-            
             const fragment = document.createDocumentFragment();
             const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
             const coords = [
@@ -690,10 +648,8 @@
                 item.style.left = `${pt.x}%`;
                 item.style.top = `${pt.y}%`;
                 item.style.setProperty('--rot', `${pt.r}deg`);
-
                 const icon = iconsList[idx % iconsList.length];
                 const color = colorClasses[idx % colorClasses.length];
-
                 item.innerHTML = `<i data-lucide="${icon}" class="neon-icon ${color}"></i>`;
                 fragment.appendChild(item);
             });
@@ -721,7 +677,6 @@
 
         function selectSubject(subject) {
             currentSubject = subject;
-            renderBackground(schoolSuppliesIcons);
             showScreen('screen-count');
         }
 
@@ -730,13 +685,8 @@
             document.getElementById(screenId).classList.add('active');
         }
 
-        function showConfirmModal() {
-            document.getElementById('confirm-modal').classList.add('active');
-        }
-
-        function closeConfirmModal() {
-            document.getElementById('confirm-modal').classList.remove('active');
-        }
+        function showConfirmModal() { document.getElementById('confirm-modal').classList.add('active'); }
+        function closeConfirmModal() { document.getElementById('confirm-modal').classList.remove('active'); }
 
         function confirmFinishTest() {
             clearTimeout(autoNextTimer);
@@ -744,18 +694,19 @@
             finishTest();
         }
 
+        // SVG Генератори для завдань
         function drawRaySVG(val, isClosed, directionRight) {
             const circleFill = isClosed ? "#00f3ff" : "#070414";
             const lineStartX = directionRight ? 130 : 25;
             const lineEndX = directionRight ? 255 : 130;
 
-            return `<svg width="290" height="90" viewBox="0 0 290 90">
-                <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
-                <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
-                <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                <line x1="${lineStartX}" y1="50" x2="${lineEndX}" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <circle cx="130" cy="50" r="7" fill="${circleFill}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="124" y="75" fill="#00f3ff" font-weight="800" font-size="15">${val}</text>
+            return `<svg width="280" height="85" viewBox="0 0 280 85">
+                <line x1="15" y1="45" x2="255" y2="45" stroke="#bf00ff" stroke-width="3"/>
+                <polygon points="255,40 268,45 255,50" fill="#bf00ff"/>
+                <text x="260" y="65" fill="#bf00ff" font-weight="800" font-size="14">x</text>
+                <line x1="${lineStartX}" y1="45" x2="${lineEndX}" y2="45" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
+                <circle cx="130" cy="45" r="7" fill="${circleFill}" stroke="#00f3ff" stroke-width="3"/>
+                <text x="124" y="70" fill="#00f3ff" font-weight="800" font-size="15">${val}</text>
             </svg>`;
         }
 
@@ -763,226 +714,171 @@
             const fillA = isClosedA ? "#00f3ff" : "#070414";
             const fillB = isClosedB ? "#00f3ff" : "#070414";
 
-            return `<svg width="290" height="90" viewBox="0 0 290 90">
-                <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
-                <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
-                <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                <line x1="85" y1="50" x2="195" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <circle cx="85" cy="50" r="7" fill="${fillA}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="78" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valA}</text>
-                <circle cx="195" cy="50" r="7" fill="${fillB}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="188" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valB}</text>
+            return `<svg width="280" height="85" viewBox="0 0 280 85">
+                <line x1="15" y1="45" x2="255" y2="45" stroke="#bf00ff" stroke-width="3"/>
+                <polygon points="255,40 268,45 255,50" fill="#bf00ff"/>
+                <text x="260" y="65" fill="#bf00ff" font-weight="800" font-size="14">x</text>
+                <line x1="85" y1="45" x2="195" y2="45" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
+                <circle cx="85" cy="45" r="7" fill="${fillA}" stroke="#00f3ff" stroke-width="3"/>
+                <text x="78" y="70" fill="#00f3ff" font-weight="800" font-size="14">${valA}</text>
+                <circle cx="195" cy="45" r="7" fill="${fillB}" stroke="#00f3ff" stroke-width="3"/>
+                <text x="188" y="70" fill="#00f3ff" font-weight="800" font-size="14">${valB}</text>
             </svg>`;
         }
 
-        function drawRightTriangleSVG(a, b, c) {
-            return `<svg width="220" height="130" viewBox="0 0 220 130">
-                <polygon points="30,100 180,100 30,20" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
-                <rect x="30" y="85" width="15" height="15" fill="none" stroke="#ff007f" stroke-width="2"/>
-                <text x="100" y="118" fill="#ffffff" font-weight="800" font-size="14">${a}</text>
-                <text x="10" y="65" fill="#ffffff" font-weight="800" font-size="14">${b}</text>
-                <text x="110" y="55" fill="#00f3ff" font-weight="800" font-size="14">${c}</text>
+        function drawRightTriangleSVG(hyp) {
+            return `<svg width="200" height="110" viewBox="0 0 200 110">
+                <polygon points="30,90 170,90 30,20" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
+                <rect x="30" y="75" width="15" height="15" fill="none" stroke="#ff007f" stroke-width="2"/>
+                <text x="160" y="80" fill="#ffd700" font-weight="800" font-size="13">30°</text>
+                <text x="100" y="45" fill="#00f3ff" font-weight="800" font-size="14">c = ${hyp} см</text>
             </svg>`;
         }
 
-        function drawCircleSVG(r) {
-            return `<svg width="160" height="140" viewBox="0 0 160 140">
-                <circle cx="80" cy="70" r="55" fill="rgba(191, 0, 255, 0.1)" stroke="#bf00ff" stroke-width="3"/>
-                <circle cx="80" cy="70" r="4" fill="#00f3ff"/>
-                <line x1="80" y1="70" x2="135" y2="70" stroke="#00f3ff" stroke-width="3" stroke-dasharray="4,4"/>
-                <text x="100" y="63" fill="#00f3ff" font-weight="800" font-size="14">R = ${r}</text>
+        function drawAdjacentAnglesSVG(deg) {
+            return `<svg width="220" height="100" viewBox="0 0 220 100">
+                <line x1="20" y1="80" x2="200" y2="80" stroke="#bf00ff" stroke-width="3"/>
+                <line x1="110" y1="80" x2="160" y2="20" stroke="#00f3ff" stroke-width="3"/>
+                <text x="130" y="70" fill="#00f3ff" font-weight="800" font-size="13">${deg}°</text>
+                <text x="75" y="70" fill="#ff007f" font-weight="800" font-size="14">?</text>
             </svg>`;
         }
 
-        function drawParallelogramSVG(a, h) {
-            return `<svg width="220" height="120" viewBox="0 0 220 120">
-                <polygon points="40,90 170,90 200,30 70,30" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
-                <line x1="70" y1="30" x2="70" y2="90" stroke="#ff007f" stroke-width="2" stroke-dasharray="4,4"/>
-                <text x="105" y="108" fill="#ffffff" font-weight="800" font-size="14">a = ${a}</text>
-                <text x="75" y="65" fill="#ff007f" font-weight="800" font-size="14">h = ${h}</text>
-            </svg>`;
-        }
-
-        function drawVectorSVG(x, y) {
-            return `<svg width="180" height="120" viewBox="0 0 180 120">
-                <line x1="20" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-                <line x1="20" y1="100" x2="20" y2="20" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-                <line x1="20" y1="100" x2="130" y2="30" stroke="#00f3ff" stroke-width="4"/>
-                <polygon points="130,30 118,34 125,45" fill="#00f3ff"/>
-                <text x="70" y="50" fill="#00f3ff" font-weight="800" font-size="15">ā (${x}; ${y})</text>
-            </svg>`;
-        }
-
+        // БАНКИ ЗАВДАНЬ ПО ПРЕДМЕТАХ
         const algebraGenerators = [
             () => {
-                const a = 2 + Math.floor(Math.random() * 5);
-                const res = Math.floor(Math.random() * 10) - 4;
-                const val = a * res;
-                return {
-                    topic: "Алгебра 9 клас — Лінійні нерівності (Істер)",
-                    text: `Розв'яжіть лінійну нерівність: ${a}x > ${val}`,
-                    diagram: drawRaySVG(res, false, true),
-                    correctVal: `x > ${res}`,
-                    wrongs: [`x < ${res}`, `x ≥ ${res}`, `x ≤ ${res}`],
-                    explanation: `Поділимо обидві частини на додатне число ${a}. Знак нерівності не змінюється: x > ${val} / ${a} ⇒ x > ${res}.`
-                };
-            },
-            () => {
-                const a = -(2 + Math.floor(Math.random() * 5));
+                const a = 2 + Math.floor(Math.random() * 4);
                 const res = Math.floor(Math.random() * 8) - 3;
                 const b = a * res;
                 return {
-                    topic: "Алгебра 9 клас — Лінійні нерівності (Істер)",
-                    text: `Розв'яжіть лінійну нерівність: ${a}x ≤ ${b}`,
+                    topic: "Алгебра 9 клас — Нерівності (Істер)",
+                    text: `Розв'яжіть лінійну нерівність: ${a}x - ${b} ≥ 0`,
                     diagram: drawRaySVG(res, true, true),
-                    correctVal: `x ≥ ${res}`,
-                    wrongs: [`x ≤ ${res}`, `x > ${res}`, `x < ${res}`],
-                    explanation: `При діленні обох частин на від'ємне число ${a} знак нерівності змінюється на протилежний: x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
+                    correctVal: `x ≥ ${res}  (або  x ∈ [${res}; +∞))`,
+                    wrongs: [`x ≤ ${res}  (або  x ∈ (-∞; ${res}])`, `x > ${res}  (або  x ∈ (${res}; +∞))`, `x ≥ -${res}`],
+                    explanation: `Перенесемо число: ${a}x ≥ ${b}. Поділимо на ${a}: x ≥ ${res}. У вигляді числового проміжку це заштрихований промінь [${res}; +∞).`
                 };
             },
             () => {
-                const num = Math.floor(Math.random() * 16) - 8;
+                const min = Math.floor(Math.random() * 4) + 1;
+                const max = min + Math.floor(Math.random() * 4) + 2;
                 return {
-                    topic: "Алгебра 9 клас — Нерівності та координатна пряма",
-                    text: `Укажіть нерівність, якій відповідає зображений на координатному промені розв'язок:`,
-                    diagram: drawRaySVG(num, false, true),
-                    correctVal: `x > ${num}`,
-                    wrongs: [`x ≥ ${num}`, `x < ${num}`, `x ≤ ${num}`],
-                    explanation: `Виколота точка та штриховка вправо відповідають строгій нерівності "більше": x > ${num}.`
-                };
-            },
-            () => {
-                const num = Math.floor(Math.random() * 16) - 8;
-                return {
-                    topic: "Алгебра 9 клас — Нерівності та координатна пряма",
-                    text: `Якій з нерівностей відповідає штриховка на малюнку?`,
-                    diagram: drawRaySVG(num, true, false),
-                    correctVal: `x ≤ ${num}`,
-                    wrongs: [`x < ${num}`, `x ≥ ${num}`, `x > ${num}`],
-                    explanation: `Зафарбована точка та штриховка вліво відповідають нестрогій нерівності "менше або дорівнює": x ≤ ${num}.`
-                };
-            },
-            () => {
-                const min = Math.floor(Math.random() * 5) - 4;
-                const max = min + Math.floor(Math.random() * 5) + 2;
-                return {
-                    topic: "Алгебра 9 клас — Подвійні нерівності",
-                    text: `Якому числовому проміжку відповідає заштрихований відрізок на малюнку?`,
+                    topic: "Алгебра 9 клас — Числові проміжки",
+                    text: `Укажіть числовий проміжок, що відповідає зображеній на малюнку подвійній нерівності для x:`,
                     diagram: drawDoubleIntervalSVG(min, max, true, false),
-                    correctVal: `[${min}; ${max})`,
-                    wrongs: [`(${min}; ${max}]`, `[${min}; ${max}]`, `(${min}; ${max})`],
-                    explanation: `Зафарбована точка біля ${min} дає квадратну дужку, а виколота біля ${max} — круглу дужку: [${min}; ${max}).`
+                    correctVal: `[${min}; ${max})   тобто  ${min} ≤ x < ${max}`,
+                    wrongs: [`(${min}; ${max}]   тобто  ${min} < x ≤ ${max}`, `[${min}; ${max}]   тобто  ${min} ≤ x ≤ ${max}`, `(${min}; ${max})   тобто  ${min} < x < ${max}`],
+                    explanation: `Зафарбована точка утворює квадратну дужку [${min}, а виколота точка біля ${max} — круглу дужку ${max}).Отже, [${min}; ${max}).`
+                };
+            },
+            () => {
+                const minA = 2, maxA = 5;
+                const minB = 1, maxB = 4;
+                return {
+                    topic: "Алгебра 9 клас — Властивості числових нерівностей",
+                    text: `Відомо, що ${minA} < a < ${maxA} та ${minB} < b < ${maxB}. Оцініть значення виразу a + b.`,
+                    diagram: "",
+                    correctVal: `${minA + minB} < a + b < ${maxA + maxB}`,
+                    wrongs: [`${minA * minB} < a + b < ${maxA * maxB}`, `${minA} < a + b < ${maxB}`, `${minA + maxA} < a + b < ${minB + maxB}`],
+                    explanation: `Нерівності однакового знака можна почленно додавати: (${minA}+${minB}) < a+b < (${maxA}+${maxB}) ⇒ ${minA + minB} < a + b < ${maxA + maxB}.`
+                };
+            },
+            () => {
+                const a = Math.floor(Math.random() * 5) + 1;
+                return {
+                    topic: "Алгебра 9 клас — Системи лінійних нерівностей",
+                    text: `Знайдіть розв'язок системи нерівностей: { x + ${a} > 0, x - 3 ≤ 1 }`,
+                    diagram: "",
+                    correctVal: `-${a} < x ≤ 4   (тобто  x ∈ (-${a}; 4])`,
+                    wrongs: [`x > -${a}`, `x ≤ 4`, `-${a} ≤ x < 4`],
+                    explanation: `З першої нерівності: x > -${a}. З другої: x ≤ 4. Спільний розв'язок: -${a} < x ≤ 4 або проміжок (-${a}; 4].`
                 };
             }
         ];
 
         const geometryGenerators = [
             () => {
-                const a = 3 * (Math.floor(Math.random() * 3) + 1);
-                const b = 4 * (Math.floor(Math.random() * 3) + 1);
-                const c = Math.sqrt(a * a + b * b);
+                const deg = (Math.floor(Math.random() * 8) + 4) * 10;
+                const ans = 180 - deg;
                 return {
-                    topic: "Геометрія 8-9 клас — Теорема Піфагора",
-                    text: `Знайдіть гіпотенузу прямокутного трикутника з катетами a = ${a} см та b = ${b} см.`,
-                    diagram: drawRightTriangleSVG(a, b, "?"),
-                    correctVal: `${c} см`,
-                    wrongs: [`${c + 2} см`, `${c - 1} см`, `${a + b} см`],
-                    explanation: `За теоремою Піфагора: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, c = ${c} см.`
+                    topic: "Геометрія 8 клас — Повторення: Суміжні кути",
+                    text: `Один із суміжних кутів дорівнює ${deg}°. Знайдіть градусну міру іншого кута.`,
+                    diagram: drawAdjacentAnglesSVG(deg),
+                    correctVal: `${ans}°`,
+                    wrongs: [`${deg}°`, `${90 - Math.floor(deg/2)}°`, `${180 + deg}°`],
+                    explanation: `Сума суміжних кутів завжди дорівнює 180°. Отже, другий кут: 180° - ${deg}° = ${ans}°.`
                 };
             },
             () => {
-                const r = (Math.floor(Math.random() * 5) + 2) * 2;
-                const area = r * r;
+                const hyp = (Math.floor(Math.random() * 6) + 2) * 2;
+                const leg = hyp / 2;
                 return {
-                    topic: "Геометрія 9 клас — Довжина кола та площа круга",
-                    text: `Обчисліть площу круга радіуса R = ${r} см.`,
-                    diagram: drawCircleSVG(r),
-                    correctVal: `${area}π см²`,
-                    wrongs: [`${2*r}π см²`, `${area*2}π см²`, `${r}π см²`],
-                    explanation: `Площа круга обчислюється за формулою S = πR² = π · ${r}² = ${area}π см².`
+                    topic: "Геометрія 8 клас — Повторення: Прямокутний трикутник",
+                    text: `У прямокутному трикутнику гіпотенуза c = ${hyp} см, а один із гострих кутів дорівнює 30°. Знайдіть катет, що лежить проти цього кута.`,
+                    diagram: drawRightTriangleSVG(hyp),
+                    correctVal: `${leg} см`,
+                    wrongs: [`${hyp} см`, `${leg * 3} см`, `${leg + 2} см`],
+                    explanation: `За властивістю прямокутного трикутника, катет, що лежить проти кута 30°, дорівнює половині гіпотенузи: ${hyp} / 2 = ${leg} см.`
                 };
             },
             () => {
-                const a = Math.floor(Math.random() * 6) + 4;
-                const h = Math.floor(Math.random() * 5) + 3;
-                const s = a * h;
+                const ratioSum = 2 + 3 + 4;
+                const part = 180 / ratioSum;
+                const maxAngle = 4 * part;
                 return {
-                    topic: "Геометрія 8 клас — Площа паралелограма",
-                    text: `Знайдіть площу паралелограма, сторона якого a = ${a} см, а висота h = ${h} см.`,
-                    diagram: drawParallelogramSVG(a, h),
-                    correctVal: `${s} см²`,
-                    wrongs: [`${s + 4} см²`, `${2 * (a + h)} см²`, `${Math.round(s / 2)} см²`],
-                    explanation: `Площа паралелограма S = a · h = ${a} · ${h} = ${s} см².`
-                };
-            },
-            () => {
-                const x = Math.floor(Math.random() * 5) + 3;
-                const y = Math.floor(Math.random() * 5) + 3;
-                const sumSq = x*x + y*y;
-                const len = Math.sqrt(sumSq);
-                const correctStr = Number.isInteger(len) ? `${len}` : `√${sumSq}`;
-                return {
-                    topic: "Геометрія 9 клас — Вектори на площині",
-                    text: `Знайдіть модуль (довжину) вектора ā(${x}; ${y}).`,
-                    diagram: drawVectorSVG(x, y),
-                    correctVal: correctStr,
-                    wrongs: [`${x + y}`, `${Math.abs(x - y)}`, `√${x + y}`],
-                    explanation: `Модуль вектора |ā| = √(x² + y²) = √(${x}² + ${y}²) = √${sumSq} = ${correctStr}.`
+                    topic: "Геометрія 8 клас — Повторення: Сума кутів трикутника",
+                    text: `Кути трикутника відносяться як 2 : 3 : 4. Знайдіть градусну міру найбільшого кута.`,
+                    diagram: "",
+                    correctVal: `${maxAngle}°`,
+                    wrongs: [`40°`, `60°`, `100°`],
+                    explanation: `Сума кутів трикутника 180°. Сума частин: 2+3+4 = 9. Одна частина: 180°/9 = 20°. Найбільший кут: 4 · 20° = ${maxAngle}°.`
                 };
             }
         ];
 
         const physicsGenerators = [
             () => {
-                const v = (Math.floor(Math.random() * 6) + 2) * 10;
-                const t = Math.floor(Math.random() * 4) + 2;
-                const s = v * t;
                 return {
-                    topic: "Фізика 7 клас — Рівномірний прямолінійний рух",
-                    text: `Автомобіль рухається зі швидкістю ${v} км/год протягом ${t} годин. Який шлях він подолає?`,
+                    topic: "Фізика 9 клас (Бар'яхтар) — Струм у металах",
+                    text: `Які частинки є носіями електричного заряду в металевих провідниках?`,
                     diagram: "",
-                    correctVal: `${s} км`,
-                    wrongs: [`${s + 20} км`, `${Math.round(v / t)} км`, `${s - 15} км`],
-                    explanation: `Шлях s = v · t = ${v} км/год · ${t} год = ${s} км.`
+                    correctVal: `Вільні електрони ("електронний газ")`,
+                    wrongs: [`Позитивні та негативні іони`, `Лише позитивні іони`, `Електрони та дірки`],
+                    explanation: `У металах кристалічна ґратка складається з позитивних іонів, а між ними вільно рухаються електрони, що відірвалися від атомів.`
                 };
             },
             () => {
-                const u = (Math.floor(Math.random() * 5) + 1) * 12;
-                const r = Math.floor(Math.random() * 4) + 2;
-                const i = u / r;
                 return {
-                    topic: "Фізика 8 клас — Закон Ома для ділянки кола",
-                    text: `Яка сила струму в провіднику опором ${r} Ом, якщо напруга на його кінцях дорівнює ${u} В?`,
+                    topic: "Фізика 9 клас (Бар'яхтар) — Струм у металах",
+                    text: `Як змінюється електричний опір металевого провідника під час його нагрівання?`,
                     diagram: "",
-                    correctVal: `${i} А`,
-                    wrongs: [`${u * r} А`, `${i + 2} А`, `${(u / r / 2).toFixed(1)} А`],
-                    explanation: `За законом Ома I = U / R = ${u} В / ${r} Ом = ${i} А.`
+                    correctVal: `Збільшується`,
+                    wrongs: [`Зменшується`, `Не змінюється`, `Спочатку зменшується, потім зростає`],
+                    explanation: `При нагріванні іони у вузлах кристалічної ґратки коливаються інтенсивніше, що створює більший опір руху вільних електронів.`
                 };
             },
             () => {
-                const m = (Math.floor(Math.random() * 5) + 1) * 2;
-                const v = Math.floor(Math.random() * 5) + 2;
-                const ek = (m * v * v) / 2;
                 return {
-                    topic: "Фізика 7 клас — Кінетична енергія",
-                    text: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с.`,
+                    topic: "Фізика 9 клас (Бар'яхтар) — Надпровідність",
+                    text: `У чому полягає сутність явища надпровідності?`,
                     diagram: "",
-                    correctVal: `${ek} Дж`,
-                    wrongs: [`${m * v} Дж`, `${ek * 2} Дж`, `${ek + 10} Дж`],
-                    explanation: `Кінетична енергия Eₖ = (m · v²) / 2 = (${m} · ${v*v}) / 2 = ${ek} Дж.`
+                    correctVal: `Повна втрата електричного опору при охолодженні до критичної температури`,
+                    wrongs: [
+                        `Різке зростання опору при охолодженні`,
+                        `Виділення максимальної кількості тепла при проходженні струму`,
+                        `Здатність металу випромінювати світло під дією струму`
+                    ],
+                    explanation: `Надпровідність — це стан речовини, за якого її електричний опір падає строго до нуля при зниженні температури нижче T_кр.`
                 };
             },
             () => {
-                const m = Math.floor(Math.random() * 10) + 2;
-                const a = Math.floor(Math.random() * 5) + 1;
-                const f = m * a;
                 return {
-                    topic: "Фізика 9 клас — Другий закон Ньютона",
-                    text: `Яка сила надає тілу масою ${m} кг прискорення ${a} м/с²?`,
+                    topic: "Фізика 9 клас (Бар'яхтар) — Надпровідність",
+                    text: `Хто і коли вперше відкрив явище надпровідності (на прикладі ртуті, охолодженої рідким гелієм)?`,
                     diagram: "",
-                    correctVal: `${f} Н`,
-                    wrongs: [`${m + a} Н`, `${(m / a).toFixed(1)} Н`, `${f + 5} Н`],
-                    explanation: `За другим законом Ньютона F = m · a = ${m} кг · ${a} м/с² = ${f} Н.`
+                    correctVal: `Гейке Камерлінг-Оннес (1911 р.)`,
+                    wrongs: [`Георг Ом (1826 р.)`, `Алессандро Вольта (1800 р.)`, `Майкл Фарадей (1831 р.)`],
+                    explanation: `Голландський фізик Гейке Камерлінг-Оннес у 1911 році виявив, що при охолодженні ртуті до 4.2 К її опір раптово падає до нуля.`
                 };
             }
         ];
@@ -1022,7 +918,7 @@
             const q = questionsData[currentQuestionIndex];
 
             document.getElementById('quiz-progress').innerText = `Завдання ${currentQuestionIndex + 1} з ${totalQuestionsCount}`;
-            document.getElementById('quiz-topic').innerText = `Тема: ${q.topic}`;
+            document.getElementById('quiz-topic').innerText = q.topic;
             document.getElementById('question-text').innerText = q.text;
 
             const diagBox = document.getElementById('diagram-container');
@@ -1051,7 +947,7 @@
             expBox.style.display = 'none';
 
             const btnNext = document.getElementById('btn-next');
-            btnNext.innerHTML = '<span>Пропустити завдання</span> <span>➔</span>';
+            btnNext.innerHTML = '<span>Пропустити</span> <span>➔</span>';
         }
 
         function handleAnswer(selectedBtn, selectedVal, correctVal, explanation) {
@@ -1074,9 +970,7 @@
             } else {
                 selectedBtn.classList.add('incorrect');
                 allBtns.forEach(b => {
-                    if (b.innerText === correctVal) {
-                        b.classList.add('correct');
-                    }
+                    if (b.innerText === correctVal) b.classList.add('correct');
                 });
 
                 const expBox = document.getElementById('explanation-box');
