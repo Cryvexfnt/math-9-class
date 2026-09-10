@@ -40,7 +40,8 @@
         .bg-item {
             position: absolute;
             user-select: none;
-            transform: translate(-50%, -50%);
+            /* Базовий поворот застосовується миттєво до запуску анімації */
+            transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
             animation: float 6s infinite alternate ease-in-out;
             display: flex;
             align-items: center;
@@ -189,7 +190,6 @@
             background: rgba(191, 0, 255, 0.25);
         }
 
-        /* ЗБІЛЬШЕНА РАМКА ЗАВДАНЬ */
         .quiz-card {
             background: rgba(18, 9, 38, 0.9);
             border: 2.5px solid #00f3ff;
@@ -321,7 +321,6 @@
             letter-spacing: 1px;
         }
 
-        /* ОНОВЛЕНИЙ НИЖНІЙ БЛОК З КНОПКАМИ ПО КУТАХ */
         .quiz-footer {
             display: flex;
             justify-content: space-between;
@@ -589,7 +588,6 @@
                 <div id="explanation-text">...</div>
             </div>
 
-            <!-- НИЖНЯ ПАНЕЛЬ З КНОПКАМИ ЗЛІВА І СТРАВА -->
             <div class="quiz-footer">
                 <button class="btn-finish-top" onclick="showConfirmModal()">Завершити тест</button>
                 <button class="btn-next" id="btn-next" onclick="skipQuestion()">
@@ -627,6 +625,7 @@
             const bgContainer = document.getElementById('bg-container');
             bgContainer.innerHTML = '';
             
+            const fragment = document.createDocumentFragment();
             const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
             const coords = [
                 {x: 7, y: 10, r: -25}, {x: 22, y: 14, r: 18}, {x: 38, y: 8, r: -12}, {x: 54, y: 12, r: 30}, {x: 72, y: 9, r: -15}, {x: 90, y: 13, r: 22},
@@ -646,9 +645,10 @@
                 const color = colorClasses[idx % colorClasses.length];
 
                 item.innerHTML = `<i data-lucide="${icon}" class="neon-icon ${color}"></i>`;
-                bgContainer.appendChild(item);
+                fragment.appendChild(item);
             });
 
+            bgContainer.appendChild(fragment);
             lucide.createIcons();
         }
 
@@ -783,7 +783,6 @@
             } catch (e) {}
         }
 
-        // --- ГЕНЕРАТОРИ АЛГЕБРА ---
         const algebraGenerators = [
             () => {
                 const a = 2 + Math.floor(Math.random() * 6);
@@ -886,7 +885,6 @@
             }
         ];
 
-        // --- ГЕНЕРАТОРИ ГЕОМЕТРІЯ ---
         const geometryGenerators = [
             () => {
                 const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
@@ -1006,7 +1004,6 @@
             }
         ];
 
-        // --- ГЕНЕРАТОРИ ФІЗИКА (Електричний струм у металах. Надпровідність) ---
         const physicsGenerators = [
             () => {
                 return {
@@ -1106,7 +1103,6 @@
             }
         ];
 
-        // --- ГЕНЕРАЦІЯ УНІКАЛЬНИХ ПИТАНЬ ---
         function generateUniqueQuestions(subject, count) {
             const currentTestTexts = new Set();
             const resultList = [];
