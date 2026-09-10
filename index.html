@@ -145,7 +145,11 @@
 
         .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
         .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
-        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
+        .btn-physics { 
+            border-color: #ff007f; 
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); 
+            width: calc(50% - 10px); /* Такий самий розмір, як у однієї кнопки з ряду */
+        }
 
         .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
         .btn-geometry:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
@@ -396,6 +400,7 @@
         @media (max-width: 650px) {
             .title { font-size: 1.8rem; }
             .subjects-row { flex-direction: column; }
+            .btn-physics { width: 100%; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
             .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 1rem; }
@@ -422,6 +427,7 @@
                     <span>Геометрія</span>
                 </button>
             </div>
+            <!-- Кнопка Фізика по центру під ними -->
             <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
                 <span>⚡</span>
                 <span>Фізика</span>
@@ -607,6 +613,15 @@
             </svg>`;
         }
 
+        function drawParallelogramSVG(a, h) {
+            return `<svg width="220" height="120" viewBox="0 0 220 120">
+                <polygon points="40,90 170,90 200,30 70,30" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
+                <line x1="70" y1="30" x2="70" y2="90" stroke="#ff007f" stroke-width="2" stroke-dasharray="4,4"/>
+                <text x="105" y="108" fill="#ffffff" font-weight="800" font-size="14">a = ${a}</text>
+                <text x="75" y="65" fill="#ff007f" font-weight="800" font-size="14">h = ${h}</text>
+            </svg>`;
+        }
+
         function drawVectorSVG(x, y) {
             return `<svg width="180" height="120" viewBox="0 0 180 120">
                 <line x1="20" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
@@ -632,34 +647,34 @@
             } catch (e) {}
         }
 
-        // --- ГЕНЕРАТОРИ ДЛЯ АЛГЕБРИ (ТЕМА: НЕРІВНОСТІ) ---
+        // --- ГЕНЕРАТОРИ ДЛЯ АЛГЕБРИ (9 КЛАС НУШ: НЕРІВНОСТІ) ---
         const algebraGenerators = [
             () => {
-                const a = 2 + Math.floor(Math.random() * 7);
-                const val = (Math.floor(Math.random() * 15) - 7) * a;
+                const a = 2 + Math.floor(Math.random() * 6);
+                const val = (Math.floor(Math.random() * 12) - 5) * a;
                 const res = val / a;
                 return {
-                    text: `Розв'яжіть нерівність: ${a}x > ${val}`,
+                    text: `Розв'яжіть лінійну нерівність: ${a}x > ${val}`,
                     diagram: drawRaySVG(res, false, true),
                     correctVal: `x > ${res}`,
                     wrongs: [`x < ${res}`, `x > ${res * 2}`, `x < ${res - 1}`],
-                    explanation: `Поділимо обидві частини на ${a} > 0. Знак нерівності зберігається: x > ${val} / ${a} ⇒ x > ${res}.`
+                    explanation: `Поділимо обидві частини на додатне число ${a}. Знак нерівності не змінюється: x > ${val} / ${a} ⇒ x > ${res}.`
                 };
             },
             () => {
-                const a = -(2 + Math.floor(Math.random() * 6));
-                const res = Math.floor(Math.random() * 10) - 4;
+                const a = -(2 + Math.floor(Math.random() * 5));
+                const res = Math.floor(Math.random() * 8) - 3;
                 const b = a * res;
                 return {
-                    text: `Розв'яжіть нерівність: ${a}x ≤ ${b}`,
+                    text: `Розв'яжіть лінійну нерівність: ${a}x ≤ ${b}`,
                     diagram: drawRaySVG(res, true, true),
                     correctVal: `x ≥ ${res}`,
                     wrongs: [`x ≤ ${res}`, `x ≥ ${-res}`, `x ≤ ${-res}`],
-                    explanation: `При діленні на від'ємне число ${a} знак нерівності змінюється на протилежний: x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
+                    explanation: `При діленні обох частин на від'ємне число ${a} знак нерівності змінюється на протилежний: x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
                 };
             },
             () => {
-                const num = Math.floor(Math.random() * 20) - 10;
+                const num = Math.floor(Math.random() * 16) - 8;
                 return {
                     text: `Запишіть розв'язок нерівності x > ${num} у вигляді числового проміжку.`,
                     diagram: drawRaySVG(num, false, true),
@@ -669,7 +684,7 @@
                 };
             },
             () => {
-                const num = Math.floor(Math.random() * 20) - 10;
+                const num = Math.floor(Math.random() * 16) - 8;
                 return {
                     text: `Множиною розв'язків якої нерівності є проміжок (-∞; ${num}]?`,
                     diagram: drawRaySVG(num, true, false),
@@ -679,66 +694,66 @@
                 };
             },
             () => {
-                const val = Math.floor(Math.random() * 14) - 5;
+                const val = Math.floor(Math.random() * 10) - 4;
                 const correctInt = val + 1;
                 return {
                     text: `Вкажіть найменше ціле число, що є розв'язком нерівності x > ${val}.`,
                     diagram: drawRaySVG(val, false, true),
                     correctVal: `${correctInt}`,
                     wrongs: [`${val}`, `${val - 1}`, `${correctInt + 1}`],
-                    explanation: `Число ${val} не входить у розв'язок, тому найменшим цілим числом, більшим за ${val}, є ${correctInt}.`
+                    explanation: `Число ${val} не входить у розв'язок (строга нерівність), тому найменшим цілим числом є ${correctInt}.`
                 };
             },
             () => {
-                const a = Math.floor(Math.random() * 5) - 3;
-                const b = a + Math.floor(Math.random() * 6) + 2;
+                const a = Math.floor(Math.random() * 4) - 2;
+                const b = a + Math.floor(Math.random() * 5) + 2;
                 return {
                     text: `Знайдіть переріз проміжків (${a}; +∞) і (-∞; ${b}]`,
                     diagram: drawIntervalSVG(a, b, false, true),
                     correctVal: `(${a}; ${b}]`,
                     wrongs: [`[${a}; ${b})`, `(${a}; ${b})`, `[-∞; ${b}]`],
-                    explanation: `Переріз — це спільна частина: елементи одночасно більші за ${a} та не більші за ${b}, тобто x ∈ (${a}; ${b}].`
+                    explanation: `Переріз — це спільна частина проміжків: елементи одночасно більші за ${a} та не більші за ${b}, тобто x ∈ (${a}; ${b}].`
                 };
             },
             () => {
-                const k = 2 + Math.floor(Math.random() * 4);
-                const bVal = (Math.floor(Math.random() * 6) + 1) * k;
+                const k = 2 + Math.floor(Math.random() * 3);
+                const bVal = (Math.floor(Math.random() * 5) + 1) * k;
                 const res = -bVal / k;
                 return {
                     text: `Знайдіть область визначення функції y = √(${k}x + ${bVal})`,
                     diagram: drawRaySVG(res, true, true),
                     correctVal: `[${res}; +∞)`,
                     wrongs: [`(${res}; +∞)`, `(-∞; ${res}]`, `[${-res}; +∞)`],
-                    explanation: `Підкореневий вираз має бути невід'ємним: ${k}x + ${bVal} ≥ 0 ⇒ x ≥ ${res}. Область визначення: [${res}; +∞).`
+                    explanation: `Підкореневий вираз має бути невід'ємним: ${k}x + ${bVal} ≥ 0 ⇒ x ≥ ${res}. Отже, область визначення: [${res}; +∞).`
                 };
             },
             () => {
-                const root = 2 + Math.floor(Math.random() * 7);
+                const root = 2 + Math.floor(Math.random() * 6);
                 const sq = root * root;
                 return {
                     text: `Розв'яжіть квадратну нерівність: x² < ${sq}`,
                     diagram: drawIntervalSVG(-root, root, false, false),
                     correctVal: `(-${root}; ${root})`,
                     wrongs: [`(-∞; ${root})`, `[-${root}; ${root}]`, `(${root}; +∞)`],
-                    explanation: `(x - ${root})(x + ${root}) < 0. За методом інтервалів отримуємо проміжок (-${root}; ${root}).`
+                    explanation: `Нерівність x² < ${sq} означає, що значення x лежать між -${root} та ${root}. Отримуємо відкритий інтервал (-${root}; ${root}).`
                 };
             },
             () => {
-                const a = 2 + Math.floor(Math.random() * 8);
+                const a = 2 + Math.floor(Math.random() * 7);
                 return {
-                    text: `Знайдіть множину розв'язків нерівності |x| ≤ ${a}`,
+                    text: `Знайдіть множину розв'язків нерівності з модулем: |x| ≤ ${a}`,
                     diagram: drawIntervalSVG(-a, a, true, true),
                     correctVal: `[-${a}; ${a}]`,
                     wrongs: [`(-∞; ${a}]`, `[${a}; +∞)`, `(-${a}; ${a})`],
-                    explanation: `Нерівність |x| ≤ a еквівалентна подвійній нерівності -a ≤ x ≤ a, тобто відрізку [-${a}; ${a}].`
+                    explanation: `Нерівність |x| ≤ ${a} рівносильна подвійній нерівності -${a} ≤ x ≤ ${a}, що дає відрізок [-${a}; ${a}].`
                 };
             }
         ];
 
-        // --- ГЕНЕРАТОРИ ДЛЯ ГЕОМЕТРІЇ (ТЕМА: ПОВТОРЕННЯ) ---
+        // --- ГЕНЕРАТОРИ ДЛЯ ГЕОМЕТРІЇ (8-9 КЛАС НУШ: ПОВТОРЕННЯ) ---
         const geometryGenerators = [
             () => {
-                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15]];
+                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
                 const triple = pyth[Math.floor(Math.random() * pyth.length)];
                 return {
                     text: `У прямокутному трикутнику катети дорівнюють ${triple[0]} см і ${triple[1]} см. Знайдіть гіпотенузу.`,
@@ -749,30 +764,30 @@
                 };
             },
             () => {
-                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
+                const pyth = [[3,4,5], [6,8,10], [5,12,13]];
                 const triple = pyth[Math.floor(Math.random() * pyth.length)];
                 return {
                     text: `Знайдіть катет прямокутного трикутника, якщо його гіпотенуза дорівнює ${triple[2]} см, а інший катет — ${triple[1]} см.`,
                     diagram: drawRightTriangleSVG('?', triple[1], triple[2]),
                     correctVal: `${triple[0]} см`,
-                    wrongs: [`${triple[0] + 3} см`, `${triple[0] + 1} см`, `${triple[2] - triple[1]} см`],
+                    wrongs: [`${triple[0] + 2} см`, `${triple[0] + 1} см`, `${triple[2] - triple[1]} см`],
                     explanation: `За теоремою Піфагора: a = √(c² - b²) = √(${triple[2]}² - ${triple[1]}²) = ${triple[0]} см.`
                 };
             },
             () => {
-                const pyth = [[3,4,5], [6,8,10], [5,12,13]];
-                const triple = pyth[Math.floor(Math.random() * pyth.length)];
-                const area = (triple[0] * triple[1]) / 2;
+                const a = Math.floor(Math.random() * 6) + 4;
+                const h = Math.floor(Math.random() * 5) + 3;
+                const area = a * h;
                 return {
-                    text: `Обчисліть площу прямокутного трикутника з катетами ${triple[0]} см та ${triple[1]} см.`,
-                    diagram: drawRightTriangleSVG(triple[0], triple[1], triple[2]),
+                    text: `Знайдіть площу паралелограма, сторона якого дорівнює ${a} см, а проведена до неї висота — ${h} см.`,
+                    diagram: drawParallelogramSVG(a, h),
                     correctVal: `${area} см²`,
-                    wrongs: [`${area * 2} см²`, `${area + 5} см²`, `${area - 3} см²`],
-                    explanation: `Площа прямокутного трикутника дорівнює півдобутку його катетів: S = (a · b) / 2 = (${triple[0]} · ${triple[1]}) / 2 = ${area} см².`
+                    wrongs: [`${area / 2} см²`, `${area + 4} см²`, `${(a + h) * 2} см²`],
+                    explanation: `Площа паралелограма обчислюється за формулою S = a · h = ${a} · ${h} = ${area} см².`
                 };
             },
             () => {
-                const r = Math.floor(Math.random() * 8) + 2;
+                const r = Math.floor(Math.random() * 7) + 2;
                 const c = 2 * r;
                 return {
                     text: `Знайдіть довжину кола, радіус якого дорівнює ${r} см.`,
@@ -783,7 +798,7 @@
                 };
             },
             () => {
-                const r = Math.floor(Math.random() * 7) + 2;
+                const r = Math.floor(Math.random() * 6) + 2;
                 const s = r * r;
                 return {
                     text: `Знайдіть площу круга, радіус якого дорівнює ${r} см.`,
@@ -794,8 +809,8 @@
                 };
             },
             () => {
-                const x = Math.floor(Math.random() * 8) + 1;
-                const y = Math.floor(Math.random() * 8) + 1;
+                const x = Math.floor(Math.random() * 6) + 1;
+                const y = Math.floor(Math.random() * 6) + 1;
                 const lenSq = x * x + y * y;
                 const len = Math.sqrt(lenSq);
                 const isInt = Number.isInteger(len);
@@ -810,10 +825,10 @@
                 };
             },
             () => {
-                const x1 = Math.floor(Math.random() * 5) + 1;
-                const y1 = Math.floor(Math.random() * 5) + 1;
-                const x2 = Math.floor(Math.random() * 5) + 1;
-                const y2 = Math.floor(Math.random() * 5) + 1;
+                const x1 = Math.floor(Math.random() * 4) + 1;
+                const y1 = Math.floor(Math.random() * 4) + 1;
+                const x2 = Math.floor(Math.random() * 4) + 1;
+                const y2 = Math.floor(Math.random() * 4) + 1;
                 const scalar = x1 * x2 + y1 * y2;
 
                 return {
@@ -821,7 +836,7 @@
                     diagram: '',
                     correctVal: `${scalar}`,
                     wrongs: [`${scalar + 3}`, `${x1 * y1 + x2 * y2}`, `${(x1 + x2) * (y1 + y2)}`],
-                    explanation: `Скалярний добуток векторів обчислюється як сума добутків їхніх відповідних координат: ā · b̄ = x1·x2 + y1·y2 = ${x1}·${x2} + ${y1}·${y2} = ${scalar}.`
+                    explanation: `Скалярний добуток векторів дорівнює сумі добутків відповідних координат: ā · b̄ = x1·x2 + y1·y2 = ${x1}·${x2} + ${y1}·${y2} = ${scalar}.`
                 };
             },
             () => {
@@ -835,15 +850,15 @@
                 const item = angles[Math.floor(Math.random() * angles.length)];
 
                 return {
-                    text: `Чому дорівнює значення виразу ${item.name}?`,
+                    text: `Чому дорівнює значення тригонометричного виразу ${item.name}?`,
                     diagram: '',
                     correctVal: item.val,
                     wrongs: ['0', '0.866', '2'],
-                    explanation: `За таблицею тригонометричних функцій стандартних кутів значення ${item.name} дорівнює ${item.val}.`
+                    explanation: `За таблицею значень тригонометричних функцій стандартних кутів ${item.name} = ${item.val}.`
                 };
             },
             () => {
-                const n = Math.floor(Math.random() * 5) + 5; // 5, 6, 7, 8, 9
+                const n = Math.floor(Math.random() * 5) + 5; // 5-кутник, 6-кутник, і т.д.
                 const sum = (n - 2) * 180;
                 return {
                     text: `Знайдіть суму кутів опуклого ${n}-кутника.`,
