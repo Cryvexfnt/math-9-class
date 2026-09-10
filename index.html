@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        /* --- ФОН С СТИКЕРАМИ --- */
+        /* --- ФОН С СТИКЕРАМИ ГЕОМЕТРИИ --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -112,7 +112,6 @@
             text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff, 0 0 40px #00f3ff;
         }
 
-        /* Кнопки выбора предмета */
         .buttons-wrapper {
             display: flex;
             justify-content: center;
@@ -142,12 +141,11 @@
         }
 
         .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
-        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
+        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); opacity: 0.7; }
 
         .btn-geometry:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
-        .btn-algebra:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
+        .btn-algebra:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); opacity: 1; }
 
-        /* Кнопки количества заданий */
         .count-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -245,7 +243,6 @@
             box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
         }
 
-        /* Состояния ответов */
         .btn-option.correct {
             border-color: #00ff66 !important;
             background: rgba(0, 255, 102, 0.25) !important;
@@ -260,7 +257,6 @@
             color: #ffffff !important;
         }
 
-        /* Блок объяснения */
         .explanation-box {
             display: none;
             background: rgba(255, 0, 85, 0.1);
@@ -287,11 +283,11 @@
             letter-spacing: 1px;
         }
 
-        /* Кнопка "Далі" в левом нижнем углу экрана */
+        /* КНОПКА "ДАЛІ" СПРАВА СНИЗУ */
         .btn-next-fixed {
             position: fixed;
             bottom: 25px;
-            left: 25px;
+            right: 25px; /* Перенесена в правый угол */
             z-index: 100;
             background: rgba(15, 8, 35, 0.95);
             border: 2.5px solid #00f3ff;
@@ -315,7 +311,7 @@
             background: rgba(0, 243, 255, 0.25);
         }
 
-        /* --- ЭКРАН РЕЗУЛЬТАТОВ --- */
+        /* --- ЭКРАН ФИНИША --- */
         .results-list {
             width: 100%;
             max-height: 60vh;
@@ -372,17 +368,44 @@
             background: rgba(191, 0, 255, 0.4);
         }
 
+        /* Всплывающее уведомление */
+        .toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(20, 10, 40, 0.95);
+            border: 2px solid #ff007f;
+            box-shadow: 0 0 20px #ff007f;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         @media (max-width: 650px) {
             .title { font-size: 2.1rem; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
-            .btn-next-fixed { bottom: 15px; left: 15px; padding: 12px 20px; font-size: 1rem; }
+            .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Динамический неоновый фон -->
+    <!-- Уведомление -->
+    <div class="toast" id="toast">Розділ "Алгебра" знаходиться в розробці!</div>
+
+    <!-- Неоновый фон -->
     <div class="background-objects" id="bg-container"></div>
 
     <!-- 1. ЭКРАН ВЫБОРА ПРЕДМЕТА -->
@@ -440,7 +463,7 @@
         </div>
     </div>
 
-    <!-- Кнопка "Далі" (Фиксированная слева внизу) -->
+    <!-- Кнопка "Далі" справа внизу -->
     <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="nextQuestion()">
         <span>Далі</span>
         <span>➔</span>
@@ -454,11 +477,9 @@
     </div>
 
     <script>
-        // --- БАЗОВЫЕ НАБОРЫ СТИКЕРОВ ---
         const defaultIcons = ['ruler', 'pencil', 'eraser', 'book-open', 'calculator', 'backpack', 'scissors'];
         const geometryIcons = ['triangle', 'square', 'circle', 'ruler', 'pencil', 'scissors', 'grid'];
 
-        // Отрисовка фоновых предметов без компаса
         function renderBackground(iconsList) {
             const bgContainer = document.getElementById('bg-container');
             bgContainer.innerHTML = '';
@@ -490,19 +511,26 @@
 
         renderBackground(defaultIcons);
 
-        // --- СОСТОЯНИЕ ПРИЛОЖЕНИЯ ---
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
         let currentSubject = '';
         let totalQuestionsCount = 10;
         let currentQuestionIndex = 0;
         let questionsData = [];
-        let userAnswers = []; // Массив ответов пользователя
+        let userAnswers = [];
 
-        // Выбор предмета
         function selectSubject(subject) {
-            currentSubject = subject;
-            if (subject === 'geometry') {
-                renderBackground(geometryIcons); // Менять на геометрию без компаса
+            if (subject === 'algebra') {
+                showToast('Розділ "Алгебра" знаходиться в розробці!');
+                return;
             }
+            currentSubject = subject;
+            renderBackground(geometryIcons);
             showScreen('screen-count');
         }
 
@@ -518,7 +546,6 @@
             }
         }
 
-        // СВЯЗАННЫЕ СХЕМЫ (SVG) ДЛЯ ГЕОМЕТРИИ
         const SVGS = {
             rightTriangle: `<svg width="150" height="110" viewBox="0 0 150 110"><path d="M 25 90 L 125 90 L 25 20 Z" fill="none" stroke="#00f3ff" stroke-width="3"/><path d="M 25 80 L 35 80 L 35 90" fill="none" stroke="#00f3ff" stroke-width="2"/><text x="10" y="60" fill="#bf00ff" font-weight="bold">a</text><text x="70" y="105" fill="#bf00ff" font-weight="bold">b</text><text x="85" y="50" fill="#ff007f" font-weight="bold">c</text></svg>`,
             trapezoid: `<svg width="160" height="100" viewBox="0 0 160 100"><polygon points="35,20 125,20 150,80 10,80" fill="none" stroke="#ff007f" stroke-width="3"/><line x1="22.5" y1="50" x2="137.5" y2="50" stroke="#00f3ff" stroke-width="2" stroke-dasharray="4,4"/><text x="75" y="15" fill="#00f3ff">a</text><text x="75" y="96" fill="#00f3ff">b</text><text x="80" y="45" fill="#bf00ff">m</text></svg>`,
@@ -526,123 +553,179 @@
             parallelogram: `<svg width="160" height="90" viewBox="0 0 160 90"><polygon points="35,15 145,15 125,75 15,75" fill="none" stroke="#bf00ff" stroke-width="3"/><line x1="35" y1="15" x2="35" y2="75" stroke="#00f3ff" stroke-width="2" stroke-dasharray="4,4"/><text x="70" y="87" fill="#00f3ff">a</text><text x="40" y="50" fill="#ff007f">h</text></svg>`
         };
 
-        // ГЕНЕРАТОР ВОПРОСОВ ПО ГЕОМЕТРИИ (8 КЛАСС ИСТЕР НУШ)
-        function generateGeometryQuestions(count) {
-            const templates = [
-                // 1. Теорема Пифагора
-                (i) => {
-                    const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20]][i % 6];
-                    const a = pyth[0], b = pyth[1], c = pyth[2];
-                    return {
-                        text: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу.`,
-                        diagram: SVGS.rightTriangle,
-                        options: [`${c} см`, `${c + 2} см`, `${c - 1} см`, `${a + b} см`],
-                        correct: 0,
-                        explanation: `За теоремою Піфагора для прямокутного трикутника: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, гіпотенуза дорівнює √${c*c} = ${c} см.`
-                    };
-                },
-                // 2. Средняя линия трапеции
-                (i) => {
-                    const a = 6 + (i % 5) * 2;
-                    const b = 14 + (i % 4) * 2;
-                    const m = (a + b) / 2;
-                    return {
-                        text: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть довжину її середньої лінії (m).`,
-                        diagram: SVGS.trapezoid,
-                        options: [`${m} см`, `${m + 2} см`, `${a + b} см`, `${m - 1.5} см`],
-                        correct: 0,
-                        explanation: `Середня лінія трапеції дорівнює півсумі її основ: m = (a + b) / 2 = (${a} + ${b}) / 2 = ${a + b} / 2 = ${m} см.`
-                    };
-                },
-                // 3. Углы параллелограмма
-                (i) => {
-                    const acute = 40 + (i % 6) * 10;
-                    const obtuse = 180 - acute;
-                    return {
-                        text: `Один із кутів паралелограма дорівнює ${acute}°. Знайдіть градусну міру тупого кута цього паралелограма.`,
-                        diagram: SVGS.parallelogram,
-                        options: [`${obtuse}°`, `${acute}°`, `${180 - acute + 10}°`, `${90}°`],
-                        correct: 0,
-                        explanation: `Сума сусідніх кутів паралелограма дорівнює 180°. Звідси тупий кут = 180° - ${acute}° = ${obtuse}°.`
-                    };
-                },
-                // 4. Вписанный угол
-                (i) => {
-                    const central = 60 + (i % 5) * 20;
-                    const inscribed = central / 2;
-                    return {
-                        text: `Центральний кут кола дорівнює ${central}°. Знайдіть вписаний кут, що спирається на ту саму дугу.`,
-                        diagram: SVGS.circleAngle,
-                        options: [`${inscribed}°`, `${central}°`, `${central * 2}°`, `${inscribed + 10}°`],
-                        correct: 0,
-                        explanation: `Вписаний кут дорівнює половині центрального кута, який спирається на ту саму дугу: Вписаний = ${central}° / 2 = ${inscribed}°.`
-                    };
-                },
-                // 5. Площадь треугольника
-                (i) => {
-                    const base = 8 + (i % 4) * 2;
-                    const height = 5 + (i % 3) * 2;
-                    const area = (base * height) / 2;
-                    return {
-                        text: `Знайдіть площу трикутника, сторона якого дорівнює ${base} см, а висота, проведена до неї — ${height} см.`,
-                        diagram: '',
-                        options: [`${area} см²`, `${base * height} см²`, `${area + 4} см²`, `${area - 2} см²`],
-                        correct: 0,
-                        explanation: `Площа трикутника обчислюється за формулою: S = ½ · a · h = ½ · ${base} · ${height} = ${area} см².`
-                    };
-                },
-                // 6. Подобие треугольников
-                (i) => {
-                    const k = 2 + (i % 3);
-                    const k2 = k * k;
-                    return {
-                        text: `Сторони двох подібних трикутників відносяться як 1 : ${k}. Як відносяться їхні площі?`,
-                        diagram: '',
-                        options: [`1 : ${k2}`, `1 : ${k}`, `1 : ${k * 2}`, `1 : ${k2 + 1}`],
-                        correct: 0,
-                        explanation: `Відношення площ двох подібних трикутників дорівнює квадрату коефіцієнта подібності (k²). Оскільки k = ${k}, площі відносяться як 1 : ${k}² = 1 : ${k2}.`
-                    };
-                }
-            ];
-
-            let questions = [];
-            for (let i = 0; i < count; i++) {
-                const q = templates[i % templates.length](i);
-                // Перемешивание вариантов ответа
-                let opts = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
-                const correctText = opts[q.correct].text;
-                opts.sort(() => Math.random() - 0.5);
-                const newCorrect = opts.findIndex(o => o.text === correctText);
-
-                questions.push({
-                    text: q.text,
-                    diagram: q.diagram,
-                    options: opts.map(o => o.text),
-                    correct: newCorrect,
-                    explanation: q.explanation
-                });
+        // --- ПРОЦЕДУРНЫЙ ДИНАМИЧЕСКИЙ ГЕНЕРАТОР УНИКАЛЬНЫХ ВОПРОСОВ ---
+        const questionGenerators = [
+            // 1. Гипотенуза
+            () => {
+                const triples = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20], [7,24,25]];
+                const t = triples[Math.floor(Math.random() * triples.length)];
+                const a = t[0], b = t[1], c = t[2];
+                return {
+                    text: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу.`,
+                    diagram: SVGS.rightTriangle,
+                    correctVal: `${c} см`,
+                    wrongs: [`${c + 2} см`, `${c - 1} см`, `${a + b} см`, `${c + 3} см`],
+                    explanation: `За теоремою Піфагора: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, гіпотенуза дорівнює √${c*c} = ${c} см.`
+                };
+            },
+            // 2. Неизвестный катет
+            () => {
+                const triples = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20]];
+                const t = triples[Math.floor(Math.random() * triples.length)];
+                const a = t[0], b = t[1], c = t[2];
+                return {
+                    text: `Гіпотенуза прямокутного трикутника дорівнює ${c} см, а один із катетів — ${a} см. Знайдіть другий катет.`,
+                    diagram: SVGS.rightTriangle,
+                    correctVal: `${b} см`,
+                    wrongs: [`${b + 1} см`, `${b - 2} см`, `${c - a} см`, `${b + 3} см`],
+                    explanation: `За теоремою Піфагора: b² = c² - a² = ${c}² - ${a}² = ${c*c} - ${a*a} = ${b*b}. Отже, другий катет дорівнює √${b*b} = ${b} см.`
+                };
+            },
+            // 3. Средняя линия трапеции
+            () => {
+                const a = 4 + Math.floor(Math.random() * 8) * 2;
+                const b = a + 4 + Math.floor(Math.random() * 6) * 2;
+                const m = (a + b) / 2;
+                return {
+                    text: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть її середню лінію.`,
+                    diagram: SVGS.trapezoid,
+                    correctVal: `${m} см`,
+                    wrongs: [`${m + 2} см`, `${a + b} см`, `${m - 1} см`, `${m + 3} см`],
+                    explanation: `Середня лінія трапеції дорівнює півсумі основ: m = (a + b) / 2 = (${a} + ${b}) / 2 = ${m} см.`
+                };
+            },
+            // 4. Углы параллелограмма
+            () => {
+                const acute = 30 + Math.floor(Math.random() * 6) * 10;
+                const obtuse = 180 - acute;
+                return {
+                    text: `Один із кутів паралелограма дорівнює ${acute}°. Знайдіть тупий кут цього паралелограма.`,
+                    diagram: SVGS.parallelogram,
+                    correctVal: `${obtuse}°`,
+                    wrongs: [`${acute}°`, `${180 - acute + 10}°`, `90°`, `${obtuse - 15}°`],
+                    explanation: `Сума сусідніх кутів паралелограма дорівнює 180°. Звідси тупий кут = 180° - ${acute}° = ${obtuse}°.`
+                };
+            },
+            // 5. Вписанный и центральный угол
+            () => {
+                const inscribed = 25 + Math.floor(Math.random() * 10) * 5;
+                const central = inscribed * 2;
+                return {
+                    text: `Вписаний кут кола дорівнює ${inscribed}°. Знайдіть центральний кут, що спирається на ту саму дугу.`,
+                    diagram: SVGS.circleAngle,
+                    correctVal: `${central}°`,
+                    wrongs: [`${inscribed}°`, `${inscribed / 2}°`, `${central + 10}°`, `${central - 15}°`],
+                    explanation: `Центральний кут у два рази більший за вписаний, що спирається на ту саму дугу: Центральний = 2 · ${inscribed}° = ${central}°.`
+                };
+            },
+            // 6. Площадь треугольника
+            () => {
+                const b = 6 + Math.floor(Math.random() * 8) * 2;
+                const h = 3 + Math.floor(Math.random() * 6);
+                const S = (b * h) / 2;
+                return {
+                    text: `Знайдіть площу трикутника зі стороною ${b} см і висотою ${h} см, проведеною до неї.`,
+                    diagram: '',
+                    correctVal: `${S} см²`,
+                    wrongs: [`${b * h} см²`, `${S + 3} см²`, `${S - 2} см²`, `${S + 5} см²`],
+                    explanation: `Площа трикутника: S = ½ · a · h = ½ · ${b} · ${h} = ${S} см².`
+                };
+            },
+            // 7. Площадь ромба через диагонали
+            () => {
+                const d1 = 6 + Math.floor(Math.random() * 5) * 2;
+                const d2 = 8 + Math.floor(Math.random() * 5) * 2;
+                const S = (d1 * d2) / 2;
+                return {
+                    text: `Діагоналі ромба дорівнюють ${d1} см і ${d2} см. Знайдіть його площу.`,
+                    diagram: '',
+                    correctVal: `${S} см²`,
+                    wrongs: [`${d1 * d2} см²`, `${S + 4} см²`, `${(d1 + d2)} см²`, `${S - 3} см²`],
+                    explanation: `Площа ромба дорівнює півдобутку його діагоналей: S = ½ · d₁ · d₂ = ½ · ${d1} · ${d2} = ${S} см².`
+                };
+            },
+            // 8. Подобие площадей
+            () => {
+                const k = 2 + Math.floor(Math.random() * 3);
+                const k2 = k * k;
+                return {
+                    text: `Коефіцієнт подібності двох трикутників дорівнює k = ${k}. Як відносяться їхні площі?`,
+                    diagram: '',
+                    correctVal: `1 : ${k2}`,
+                    wrongs: [`1 : ${k}`, `1 : ${k * 2}`, `1 : ${k2 + 2}`, `1 : ${k + 3}`],
+                    explanation: `Відношення площ подібних фігур дорівнює квадрату коефіцієнта подібності: S₁ / S₂ = k² = ${k}² = ${k2}.`
+                };
+            },
+            // 9. Периметр квадрата по площади
+            () => {
+                const a = 3 + Math.floor(Math.random() * 8);
+                const S = a * a;
+                const P = 4 * a;
+                return {
+                    text: `Площа квадрата дорівнює ${S} см². Знайдіть його периметр.`,
+                    diagram: '',
+                    correctVal: `${P} см`,
+                    wrongs: [`${a} см`, `${S / 2} см`, `${P + 4} см`, `${P - 2} см`],
+                    explanation: `Сторона квадрата a = √S = √${S} = ${a} см. Периметр P = 4 · a = 4 · ${a} = ${P} см.`
+                };
+            },
+            // 10. Средняя линия треугольника
+            () => {
+                const side = 10 + Math.floor(Math.random() * 8) * 2;
+                const mid = side / 2;
+                return {
+                    text: `Сторона трикутника дорівнює ${side} см. Знайдіть довжину середньої лінії, яка паралельна цій стороні.`,
+                    diagram: '',
+                    correctVal: `${mid} см`,
+                    wrongs: [`${side} см`, `${mid + 2} см`, `${mid - 1} см`, `${mid * 2} см`],
+                    explanation: `Середня лінія трикутника паралельна одній з його сторін і дорівнює її половині: m = ${side} / 2 = ${mid} см.`
+                };
             }
-            return questions;
+        ];
+
+        function generateUniqueQuestions(count) {
+            let list = [];
+            let usedTexts = new Set();
+
+            while (list.length < count) {
+                const gen = questionGenerators[Math.floor(Math.random() * questionGenerators.length)];
+                const qRaw = gen();
+
+                if (!usedTexts.has(qRaw.text)) {
+                    usedTexts.add(qRaw.text);
+
+                    // Сборка вариантов ответа
+                    let allOptions = [qRaw.correctVal, ...qRaw.wrongs.slice(0, 3)];
+                    allOptions.sort(() => Math.random() - 0.5);
+                    const correctIdx = allOptions.indexOf(qRaw.correctVal);
+
+                    list.push({
+                        text: qRaw.text,
+                        diagram: qRaw.diagram,
+                        options: allOptions,
+                        correct: correctIdx,
+                        explanation: qRaw.explanation
+                    });
+                }
+            }
+            return list;
         }
 
-        // Запуск теста
         function startTest(count) {
             totalQuestionsCount = count;
             currentQuestionIndex = 0;
             userAnswers = new Array(count).fill(null);
-            questionsData = generateGeometryQuestions(count);
+            questionsData = generateUniqueQuestions(count);
 
             showScreen('screen-quiz');
             loadQuestion(0);
         }
 
-        // Загрузка вопроса
         function loadQuestion(index) {
             const q = questionsData[index];
             document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
             document.getElementById('question-text').innerText = q.text;
 
-            // Схема
             const diagContainer = document.getElementById('diagram-container');
             if (q.diagram) {
                 diagContainer.style.display = 'flex';
@@ -651,7 +734,6 @@
                 diagContainer.style.display = 'none';
             }
 
-            // Варианты ответов
             const optionsGrid = document.getElementById('options-grid');
             optionsGrid.innerHTML = '';
 
@@ -665,7 +747,6 @@
                 btn.className = 'btn-option';
                 btn.innerText = optText;
 
-                // Если вопрос уже был отвечен ранее
                 if (savedAnswer !== null) {
                     btn.disabled = true;
                     if (optIdx === q.correct) {
@@ -687,7 +768,6 @@
             }
         }
 
-        // Обработка ответа
         function handleAnswer(selectedIndex) {
             userAnswers[currentQuestionIndex] = selectedIndex;
             const q = questionsData[currentQuestionIndex];
@@ -702,13 +782,11 @@
                 buttons[selectedIndex].classList.add('incorrect');
                 buttons[q.correct].classList.add('correct');
 
-                // Показать объяснение
                 document.getElementById('explanation-text').innerText = q.explanation;
                 document.getElementById('explanation-box').classList.add('active');
             }
         }
 
-        // Кнопка "Далі"
         function nextQuestion() {
             if (currentQuestionIndex < totalQuestionsCount - 1) {
                 currentQuestionIndex++;
@@ -718,7 +796,6 @@
             }
         }
 
-        // Финиш теста
         function finishTest() {
             showScreen('screen-results');
             const resultsList = document.getElementById('results-list');
@@ -746,7 +823,7 @@
                     ${badgeHTML}
                     <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">№${idx + 1}. ${q.text}</div>
                     <div style="font-size: 0.95rem; margin-bottom: 6px;">
-                        Ваш відповідь: <strong style="color: ${ans === q.correct ? '#00ff66' : '#ff0055'}">${ans !== null ? q.options[ans] : 'Не вибрано'}</strong>
+                        Ваша відповідь: <strong style="color: ${ans === q.correct ? '#00ff66' : '#ff0055'}">${ans !== null ? q.options[ans] : 'Не вибрано'}</strong>
                     </div>
                     <div style="font-size: 0.95rem; margin-bottom: 10px;">
                         Правильна відповідь: <strong style="color: #00ff66">${q.options[q.correct]}</strong>
@@ -759,7 +836,6 @@
             });
         }
 
-        // Возврат на главное меню
         function resetToHome() {
             renderBackground(defaultIcons);
             showScreen('screen-subject');
