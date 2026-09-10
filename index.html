@@ -6,7 +6,7 @@
     <title>Математика 9 Клас</title>
     <!-- Шрифт Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
-    <!-- Иконки Lucide для идеального неонового контура -->
+    <!-- Иконки Lucide для неоновых предметов -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
@@ -23,12 +23,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
             color: #ffffff;
         }
 
-        /* --- СЕТКА НАСТОЯЩЕЙ НЕОНОВОЙ КАНЦЕЛЯРИИ НА ВЕСЬ ЭКРАН --- */
+        /* --- СЕТКА НЕОНОВОЙ КАНЦЕЛЯРИИ НА ВЕСЬ ЭКРАН --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -53,7 +53,7 @@
             justify-content: center;
         }
 
-        /* Стиль неоновых трубок (белый центр + яркий неон вокруг) */
+        /* Неоновые светящиеся контуры */
         .neon-icon {
             width: 45px;
             height: 45px;
@@ -79,7 +79,6 @@
             filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
         }
 
-        /* Анимация хаотичного плавания */
         .d-1 { animation-duration: 5s; animation-delay: 0s; }
         .d-2 { animation-duration: 7s; animation-delay: 1s; }
         .d-3 { animation-duration: 6s; animation-delay: 2s; }
@@ -90,7 +89,7 @@
             100% { transform: translateY(-18px) rotate(15deg) scale(1.08); }
         }
 
-        /* --- ЦЕНТРАЛЬНЫЙ КОНТЕЙНЕР --- */
+        /* --- ЦЕНТРАЛЬНЫЙ БЛОК МЕНЮ --- */
         .main-container {
             position: relative;
             z-index: 2;
@@ -101,16 +100,15 @@
         }
 
         .title {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 900;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff, 0 0 40px #00f3ff;
         }
 
-        /* --- КНОПКИ ПРЕДМЕТОВ --- */
         .buttons-wrapper {
             display: flex;
             justify-content: center;
@@ -135,6 +133,7 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
+            user-select: none;
         }
 
         .btn-geometry {
@@ -159,7 +158,9 @@
             background: rgba(191, 0, 255, 0.2);
         }
 
-        .btn-subject:active { transform: scale(0.98); }
+        .btn-subject:active {
+            transform: scale(0.98);
+        }
 
         .btn-icon {
             width: 30px;
@@ -167,80 +168,15 @@
             stroke-width: 2.5px;
         }
 
-        /* --- СПИСОК ТЕМ --- */
-        .topics-screen {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out forwards;
+        .math-symbol {
+            font-family: serif;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 1.8rem;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn-back {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #ff007f;
-            color: #fff;
-            padding: 10px 22px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 25px;
-            transition: 0.3s;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
-        }
-
-        .btn-back:hover {
-            background: #ff007f;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.8);
-        }
-
-        .topics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .topic-card {
-            background: rgba(20, 10, 45, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 22px 18px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 100px;
-        }
-
-        .geometry-topic { border-color: rgba(0, 243, 255, 0.5); }
-        .geometry-topic:hover {
-            border-color: #00f3ff;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
-            transform: translateY(-5px);
-            background: rgba(0, 243, 255, 0.15);
-        }
-
-        .algebra-topic { border-color: rgba(191, 0, 255, 0.5); }
-        .algebra-topic:hover {
-            border-color: #bf00ff;
-            box-shadow: 0 0 20px rgba(191, 0, 255, 0.6);
-            transform: translateY(-5px);
-            background: rgba(191, 0, 255, 0.15);
-        }
-
-        .math-symbol { font-family: serif; font-style: italic; font-weight: bold; font-size: 1.8rem; }
 
         @media (max-width: 650px) {
-            .title { font-size: 2rem; }
+            .title { font-size: 2.2rem; }
             .buttons-wrapper { flex-direction: column; }
             .btn-subject { width: 100%; font-size: 1.4rem; }
             .background-objects {
@@ -252,7 +188,7 @@
 </head>
 <body>
 
-    <!-- Фоновая канцелярия (Неоновые контурные вывески) -->
+    <!-- Фоновая неоновая канцелярия -->
     <div class="background-objects">
         <div class="bg-item d-1"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
         <div class="bg-item d-2"><i data-lucide="compass" class="neon-icon neon-purple"></i></div>
@@ -283,76 +219,30 @@
         <div class="bg-item d-4"><i data-lucide="calculator" class="neon-icon neon-pink"></i></div>
     </div>
 
+    <!-- Главное меню -->
     <div class="main-container">
+        <h1 class="title">Оберіть предмет</h1>
+        
+        <div class="buttons-wrapper">
+            <!-- Кнопка Геометрия (нажимается без действий) -->
+            <button class="btn-subject btn-geometry">
+                <i data-lucide="ruler" class="btn-icon"></i>
+                <span>Геометрія</span>
+                <i data-lucide="pencil" class="btn-icon"></i>
+            </button>
 
-        <!-- 1. ЭКРАН ВЫБОРА ПРЕДМЕТА -->
-        <div id="selection-screen">
-            <h1 class="title">Оберіть предмет</h1>
-            <div class="buttons-wrapper">
-                <button class="btn-subject btn-geometry" onclick="openSubject('geometry')">
-                    <i data-lucide="ruler" class="btn-icon"></i>
-                    <span>Геометрія</span>
-                    <i data-lucide="pencil" class="btn-icon"></i>
-                </button>
-
-                <button class="btn-subject btn-algebra" onclick="openSubject('algebra')">
-                    <i data-lucide="pen-tool" class="btn-icon"></i>
-                    <span>Алгебра</span>
-                    <span class="math-symbol">√x</span>
-                </button>
-            </div>
+            <!-- Кнопка Алгебра (нажимается без действий) -->
+            <button class="btn-subject btn-algebra">
+                <i data-lucide="pen-tool" class="btn-icon"></i>
+                <span>Алгебра</span>
+                <span class="math-symbol">√x</span>
+            </button>
         </div>
-
-        <!-- 2. ЭКРАН ГЕОМЕТРИИ -->
-        <div id="geometry-screen" class="topics-screen">
-            <button class="btn-back" onclick="goBack()">⬅ Назад</button>
-            <h1 class="title" style="text-shadow: 0 0 20px #00f3ff;">Геометрія 9 Клас</h1>
-            
-            <div class="topics-grid">
-                <div class="topic-card geometry-topic" onclick="openTopic('Теорема синусів і косинусів')">Теорема синусів і косинусів</div>
-                <div class="topic-card geometry-topic" onclick="openTopic('Вектори на площині')">Вектори на площині</div>
-                <div class="topic-card geometry-topic" onclick="openTopic('Правильні многокутники')">Правильні многокутники</div>
-                <div class="topic-card geometry-topic" onclick="openTopic('Метод координат')">Метод координат</div>
-            </div>
-        </div>
-
-        <!-- 3. ЭКРАН АЛГЕБРЫ -->
-        <div id="algebra-screen" class="topics-screen">
-            <button class="btn-back" onclick="goBack()">⬅ Назад</button>
-            <h1 class="title" style="text-shadow: 0 0 20px #bf00ff;">Алгебра 9 Клас</h1>
-            
-            <div class="topics-grid">
-                <div class="topic-card algebra-topic" onclick="openTopic('Квадратні нерівності')">Квадратні нерівності</div>
-                <div class="topic-card algebra-topic" onclick="openTopic('Числові послідовності')">Прогресії (Арифметична / Геометрична)</div>
-                <div class="topic-card algebra-topic" onclick="openTopic('Квадратична функція')">Квадратична функція</div>
-                <div class="topic-card algebra-topic" onclick="openTopic('Елементи ймовірності')">Теорія ймовірностей</div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Инициализация неоновых иконок Lucide
+        // Инициализация иконок
         lucide.createIcons();
-
-        function openSubject(subject) {
-            document.getElementById('selection-screen').style.display = 'none';
-            if (subject === 'geometry') {
-                document.getElementById('geometry-screen').style.display = 'block';
-            } else if (subject === 'algebra') {
-                document.getElementById('algebra-screen').style.display = 'block';
-            }
-        }
-
-        function goBack() {
-            document.getElementById('geometry-screen').style.display = 'none';
-            document.getElementById('algebra-screen').style.display = 'none';
-            document.getElementById('selection-screen').style.display = 'block';
-        }
-
-        function openTopic(topicName) {
-            alert("Скоро тут буде тема: " + topicName + "!");
-        }
     </script>
 
 </body>
