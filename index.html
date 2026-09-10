@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Математика 9 Клас</title>
+    <title>Математика 9 Клас — Геометрія</title>
     <!-- Шрифт Montserrat -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <!-- Иконки Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -23,12 +23,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
             color: #ffffff;
         }
 
-        /* --- ФОН С ФИКСИРОВАННЫМИ ПОЗИЦИЯМИ (БЕЗ ДЁРГАНИЙ) --- */
+        /* --- ФОН С СТИКЕРАМИ --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -50,7 +50,6 @@
             justify-content: center;
         }
 
-        /* Неоновые иконки */
         .neon-icon {
             width: 44px;
             height: 44px;
@@ -76,47 +75,51 @@
             filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
         }
 
-        /* Разная скорость парения */
         .d-1 { animation-duration: 5.2s; animation-delay: 0s; }
         .d-2 { animation-duration: 6.8s; animation-delay: 1.2s; }
         .d-3 { animation-duration: 5.8s; animation-delay: 2.1s; }
         .d-4 { animation-duration: 7.4s; animation-delay: 0.6s; }
 
         @keyframes float {
-            0% {
-                transform: translate(-50%, -50%) translateY(0px) rotate(var(--rot, 0deg)) scale(1);
-            }
-            100% {
-                transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06);
-            }
+            0% { transform: translate(-50%, -50%) translateY(0px) rotate(var(--rot, 0deg)) scale(1); }
+            100% { transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06); }
         }
 
-        /* --- ЦЕНТРАЛЬНЫЙ БЛОК МЕНЮ --- */
-        .main-container {
+        /* --- ЭКРАНЫ И КОНТЕЙНЕРЫ --- */
+        .screen {
+            display: none;
             position: relative;
             z-index: 2;
-            text-align: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             padding: 20px;
+            text-align: center;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .title {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            margin-bottom: 50px;
+            margin-bottom: 35px;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff, 0 0 40px #00f3ff;
         }
 
+        /* Кнопки выбора предмета */
         .buttons-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 25px;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .btn-subject {
@@ -138,109 +141,629 @@
             user-select: none;
         }
 
-        .btn-geometry {
+        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
+
+        .btn-geometry:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
+        .btn-algebra:hover { transform: scale(1.06); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
+
+        /* Кнопки количества заданий */
+        .count-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .btn-count {
+            background: rgba(20, 10, 45, 0.85);
+            border: 2.5px solid #00f3ff;
+            border-radius: 16px;
+            padding: 15px 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-count:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 0 25px #00f3ff;
+            background: rgba(0, 243, 255, 0.25);
+        }
+
+        /* --- КАРТОЧКА ТЕСТА --- */
+        .quiz-card {
+            background: rgba(18, 9, 38, 0.9);
+            border: 2px solid #bf00ff;
+            box-shadow: 0 0 30px rgba(191, 0, 255, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            backdrop-filter: blur(15px);
+            text-align: left;
+            position: relative;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 800;
+            color: #00f3ff;
+            font-size: 1.1rem;
+        }
+
+        .question-text {
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 15px;
+            border: 1px stroke rgba(255, 255, 255, 0.1);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-option {
+            background: rgba(30, 15, 60, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .btn-option:hover:not(:disabled) {
             border-color: #00f3ff;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(0, 243, 255, 0.2);
+            background: rgba(0, 243, 255, 0.15);
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
         }
 
-        .btn-algebra {
-            border-color: #bf00ff;
-            box-shadow: 0 0 15px rgba(191, 0, 255, 0.4), inset 0 0 15px rgba(191, 0, 255, 0.2);
+        /* Состояния ответов */
+        .btn-option.correct {
+            border-color: #00ff66 !important;
+            background: rgba(0, 255, 102, 0.25) !important;
+            box-shadow: 0 0 20px #00ff66 !important;
+            color: #ffffff !important;
         }
 
-        .btn-geometry:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.9), inset 0 0 20px rgba(0, 243, 255, 0.5);
-            background: rgba(0, 243, 255, 0.2);
+        .btn-option.incorrect {
+            border-color: #ff0055 !important;
+            background: rgba(255, 0, 85, 0.25) !important;
+            box-shadow: 0 0 20px #ff0055 !important;
+            color: #ffffff !important;
         }
 
-        .btn-algebra:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 30px rgba(191, 0, 255, 0.9), inset 0 0 20px rgba(191, 0, 255, 0.5);
+        /* Блок объяснения */
+        .explanation-box {
+            display: none;
+            background: rgba(255, 0, 85, 0.1);
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #ffe6ee;
+        }
+
+        .explanation-box.active {
+            display: block;
+        }
+
+        .explanation-title {
+            font-weight: 800;
+            color: #ff0055;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Кнопка "Далі" в левом нижнем углу экрана */
+        .btn-next-fixed {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 100;
+            background: rgba(15, 8, 35, 0.95);
+            border: 2.5px solid #00f3ff;
+            box-shadow: 0 0 18px rgba(0, 243, 255, 0.5);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+
+        .btn-next-fixed:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 30px #00f3ff;
+            background: rgba(0, 243, 255, 0.25);
+        }
+
+        /* --- ЭКРАН РЕЗУЛЬТАТОВ --- */
+        .results-list {
+            width: 100%;
+            max-height: 60vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-right: 10px;
+            margin-bottom: 25px;
+        }
+
+        .result-item-card {
+            background: rgba(20, 10, 45, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .result-item-card.is-correct { border-color: #00ff66; box-shadow: 0 0 10px rgba(0, 255, 102, 0.2); }
+        .result-item-card.is-incorrect { border-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.2); }
+        .result-item-card.is-skipped { border-color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-correct { background: rgba(0, 255, 102, 0.2); color: #00ff66; border: 1px solid #00ff66; }
+        .badge-incorrect { background: rgba(255, 0, 85, 0.2); color: #ff0055; border: 1px solid #ff0055; }
+        .badge-skipped { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid #ffd700; }
+
+        .btn-restart {
             background: rgba(191, 0, 255, 0.2);
+            border: 2.5px solid #bf00ff;
+            box-shadow: 0 0 20px rgba(191, 0, 255, 0.5);
+            color: #ffffff;
+            padding: 15px 40px;
+            border-radius: 18px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .btn-subject:active {
-            transform: scale(0.98);
-        }
-
-        .btn-icon-normal {
-            font-size: 2rem;
-            line-height: 1;
-            filter: none !important;
-        }
-
-        .math-symbol {
-            font-family: serif;
-            font-style: italic;
-            font-weight: bold;
-            font-size: 1.8rem;
-            filter: none !important;
+        .btn-restart:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 35px #bf00ff;
+            background: rgba(191, 0, 255, 0.4);
         }
 
         @media (max-width: 650px) {
-            .title { font-size: 2.2rem; }
-            .buttons-wrapper { flex-direction: column; }
-            .btn-subject { width: 100%; font-size: 1.4rem; }
+            .title { font-size: 2.1rem; }
+            .count-grid { grid-template-columns: repeat(2, 1fr); }
+            .options-grid { grid-template-columns: 1fr; }
+            .btn-next-fixed { bottom: 15px; left: 15px; padding: 12px 20px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Зафиксированные позиции стикеров по всему экрану без наложений и прыжков -->
-    <div class="background-objects">
-        <!-- Строка 1 -->
-        <div class="bg-item d-1" style="left: 7%; top: 10%; --rot: -25deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-2" style="left: 22%; top: 14%; --rot: 18deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-3" style="left: 38%; top: 8%; --rot: -12deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4" style="left: 54%; top: 12%; --rot: 30deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-1" style="left: 72%; top: 9%; --rot: -15deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2" style="left: 90%; top: 13%; --rot: 22deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
+    <!-- Динамический неоновый фон -->
+    <div class="background-objects" id="bg-container"></div>
 
-        <!-- Строка 2 -->
-        <div class="bg-item d-3" style="left: 12%; top: 32%; --rot: 35deg;"><i data-lucide="scissors" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4" style="left: 28%; top: 35%; --rot: -20deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-1" style="left: 45%; top: 28%; --rot: 15deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2" style="left: 62%; top: 33%; --rot: -30deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-3" style="left: 82%; top: 30%; --rot: 10deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
-
-        <!-- Строка 3 -->
-        <div class="bg-item d-4" style="left: 6%; top: 58%; --rot: -18deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-1" style="left: 20%; top: 62%; --rot: 25deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-2" style="left: 80%; top: 55%; --rot: -22deg;"><i data-lucide="scissors" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-3" style="left: 94%; top: 60%; --rot: 16deg;"><i data-lucide="ruler" class="neon-icon neon-cyan"></i></div>
-
-        <!-- Строка 4 -->
-        <div class="bg-item d-2" style="left: 10%; top: 85%; --rot: 20deg;"><i data-lucide="pencil" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-3" style="left: 26%; top: 88%; --rot: -28deg;"><i data-lucide="eraser" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-4" style="left: 42%; top: 82%; --rot: 14deg;"><i data-lucide="book-open" class="neon-icon neon-cyan"></i></div>
-        <div class="bg-item d-1" style="left: 58%; top: 89%; --rot: -18deg;"><i data-lucide="calculator" class="neon-icon neon-purple"></i></div>
-        <div class="bg-item d-2" style="left: 74%; top: 84%; --rot: 32deg;"><i data-lucide="backpack" class="neon-icon neon-pink"></i></div>
-        <div class="bg-item d-3" style="left: 90%; top: 87%; --rot: -10deg;"><i data-lucide="scissors" class="neon-icon neon-cyan"></i></div>
-    </div>
-
-    <!-- Главное меню -->
-    <div class="main-container">
+    <!-- 1. ЭКРАН ВЫБОРА ПРЕДМЕТА -->
+    <div class="screen active" id="screen-subject">
         <h1 class="title">Оберіть предмет</h1>
-        
         <div class="buttons-wrapper">
-            <button class="btn-subject btn-geometry">
-                <span class="btn-icon-normal">📐</span>
+            <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
+                <span>📐</span>
                 <span>Геометрія</span>
-                <span class="btn-icon-normal">✏️</span>
+                <span>✏️</span>
             </button>
-
-            <button class="btn-subject btn-algebra">
-                <span class="btn-icon-normal">✏️</span>
+            <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
+                <span>✏️</span>
                 <span>Алгебра</span>
-                <span class="math-symbol">√x</span>
+                <span style="font-family: serif; font-style: italic;">√x</span>
             </button>
         </div>
     </div>
 
-    <script>
-        lucide.createIcons();
-    </script>
+    <!-- 2. ЭКРАН ВЫБОРА КОЛИЧЕСТВА ЗАДАНИЙ -->
+    <div class="screen" id="screen-count">
+        <h1 class="title">Оберіть кількість завдань</h1>
+        <div class="count-grid">
+            <button class="btn-count" onclick="startTest(5)">5</button>
+            <button class="btn-count" onclick="startTest(10)">10</button>
+            <button class="btn-count" onclick="startTest(15)">15</button>
+            <button class="btn-count" onclick="startTest(20)">20</button>
+            <button class="btn-count" onclick="startTest(25)">25</button>
+            <button class="btn-count" onclick="startTest(30)">30</button>
+            <button class="btn-count" onclick="startTest(35)">35</button>
+            <button class="btn-count" onclick="startTest(40)">40</button>
+            <button class="btn-count" onclick="startTest(45)">45</button>
+            <button class="btn-count" onclick="startTest(50)">50</button>
+        </div>
+    </div>
 
+    <!-- 3. ЭКРАН ТЕСТИРОВАНИЯ -->
+    <div class="screen" id="screen-quiz">
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <span id="quiz-progress">Завдання 1 з 10</span>
+                <span id="quiz-topic" style="color: #bf00ff;">Повторення 8 клас</span>
+            </div>
+            
+            <div class="question-text" id="question-text">Текст вопроса...</div>
+            
+            <div class="diagram-container" id="diagram-container"></div>
+
+            <div class="options-grid" id="options-grid"></div>
+
+            <div class="explanation-box" id="explanation-box">
+                <div class="explanation-title">Пояснення:</div>
+                <div id="explanation-text">...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Далі" (Фиксированная слева внизу) -->
+    <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="nextQuestion()">
+        <span>Далі</span>
+        <span>➔</span>
+    </button>
+
+    <!-- 4. ЭКРАН ФИНИША -->
+    <div class="screen" id="screen-results">
+        <h1 class="title">Тест пройдено!</h1>
+        <div class="results-list" id="results-list"></div>
+        <button class="btn-restart" onclick="resetToHome()">На головну</button>
+    </div>
+
+    <script>
+        // --- БАЗОВЫЕ НАБОРЫ СТИКЕРОВ ---
+        const defaultIcons = ['ruler', 'pencil', 'eraser', 'book-open', 'calculator', 'backpack', 'scissors'];
+        const geometryIcons = ['triangle', 'square', 'circle', 'ruler', 'pencil', 'scissors', 'grid'];
+
+        // Отрисовка фоновых предметов без компаса
+        function renderBackground(iconsList) {
+            const bgContainer = document.getElementById('bg-container');
+            bgContainer.innerHTML = '';
+            
+            const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
+            const coords = [
+                {x: 7, y: 10, r: -25}, {x: 22, y: 14, r: 18}, {x: 38, y: 8, r: -12}, {x: 54, y: 12, r: 30}, {x: 72, y: 9, r: -15}, {x: 90, y: 13, r: 22},
+                {x: 12, y: 32, r: 35}, {x: 28, y: 35, r: -20}, {x: 45, y: 28, r: 15}, {x: 62, y: 33, r: -30}, {x: 82, y: 30, r: 10},
+                {x: 6, y: 58, r: -18}, {x: 20, y: 62, r: 25}, {x: 80, y: 55, r: -22}, {x: 94, y: 60, r: 16},
+                {x: 10, y: 85, r: 20}, {x: 26, y: 88, r: -28}, {x: 42, y: 82, r: 14}, {x: 58, y: 89, r: -18}, {x: 74, y: 84, r: 32}, {x: 90, y: 87, r: -10}
+            ];
+
+            coords.forEach((pt, idx) => {
+                const item = document.createElement('div');
+                item.className = `bg-item d-${(idx % 4) + 1}`;
+                item.style.left = `${pt.x}%`;
+                item.style.top = `${pt.y}%`;
+                item.style.setProperty('--rot', `${pt.r}deg`);
+
+                const icon = iconsList[idx % iconsList.length];
+                const color = colorClasses[idx % colorClasses.length];
+
+                item.innerHTML = `<i data-lucide="${icon}" class="neon-icon ${color}"></i>`;
+                bgContainer.appendChild(item);
+            });
+
+            lucide.createIcons();
+        }
+
+        renderBackground(defaultIcons);
+
+        // --- СОСТОЯНИЕ ПРИЛОЖЕНИЯ ---
+        let currentSubject = '';
+        let totalQuestionsCount = 10;
+        let currentQuestionIndex = 0;
+        let questionsData = [];
+        let userAnswers = []; // Массив ответов пользователя
+
+        // Выбор предмета
+        function selectSubject(subject) {
+            currentSubject = subject;
+            if (subject === 'geometry') {
+                renderBackground(geometryIcons); // Менять на геометрию без компаса
+            }
+            showScreen('screen-count');
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+
+            const btnNext = document.getElementById('btn-next');
+            if (screenId === 'screen-quiz') {
+                btnNext.style.display = 'flex';
+            } else {
+                btnNext.style.display = 'none';
+            }
+        }
+
+        // СВЯЗАННЫЕ СХЕМЫ (SVG) ДЛЯ ГЕОМЕТРИИ
+        const SVGS = {
+            rightTriangle: `<svg width="150" height="110" viewBox="0 0 150 110"><path d="M 25 90 L 125 90 L 25 20 Z" fill="none" stroke="#00f3ff" stroke-width="3"/><path d="M 25 80 L 35 80 L 35 90" fill="none" stroke="#00f3ff" stroke-width="2"/><text x="10" y="60" fill="#bf00ff" font-weight="bold">a</text><text x="70" y="105" fill="#bf00ff" font-weight="bold">b</text><text x="85" y="50" fill="#ff007f" font-weight="bold">c</text></svg>`,
+            trapezoid: `<svg width="160" height="100" viewBox="0 0 160 100"><polygon points="35,20 125,20 150,80 10,80" fill="none" stroke="#ff007f" stroke-width="3"/><line x1="22.5" y1="50" x2="137.5" y2="50" stroke="#00f3ff" stroke-width="2" stroke-dasharray="4,4"/><text x="75" y="15" fill="#00f3ff">a</text><text x="75" y="96" fill="#00f3ff">b</text><text x="80" y="45" fill="#bf00ff">m</text></svg>`,
+            circleAngle: `<svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="45" fill="none" stroke="#00f3ff" stroke-width="3"/><path d="M 60 60 L 28 92 M 60 60 L 92 92" stroke="#ff007f" stroke-width="2"/><path d="M 60 15 L 28 92 M 60 15 L 92 92" stroke="#bf00ff" stroke-width="2"/><circle cx="60" cy="60" r="3" fill="#00f3ff"/></svg>`,
+            parallelogram: `<svg width="160" height="90" viewBox="0 0 160 90"><polygon points="35,15 145,15 125,75 15,75" fill="none" stroke="#bf00ff" stroke-width="3"/><line x1="35" y1="15" x2="35" y2="75" stroke="#00f3ff" stroke-width="2" stroke-dasharray="4,4"/><text x="70" y="87" fill="#00f3ff">a</text><text x="40" y="50" fill="#ff007f">h</text></svg>`
+        };
+
+        // ГЕНЕРАТОР ВОПРОСОВ ПО ГЕОМЕТРИИ (8 КЛАСС ИСТЕР НУШ)
+        function generateGeometryQuestions(count) {
+            const templates = [
+                // 1. Теорема Пифагора
+                (i) => {
+                    const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17], [9,12,15], [12,16,20]][i % 6];
+                    const a = pyth[0], b = pyth[1], c = pyth[2];
+                    return {
+                        text: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу.`,
+                        diagram: SVGS.rightTriangle,
+                        options: [`${c} см`, `${c + 2} см`, `${c - 1} см`, `${a + b} см`],
+                        correct: 0,
+                        explanation: `За теоремою Піфагора для прямокутного трикутника: c² = a² + b² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. Отже, гіпотенуза дорівнює √${c*c} = ${c} см.`
+                    };
+                },
+                // 2. Средняя линия трапеции
+                (i) => {
+                    const a = 6 + (i % 5) * 2;
+                    const b = 14 + (i % 4) * 2;
+                    const m = (a + b) / 2;
+                    return {
+                        text: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть довжину її середньої лінії (m).`,
+                        diagram: SVGS.trapezoid,
+                        options: [`${m} см`, `${m + 2} см`, `${a + b} см`, `${m - 1.5} см`],
+                        correct: 0,
+                        explanation: `Середня лінія трапеції дорівнює півсумі її основ: m = (a + b) / 2 = (${a} + ${b}) / 2 = ${a + b} / 2 = ${m} см.`
+                    };
+                },
+                // 3. Углы параллелограмма
+                (i) => {
+                    const acute = 40 + (i % 6) * 10;
+                    const obtuse = 180 - acute;
+                    return {
+                        text: `Один із кутів паралелограма дорівнює ${acute}°. Знайдіть градусну міру тупого кута цього паралелограма.`,
+                        diagram: SVGS.parallelogram,
+                        options: [`${obtuse}°`, `${acute}°`, `${180 - acute + 10}°`, `${90}°`],
+                        correct: 0,
+                        explanation: `Сума сусідніх кутів паралелограма дорівнює 180°. Звідси тупий кут = 180° - ${acute}° = ${obtuse}°.`
+                    };
+                },
+                // 4. Вписанный угол
+                (i) => {
+                    const central = 60 + (i % 5) * 20;
+                    const inscribed = central / 2;
+                    return {
+                        text: `Центральний кут кола дорівнює ${central}°. Знайдіть вписаний кут, що спирається на ту саму дугу.`,
+                        diagram: SVGS.circleAngle,
+                        options: [`${inscribed}°`, `${central}°`, `${central * 2}°`, `${inscribed + 10}°`],
+                        correct: 0,
+                        explanation: `Вписаний кут дорівнює половині центрального кута, який спирається на ту саму дугу: Вписаний = ${central}° / 2 = ${inscribed}°.`
+                    };
+                },
+                // 5. Площадь треугольника
+                (i) => {
+                    const base = 8 + (i % 4) * 2;
+                    const height = 5 + (i % 3) * 2;
+                    const area = (base * height) / 2;
+                    return {
+                        text: `Знайдіть площу трикутника, сторона якого дорівнює ${base} см, а висота, проведена до неї — ${height} см.`,
+                        diagram: '',
+                        options: [`${area} см²`, `${base * height} см²`, `${area + 4} см²`, `${area - 2} см²`],
+                        correct: 0,
+                        explanation: `Площа трикутника обчислюється за формулою: S = ½ · a · h = ½ · ${base} · ${height} = ${area} см².`
+                    };
+                },
+                // 6. Подобие треугольников
+                (i) => {
+                    const k = 2 + (i % 3);
+                    const k2 = k * k;
+                    return {
+                        text: `Сторони двох подібних трикутників відносяться як 1 : ${k}. Як відносяться їхні площі?`,
+                        diagram: '',
+                        options: [`1 : ${k2}`, `1 : ${k}`, `1 : ${k * 2}`, `1 : ${k2 + 1}`],
+                        correct: 0,
+                        explanation: `Відношення площ двох подібних трикутників дорівнює квадрату коефіцієнта подібності (k²). Оскільки k = ${k}, площі відносяться як 1 : ${k}² = 1 : ${k2}.`
+                    };
+                }
+            ];
+
+            let questions = [];
+            for (let i = 0; i < count; i++) {
+                const q = templates[i % templates.length](i);
+                // Перемешивание вариантов ответа
+                let opts = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+                const correctText = opts[q.correct].text;
+                opts.sort(() => Math.random() - 0.5);
+                const newCorrect = opts.findIndex(o => o.text === correctText);
+
+                questions.push({
+                    text: q.text,
+                    diagram: q.diagram,
+                    options: opts.map(o => o.text),
+                    correct: newCorrect,
+                    explanation: q.explanation
+                });
+            }
+            return questions;
+        }
+
+        // Запуск теста
+        function startTest(count) {
+            totalQuestionsCount = count;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(count).fill(null);
+            questionsData = generateGeometryQuestions(count);
+
+            showScreen('screen-quiz');
+            loadQuestion(0);
+        }
+
+        // Загрузка вопроса
+        function loadQuestion(index) {
+            const q = questionsData[index];
+            document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
+            document.getElementById('question-text').innerText = q.text;
+
+            // Схема
+            const diagContainer = document.getElementById('diagram-container');
+            if (q.diagram) {
+                diagContainer.style.display = 'flex';
+                diagContainer.innerHTML = q.diagram;
+            } else {
+                diagContainer.style.display = 'none';
+            }
+
+            // Варианты ответов
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+
+            const explanationBox = document.getElementById('explanation-box');
+            explanationBox.classList.remove('active');
+
+            const savedAnswer = userAnswers[index];
+
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.innerText = optText;
+
+                // Если вопрос уже был отвечен ранее
+                if (savedAnswer !== null) {
+                    btn.disabled = true;
+                    if (optIdx === q.correct) {
+                        btn.classList.add('correct');
+                    }
+                    if (savedAnswer === optIdx && savedAnswer !== q.correct) {
+                        btn.classList.add('incorrect');
+                    }
+                } else {
+                    btn.onclick = () => handleAnswer(optIdx);
+                }
+
+                optionsGrid.appendChild(btn);
+            });
+
+            if (savedAnswer !== null && savedAnswer !== q.correct) {
+                document.getElementById('explanation-text').innerText = q.explanation;
+                explanationBox.classList.add('active');
+            }
+        }
+
+        // Обработка ответа
+        function handleAnswer(selectedIndex) {
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            const q = questionsData[currentQuestionIndex];
+            const optionsGrid = document.getElementById('options-grid');
+            const buttons = optionsGrid.querySelectorAll('.btn-option');
+
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === q.correct) {
+                buttons[selectedIndex].classList.add('correct');
+            } else {
+                buttons[selectedIndex].classList.add('incorrect');
+                buttons[q.correct].classList.add('correct');
+
+                // Показать объяснение
+                document.getElementById('explanation-text').innerText = q.explanation;
+                document.getElementById('explanation-box').classList.add('active');
+            }
+        }
+
+        // Кнопка "Далі"
+        function nextQuestion() {
+            if (currentQuestionIndex < totalQuestionsCount - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                finishTest();
+            }
+        }
+
+        // Финиш теста
+        function finishTest() {
+            showScreen('screen-results');
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';
+
+            questionsData.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                const card = document.createElement('div');
+                
+                let statusClass = 'is-skipped';
+                let badgeHTML = '<span class="status-badge badge-skipped">Пропущено</span>';
+
+                if (ans !== null) {
+                    if (ans === q.correct) {
+                        statusClass = 'is-correct';
+                        badgeHTML = '<span class="status-badge badge-correct">Правильно</span>';
+                    } else {
+                        statusClass = 'is-incorrect';
+                        badgeHTML = '<span class="status-badge badge-incorrect">Неправильно</span>';
+                    }
+                }
+
+                card.className = `result-item-card ${statusClass}`;
+                card.innerHTML = `
+                    ${badgeHTML}
+                    <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">№${idx + 1}. ${q.text}</div>
+                    <div style="font-size: 0.95rem; margin-bottom: 6px;">
+                        Ваш відповідь: <strong style="color: ${ans === q.correct ? '#00ff66' : '#ff0055'}">${ans !== null ? q.options[ans] : 'Не вибрано'}</strong>
+                    </div>
+                    <div style="font-size: 0.95rem; margin-bottom: 10px;">
+                        Правильна відповідь: <strong style="color: #00ff66">${q.options[q.correct]}</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4;">
+                        <strong style="color: #00f3ff;">Пояснення:</strong> ${q.explanation}
+                    </div>
+                `;
+                resultsList.appendChild(card);
+            });
+        }
+
+        // Возврат на главное меню
+        function resetToHome() {
+            renderBackground(defaultIcons);
+            showScreen('screen-subject');
+        }
+    </script>
 </body>
 </html>
