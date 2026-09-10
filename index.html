@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        /* --- ХАОТИЧНЫЙ НЕОНОВЫЙ ФОН --- */
+        /* --- ФОН С РАВНОМЕРНЫМ ЗАПОЛНЕНИЕМ --- */
         .background-objects {
             position: fixed;
             top: 0;
@@ -43,6 +43,7 @@
         .bg-item {
             position: absolute;
             user-select: none;
+            transform: translate(-50%, -50%); /* Точная центровка для сохранения дистанции */
             animation: float infinite alternate ease-in-out;
             display: flex;
             align-items: center;
@@ -51,8 +52,8 @@
 
         /* Неоновое свечение стикеров */
         .neon-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             stroke-width: 2.2px;
             opacity: 0.55;
         }
@@ -75,13 +76,13 @@
             filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
         }
 
-        /* Анимация плавного парения с учётом случайного угла */
+        /* Анимация движения */
         @keyframes float {
             0% {
-                transform: translateY(0px) rotate(var(--base-rotate)) scale(1);
+                transform: translate(-50%, -50%) translateY(0px) rotate(var(--base-rotate)) scale(1);
             }
             100% {
-                transform: translateY(-20px) rotate(calc(var(--base-rotate) + 12deg)) scale(1.08);
+                transform: translate(-50%, -50%) translateY(-18px) rotate(calc(var(--base-rotate) + 12deg)) scale(1.06);
             }
         }
 
@@ -181,7 +182,7 @@
 </head>
 <body>
 
-    <!-- Контейнер для случайных неоновых стикеров -->
+    <!-- Контейнер для фоновых предметов -->
     <div class="background-objects" id="bg-container"></div>
 
     <!-- Главное меню -->
@@ -204,28 +205,31 @@
     </div>
 
     <script>
-        // Генерация случайного фона при загрузке
         const itemsList = ['ruler', 'pencil', 'eraser', 'book-open', 'calculator', 'backpack', 'scissors'];
         const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
         const bgContainer = document.getElementById('bg-container');
 
-        const rows = 4;
-        const cols = 6;
+        // Сетка 5 строк на 8 колонок — обеспечивает 100% покрытие экрана без пустот
+        const rows = 5;
+        const cols = 8;
+
+        const cellWidth = 100 / cols;
+        const cellHeight = 100 / rows;
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 const item = document.createElement('div');
                 item.className = 'bg-item';
 
-                // Вычисляем случайное смещение внутри каждого сектора экрана (хаос без наложений)
-                const cellWidth = 100 / cols;
-                const cellHeight = 100 / rows;
-                
-                const posX = (c * cellWidth) + (Math.random() * (cellWidth * 0.75) + 2);
-                const posY = (r * cellHeight) + (Math.random() * (cellHeight * 0.75) + 2);
+                // Центр ячейки + контролируемый сдвиг (до ±35% размера ячейки), чтобы иконки не накладывались
+                const offsetX = (Math.random() - 0.5) * (cellWidth * 0.7);
+                const offsetY = (Math.random() - 0.5) * (cellHeight * 0.7);
 
-                const randomRotate = Math.floor(Math.random() * 100) - 50; // Наклон от -50° до 50°
-                const randomDuration = (4 + Math.random() * 4).toFixed(1); // Время парения от 4с до 8с
+                const posX = (c + 0.5) * cellWidth + offsetX;
+                const posY = (r + 0.5) * cellHeight + offsetY;
+
+                const randomRotate = Math.floor(Math.random() * 90) - 45; // Поворот от -45° до 45°
+                const randomDuration = (4.5 + Math.random() * 3.5).toFixed(1);
                 const randomDelay = (Math.random() * 3).toFixed(1);
 
                 const randomIcon = itemsList[Math.floor(Math.random() * itemsList.length)];
@@ -242,7 +246,6 @@
             }
         }
 
-        // Рендерим иконки Lucide
         lucide.createIcons();
     </script>
 
