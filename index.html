@@ -301,6 +301,7 @@
             border-radius: 14px;
             padding: 18px;
             margin-top: 15px;
+            margin-bottom: 20px;
             font-size: 1rem;
             line-height: 1.5;
             color: #ffe6ee;
@@ -319,18 +320,22 @@
             letter-spacing: 1px;
         }
 
-        .btn-next-fixed {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 100;
+        .quiz-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-next {
             background: rgba(15, 8, 35, 0.95);
             border: 2.5px solid #ffd700;
             box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
             color: #ffffff;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 16px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
             display: flex;
@@ -340,9 +345,9 @@
             transition: all 0.25s ease;
         }
 
-        .btn-next-fixed:hover {
-            transform: scale(1.06);
-            box-shadow: 0 0 30px #ffd700;
+        .btn-next:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #ffd700;
             background: rgba(255, 215, 0, 0.25);
         }
 
@@ -511,7 +516,8 @@
             .subjects-row { flex-direction: column; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
-            .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 0.95rem; }
+            .quiz-footer { justify-content: center; }
+            .btn-next { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -578,13 +584,15 @@
                 <div class="explanation-title">Пояснення:</div>
                 <div id="explanation-text">...</div>
             </div>
+
+            <div class="quiz-footer">
+                <button class="btn-next" id="btn-next" onclick="skipQuestion()">
+                    <span>Пропустити завдання</span>
+                    <span>➔</span>
+                </button>
+            </div>
         </div>
     </div>
-
-    <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="skipQuestion()">
-        <span>Пропустити завдання</span>
-        <span>➔</span>
-    </button>
 
     <!-- 4. ФІНІШ -->
     <div class="screen" id="screen-results">
@@ -670,13 +678,6 @@
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-
-            const btnNext = document.getElementById('btn-next');
-            if (screenId === 'screen-quiz') {
-                btnNext.style.display = 'flex';
-            } else {
-                btnNext.style.display = 'none';
-            }
         }
 
         function showConfirmModal() {
