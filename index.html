@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тести з математики 9 класс</title>
+    <title>Інтерактивний Тренажер — Математика & Фізика</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -148,7 +148,7 @@
         .btn-physics { 
             border-color: #ff007f; 
             box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); 
-            width: calc(50% - 10px);
+            width: 100%;
         }
 
         .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
@@ -419,7 +419,6 @@
             opacity: 1;
         }
 
-        /* МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -475,7 +474,6 @@
             outline: none;
         }
 
-        /* ТАК (ЗЕЛЕНА) */
         .btn-modal-yes {
             background: rgba(0, 255, 102, 0.2);
             border-color: #00ff66;
@@ -489,7 +487,6 @@
             transform: scale(1.05);
         }
 
-        /* НІ (ЧЕРВОНА) */
         .btn-modal-no {
             background: rgba(255, 0, 85, 0.2);
             border-color: #ff0055;
@@ -506,7 +503,6 @@
         @media (max-width: 650px) {
             .title { font-size: 1.8rem; }
             .subjects-row { flex-direction: column; }
-            .btn-physics { width: 100%; }
             .count-grid { grid-template-columns: repeat(2, 1fr); }
             .options-grid { grid-template-columns: 1fr; }
             .btn-next-fixed { bottom: 15px; right: 15px; padding: 12px 20px; font-size: 1rem; }
@@ -579,7 +575,6 @@
         </div>
     </div>
 
-    <!-- КНОПКА "ДАЛІ" -->
     <button class="btn-next-fixed" id="btn-next" style="display: none;" onclick="nextQuestion()">
         <span>Далі</span>
         <span>➔</span>
@@ -606,6 +601,7 @@
     <script>
         const algebraIcons = ['calculator', 'percent', 'hash', 'binary', 'bar-chart-2', 'trending-up', 'sparkles'];
         const geometryIcons = ['triangle', 'square', 'circle', 'box', 'compass', 'ruler', 'layers'];
+        const physicsIcons = ['zap', 'atom', 'battery-charging', 'gauge', 'magnet', 'flame', 'lightbulb'];
 
         function renderBackground(iconsList) {
             const bgContainer = document.getElementById('bg-container');
@@ -652,16 +648,13 @@
         let userAnswers = [];
 
         function selectSubject(subject) {
-            if (subject === 'physics') {
-                showToast('Тести з фізики у розробці 🛠️');
-                return;
-            }
-
             currentSubject = subject;
             if (subject === 'algebra') {
                 renderBackground(algebraIcons);
             } else if (subject === 'geometry') {
                 renderBackground(geometryIcons);
+            } else if (subject === 'physics') {
+                renderBackground(physicsIcons);
             }
 
             showScreen('screen-count');
@@ -679,7 +672,6 @@
             }
         }
 
-        // МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ
         function showConfirmModal() {
             document.getElementById('confirm-modal').classList.add('active');
         }
@@ -693,7 +685,7 @@
             finishTest();
         }
 
-        // --- ДИНАМІЧНІ SVG КРЕСЛЕННЯ ---
+        // SVG креслення для математики
         function drawRaySVG(val, isClosed, directionRight) {
             const circleFill = isClosed ? "#00f3ff" : "#070414";
             const lineStartX = directionRight ? 130 : 25;
@@ -763,7 +755,6 @@
             </svg>`;
         }
 
-        // --- ІСТОРІЯ В LOCALSTORAGE ---
         function getSeenQuestions(key) {
             try {
                 return JSON.parse(localStorage.getItem(key)) || [];
@@ -778,7 +769,7 @@
             } catch (e) {}
         }
 
-        // --- ГЕНЕРАТОРИ ДЛЯ АЛГЕБРИ (9 КЛАС НУШ: НЕРІВНОСТІ) ---
+        // --- ГЕНЕРАТОРИ АЛГЕБРА ---
         const algebraGenerators = [
             () => {
                 const a = 2 + Math.floor(Math.random() * 6);
@@ -881,7 +872,7 @@
             }
         ];
 
-        // --- ГЕНЕРАТОРИ ДЛЯ ГЕОМЕТРІЇ (8-9 КЛАС НУШ: ПОВТОРЕННЯ) ---
+        // --- ГЕНЕРАТОРИ ГЕОМЕТРІЯ ---
         const geometryGenerators = [
             () => {
                 const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
@@ -891,7 +882,7 @@
                     diagram: drawRightTriangleSVG(triple[0], triple[1], '?'),
                     correctVal: `${triple[2]} см`,
                     wrongs: [`${triple[2] + 2} см`, `${triple[2] - 1} см`, `${triple[0] + triple[1]} см`],
-                    explanation: `За теоремою Піфагора: c = √(a² + b²) = √(${triple[0]}² + ${triple[1]}²) = √(${triple[0]*triple[0] + triple[1]*triple[1]}) = ${triple[2]} см.`
+                    explanation: `За теоремою Піфагора: c = √(a² + b²) = √(${triple[0]}² + ${triple[1]}²) = ${triple[2]} см.`
                 };
             },
             () => {
@@ -1001,16 +992,124 @@
             }
         ];
 
+        // --- ГЕНЕРАТОРИ ФІЗИКА (ЕЛЕКТРИЧНИЙ СТРУМ В ЕЛЕКТРОЛІТАХ. ЕЛЕКТРОЛІЗ) ---
+        const physicsGenerators = [
+            () => {
+                const k = 0.3; // мг/Кл
+                const I = (Math.floor(Math.random() * 5) + 1) * 2; // 2..10 A
+                const t = (Math.floor(Math.random() * 5) + 1) * 500; // 500..2500 s
+                const m = Math.round(k * I * t);
+                return {
+                    text: `Яка маса речовини виділиться на катоді за ${t} с при силі струму ${I} А? (Електрохімічний еквівалент k = ${k} мг/Кл)`,
+                    diagram: '',
+                    correctVal: `${m} мг`,
+                    wrongs: [`${m * 2} мг`, `${Math.round(m / 2)} мг`, `${m + 120} мг`],
+                    explanation: `За першим законом Фарадея: m = k · I · t. Обчислюємо: m = ${k} · ${I} · ${t} = ${m} мг.`
+                };
+            },
+            () => {
+                const q = (Math.floor(Math.random() * 8) + 2) * 100;
+                const k = 0.329;
+                const m = (k * q).toFixed(1);
+                return {
+                    text: `Через розчин солі пропускають електричний заряд ${q} Кл. Яка маса речовини виділиться, якщо k = ${k} мг/Кл?`,
+                    diagram: '',
+                    correctVal: `${m} мг`,
+                    wrongs: [`${(q / k).toFixed(1)} мг`, `${(m * 2).toFixed(1)} мг`, `${(m / 2).toFixed(1)} мг`],
+                    explanation: `Закон Фарадея через заряд: m = k · q. Обчислюємо: m = ${k} · ${q} = ${m} мг.`
+                };
+            },
+            () => {
+                return {
+                    text: "Що є носіями електричного заряду в електролітах?",
+                    diagram: '',
+                    correctVal: "Позитивні та негативні йони",
+                    wrongs: ["Тільки вільні електрони", "Позитивні йони та електрони", "Нейтральні молекули"],
+                    explanation: "В електролітах струм зумовлений напрямленим рухом як позитивних (катіонів), так і негативних (аніонів) йонів."
+                };
+            },
+            () => {
+                return {
+                    text: "Як називається процес розпаду молекул електроліту на йони під дією полярних молекул розчинника?",
+                    diagram: '',
+                    correctVal: "Електролітична дисоціація",
+                    wrongs: ["Рекомбінація", "Електроліз", "Гальваностегія"],
+                    explanation: "Розпад молекул солей, кислот або основ на йони під дією полярних молекул розчинника називається електролітичною дисоціацією."
+                };
+            },
+            () => {
+                const I = Math.floor(Math.random() * 4) + 2; // 2..5 A
+                const m = I * 300; // mg
+                const k = 0.3; // mg/C
+                const t = Math.round(m / (k * I));
+                return {
+                    text: `Скільки часу (в секундах) тривав електроліз, якщо виділилося ${m} мг речовини при струмі ${I} А? (k = ${k} мг/Кл)`,
+                    diagram: '',
+                    correctVal: `${t} с`,
+                    wrongs: [`${t * 2} с`, `${Math.round(t / 2)} с`, `${t + 100} с`],
+                    explanation: `З закону Фарадея m = k · I · t виражаємо час: t = m / (k · I) = ${m} / (${k} · ${I}) = ${t} с.`
+                };
+            },
+            () => {
+                return {
+                    text: "На якому електроді під час електролізу виділяються метали та водень?",
+                    diagram: '',
+                    correctVal: "На катоді (негативному)",
+                    wrongs: ["На аноді (позитивному)", "На обох електродах", "У товщі розчину"],
+                    explanation: "Позитивно заряджені йони металів та водню (катіони) притягуються до негативно зарядженого катода та відновлюються на ньому."
+                };
+            },
+            () => {
+                return {
+                    text: "Як називается процес покриття металевих виробів тонким шаром іншого металу за допомогою електролізу?",
+                    diagram: '',
+                    correctVal: "Гальваностегія",
+                    wrongs: ["Гальванопластика", "Рафінування", "Дисоціація"],
+                    explanation: "Гальваностегія — це нанесення тонких міцних покриттів (хромування, нікелювання, золочення) для захисту або декору за допомогою електролізу."
+                };
+            },
+            () => {
+                return {
+                    text: "Як зміниться маса речовини, що виділяється на катоді, якщо силу струму збільшити в 3 рази?",
+                    diagram: '',
+                    correctVal: "Збільшиться в 3 рази",
+                    wrongs: ["Зменшиться в 3 рази", "Збільшиться в 9 разів", "Не зміниться"],
+                    explanation: "За першим законом Фарадея (m = k · I · t) маса речовини прямо пропорційна силі струму. Збільшення I в 3 рази збільшує m в 3 рази."
+                };
+            },
+            () => {
+                const m = (Math.floor(Math.random() * 5) + 1) * 60; // 60..300 mg
+                const q = m * 20; // C
+                const k = (m / q).toFixed(3);
+                return {
+                    text: `Визначте електрохімічний еквівалент k, якщо за проходження заряду ${q} Кл виділилося ${m} мг речовини.`,
+                    diagram: '',
+                    correctVal: `${k} мг/Кл`,
+                    wrongs: [`${(k * 2).toFixed(3)} мг/Кл`, `${(k / 2).toFixed(3)} мг/Кл`, `${(m * q).toFixed(0)} мг/Кл`],
+                    explanation: `З формули m = k · q маємо: k = m / q = ${m} / ${q} = ${k} мг/Кл.`
+                };
+            },
+            () => {
+                return {
+                    text: "Одиницею вимірювання електрохімічного еквівалента в СІ є:",
+                    diagram: '',
+                    correctVal: "кг/Кл",
+                    wrongs: ["Кл/кг", "Дж/Кл", "В·с"],
+                    explanation: `З формули k = m / q слідує, що одиницею k є маса поділена на заряд: кг/Кл (або мг/Кл).`
+                };
+            }
+        ];
+
         // --- ГЕНЕРАЦІЯ УНІКАЛЬНИХ ПИТАНЬ ---
         function generateUniqueQuestions(subject, count) {
             const currentTestTexts = new Set();
             const resultList = [];
             
-            const storageKey = subject === 'algebra' ? 'algebra_seen' : 'geometry_seen';
+            const storageKey = subject === 'algebra' ? 'algebra_seen' : (subject === 'geometry' ? 'geometry_seen' : 'physics_seen');
             const historyList = getSeenQuestions(storageKey);
             const historySet = new Set(historyList);
 
-            const pool = subject === 'algebra' ? algebraGenerators : geometryGenerators;
+            const pool = subject === 'algebra' ? algebraGenerators : (subject === 'geometry' ? geometryGenerators : physicsGenerators);
 
             let attempts = 0;
             const maxAttempts = 5000;
@@ -1085,9 +1184,12 @@
             if (currentSubject === 'algebra') {
                 topicElem.innerText = 'Тема: Нерівності';
                 topicElem.style.color = '#bf00ff';
-            } else {
+            } else if (currentSubject === 'geometry') {
                 topicElem.innerText = 'Тема: Повторення';
                 topicElem.style.color = '#00f3ff';
+            } else if (currentSubject === 'physics') {
+                topicElem.innerText = 'Тема: Електроліз';
+                topicElem.style.color = '#ff007f';
             }
 
             document.getElementById('question-text').innerText = q.text;
