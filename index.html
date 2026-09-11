@@ -40,28 +40,28 @@
 
         .sticker {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.6; 
+            opacity: 0.55; 
             user-select: none;
             transform-origin: center center;
-            margin-left: -35px;
-            margin-top: -35px;
+            margin-left: -27px;
+            margin-top: -27px;
             animation: pulse-glow 3s infinite alternate ease-in-out;
         }
 
         .sticker svg {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
+            filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 15px currentColor);
         }
 
         @keyframes pulse-glow {
-            0% { opacity: 0.4; filter: brightness(0.9); }
-            100% { opacity: 0.8; filter: brightness(1.3); }
+            0% { opacity: 0.35; filter: brightness(0.8); transform: scale(0.95); }
+            100% { opacity: 0.75; filter: brightness(1.4); transform: scale(1.05); }
         }
 
         /* Контейнери екранів */
@@ -155,8 +155,8 @@
     <div id="screen-menu" class="screen active">
         <h1>Оберіть предмет</h1>
         <div class="subject-menu">
-            <button class="btn btn-algebra" onclick="selectSubject('algebra')">√ Алгебра</button>
-            <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠ Геометрія</button>
+            <button class="btn btn-algebra" onclick="selectSubject('algebra')">√x Алгебра</button>
+            <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠a Геометрія</button>
             <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика</button>
         </div>
     </div>
@@ -254,19 +254,32 @@
     </div>
 
     <script>
-        /* Генерація фонових стікерів */
+        /* Генерація фонових неонових стікерів як на макеті */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
+            
+            // Набір неонових математичних та технологічних SVG-іконок з макету
             const icons = [
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 14.6L9.4 4.6c-1.2-1.2-3.1-1.2-4.2 0l-0.6 0.6c-1.2 1.2-1.2 3.1 0 4.2l10 10c1.2 1.2 3.1 1.2 4.2 0l0.6-0.6c1.2-1.2 1.2-3.1 0-4.2z"></path><line x1="12" y1="7" x2="15" y2="10"></line><line x1="9" y1="10" x2="12" y2="13"></line><line x1="6" y1="13" x2="9" y2="16"></line></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path><path d="M22 21H7"></path><path d="m5 11 9 9"></path></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`
+                // Відсоток %
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
+                // Решітка / Хештег #
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>`,
+                // Знак ділення ÷
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="6" r="2" fill="currentColor"/><line x1="5" y1="12" x2="19" y2="12"/><circle cx="12" cy="18" r="2" fill="currentColor"/></svg>`,
+                // Графік / Стовпчики
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="8"/><line x1="18" y1="20" x2="18" y2="4"/></svg>`,
+                // Калькулятор
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="3" width="14" height="18" rx="2"/><rect x="8" y="6" width="8" height="3"/><circle cx="8.5" cy="12.5" r="1" fill="currentColor"/><circle cx="12" cy="12.5" r="1" fill="currentColor"/><circle cx="15.5" cy="12.5" r="1" fill="currentColor"/><circle cx="8.5" cy="16.5" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/><circle cx="15.5" cy="16.5" r="1" fill="currentColor"/></svg>`,
+                // Сяюча зірочка ✦
+                `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg>`,
+                // Бінарні числа 01 / 10
+                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="9"><text x="1" y="10" font-family="sans-serif">01</text><text x="1" y="21" font-family="sans-serif">10</text></svg>`,
+                // Стрілка тренду / Зигзаг
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`
             ];
             
             const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
-            const cols = 6; const rows = 4;
+            const cols = 7; const rows = 5;
             const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
 
             for (let r = 0; r < rows; r++) {
@@ -276,18 +289,18 @@
                     el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
                     el.style.color = colors[Math.floor(Math.random() * colors.length)];
                     let scale = Math.random() * (1.1 - 0.7) + 0.7; 
-                    let randomX = Math.random() * (cellWidthPct * 0.6) + (cellWidthPct * 0.2);
-                    let randomY = Math.random() * (cellHeightPct * 0.6) + (cellHeightPct * 0.2);
+                    let randomX = Math.random() * (cellWidthPct * 0.7) + (cellWidthPct * 0.15);
+                    let randomY = Math.random() * (cellHeightPct * 0.7) + (cellHeightPct * 0.15);
                     el.style.left = `${c * cellWidthPct + randomX}vw`;
                     el.style.top = `${r * cellHeightPct + randomY}vh`;
-                    el.style.transform = `scale(${scale}) rotate(${Math.random() * 360}deg)`;
+                    el.style.transform = `scale(${scale}) rotate(${Math.random() * 40 - 20}deg)`;
                     container.appendChild(el);
                 }
             }
         }
         window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
-        /* --- ГЕНЕРАТОРИ ВИПАДКОВИХ ПИТАНЬ (БЕЗ НЕСКІНЧЕННОСТЕЙ ТА ПОВТОРІВ) --- */
+        /* --- ГЕНЕРАТОРИ ВИПАДКОВИХ ПИТАНЬ --- */
         function shuffle(arr) {
             let res = [...arr];
             for (let i = res.length - 1; i > 0; i--) {
@@ -306,7 +319,6 @@
         function createAlgebraQuestion() {
             const type = Math.floor(Math.random() * 6);
             if (type === 0) {
-                // Нерівність ax + b > c
                 let a = Math.floor(Math.random() * 5) + 2;
                 let xVal = Math.floor(Math.random() * 8) + 1;
                 let b = Math.floor(Math.random() * 10) + 1;
@@ -319,7 +331,6 @@
                     exp: `${a}x > ${c} - ${b} ➔ ${a}x > ${c - b} ➔ x > ${xVal}.`
                 };
             } else if (type === 1) {
-                // Від'ємна нерівність -ax + b > c
                 let a = Math.floor(Math.random() * 4) + 2;
                 let xVal = Math.floor(Math.random() * 6) + 1;
                 let b = Math.floor(Math.random() * 12) + 5;
@@ -332,7 +343,6 @@
                     exp: `-${a}x > ${c} - ${b} ➔ -${a}x > ${c - b}. При діленні на -${a} знак нерівності змінюється: x < ${xVal}.`
                 };
             } else if (type === 2) {
-                // Властивості степеня
                 let base = ['a', 'x', 'y', 'b'][Math.floor(Math.random()*4)];
                 let n = Math.floor(Math.random() * 6) + 3;
                 let m = Math.floor(Math.random() * 6) + 2;
@@ -346,7 +356,6 @@
                     exp: `За властивостями степеня: ${base}^(${n} + ${m} - ${k}) = ${base}^${res}.`
                 };
             } else if (type === 3) {
-                // Теорема Вієта
                 let x1 = Math.floor(Math.random() * 7) + 1;
                 let x2 = Math.floor(Math.random() * 7) + 1;
                 let sum = x1 + x2;
@@ -359,7 +368,6 @@
                     exp: `За теоремою Вієта сума коренів зведеного квадратного рівняння дорівнює другому коефіцієнту з протилежним знаком: x₁ + x₂ = ${sum}.`
                 };
             } else if (type === 4) {
-                // Значення функції f(x) = kx + b
                 let k = Math.floor(Math.random() * 5) + 2;
                 let b = Math.floor(Math.random() * 10) - 5;
                 let x0 = Math.floor(Math.random() * 6) + 1;
@@ -373,7 +381,6 @@
                     exp: `Підставляємо x = ${x0}: f(${x0}) = ${k} · ${x0} ${bStr} = ${val}.`
                 };
             } else {
-                // Переріз числових проміжків (БЕЗ НЕСКІНЧЕННОСТЕЙ)
                 let a = Math.floor(Math.random() * 5) - 5;
                 let b = a + Math.floor(Math.random() * 4) + 6;
                 let c = a + Math.floor(Math.random() * 3) + 2;
@@ -391,7 +398,6 @@
         function createGeometryQuestion() {
             const type = Math.floor(Math.random() * 5);
             if (type === 0) {
-                // Теорема Піфагора
                 const triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20]];
                 let t = triples[Math.floor(Math.random() * triples.length)];
                 let a = t[0], b = t[1], c = t[2];
@@ -404,7 +410,6 @@
                     exp: `За теоремою Піфагора: c² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. c = ${c} см.`
                 };
             } else if (type === 1) {
-                // Сума кутів багатокутника
                 let n = [4, 5, 6, 8, 10][Math.floor(Math.random() * 5)];
                 let sum = (n - 2) * 180;
                 let correctOpt = `${sum}°`;
@@ -416,7 +421,6 @@
                     exp: `Формула суми кутів n-кутника: S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
                 };
             } else if (type === 2) {
-                // Кути рівнобедреного трикутника
                 let vertexAngle = (Math.floor(Math.random() * 12) + 2) * 10;
                 let baseAngle = (180 - vertexAngle) / 2;
                 let correctOpt = `${baseAngle}°`;
@@ -427,7 +431,6 @@
                     exp: `Сума кутів трикутника 180°. Кути при основі рівні: (180° - ${vertexAngle}°) / 2 = ${baseAngle}°.`
                 };
             } else if (type === 3) {
-                // Середня лінія трапеції
                 let a = (Math.floor(Math.random() * 5) + 2) * 2;
                 let b = a + (Math.floor(Math.random() * 4) + 2) * 2;
                 let m = (a + b) / 2;
@@ -439,7 +442,6 @@
                     exp: `Середня лінія трапеції дорівнює півсумі її основ: (${a} + ${b}) / 2 = ${m} см.`
                 };
             } else {
-                // Площа прямокутника
                 let w = Math.floor(Math.random() * 8) + 3;
                 let h = Math.floor(Math.random() * 8) + 3;
                 let area = w * h;
@@ -456,7 +458,6 @@
         function createPhysicsQuestion() {
             const type = Math.floor(Math.random() * 5);
             if (type === 0) {
-                // Закон Ома
                 let I = Math.floor(Math.random() * 5) + 1;
                 let R = (Math.floor(Math.random() * 8) + 2) * 5;
                 let U = I * R;
@@ -468,7 +469,6 @@
                     exp: `За законом Ома для ділянки кола: U = I · R = ${I} · ${R} = ${U} В.`
                 };
             } else if (type === 1) {
-                // Шлях і швидкість
                 let v = (Math.floor(Math.random() * 8) + 2) * 10;
                 let t = Math.floor(Math.random() * 4) + 2;
                 let s = v * t;
@@ -480,7 +480,6 @@
                     exp: `Формула шляху: s = v · t = ${v} · ${t} = ${s} км.`
                 };
             } else if (type === 2) {
-                // Густина та маса
                 let rho = 1000;
                 let V = Math.floor(Math.random() * 5) + 1;
                 let m = rho * V;
@@ -492,7 +491,6 @@
                     exp: `Маса обчислюється за формулою: m = ρ · V = ${rho} · ${V} = ${m} кг.`
                 };
             } else if (type === 3) {
-                // Потужність
                 let A = (Math.floor(Math.random() * 8) + 2) * 100;
                 let t = Math.floor(Math.random() * 5) + 2;
                 let P = Math.round(A / t);
@@ -504,10 +502,9 @@
                     exp: `Потужність обчислюється за формулою: P = A / t = ${A} / ${t} = ${P} Вт.`
                 };
             } else {
-                // Теоретичні питання фізики
                 const conceptQuestions = [
                     { q: "Що є носіями електричного струму в металах?", opts: ["Вільні електрони", "Позитивні йони", "Негативні йони", "Протони"], exp: "Вільні електрони в металах легко переміщуються, створюючи струм." },
-                    { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Збільшується", "Зменшується", "Не змінюється", "Падає до нуля"], exp: "При нагріванні іони решітки коливаються інтенсивніше, частіше стикаючись з електронами, що збільшує опір." },
+                    { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Збільшується", "Зменшується", "Не змінюється", "Падає до нуля"], exp: "При нагріванні іони решітки коливаються інтенсивніше, частіше стикаючись з электронами, що збільшує опір." },
                     { q: "Хто відкрив явище надпровідності?", opts: ["Гейке Камерлінг-Оннес", "Георг Ом", "Алессандро Вольта", "Джеймс Максвелл"], exp: "Явище надпровідності (різке падіння опору до нуля) відкрив Г. Камерлінг-Оннес у 1911 році." },
                     { q: "Одиницею вимірювання електричного опору в SІ є:", opts: ["Ом", "Вольт", "Ампер", "Ват"], exp: "Електричний опір вимірюється в Омах (Ом)." }
                 ];
@@ -535,7 +532,7 @@
             return list;
         }
 
-        /* --- УПРАВЛІННЯ ІНТЕРФЕЙСОМ ТА СТАНOM ТЕСТУ --- */
+        /* --- УПРАВЛІННЯ ІНТЕРФЕЙСОМ ТА СТАНОМ ТЕСТУ --- */
         let currentSubject = '';
         let targetQuestionsCount = 5;
         let selectedTime = 0;
@@ -612,10 +609,7 @@
 
         function startQuiz(timeSec) {
             selectedTime = timeSec;
-            
-            // Генерація унікальних випадкових завдань для цього сеансу
             currentQuestions = generateUniqueQuizQuestions(currentSubject, targetQuestionsCount);
-
             currentIndex = 0;
             results = [];
             
