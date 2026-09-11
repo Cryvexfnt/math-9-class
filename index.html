@@ -13,7 +13,7 @@
             --neon-pink: #ff00a0;
             --neon-red: #ff0055;
             --neon-green: #00ff66;
-            --bg-color: #0d081c; /* Глибокий темний фон як на фото */
+            --bg-color: #0d081c; 
             --panel-bg: rgba(13, 8, 28, 0.85);
         }
 
@@ -40,27 +40,30 @@
 
         .sticker {
             position: absolute;
-            width: 45px;
-            height: 45px;
+            /* Збільшено розмір стікерів */
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.6; /* Напівпрозорі як на фото */
+            opacity: 0.6; 
             user-select: none;
+            /* Центрування відносно заданих координат left/top */
+            transform-origin: center center;
+            margin-left: -35px;
+            margin-top: -35px;
             animation: pulse-glow 3s infinite alternate ease-in-out;
         }
 
-        /* Світіння для SVG іконок */
         .sticker svg {
             width: 100%;
             height: 100%;
             filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
         }
 
-        /* Світіння для текстових іконок (наприклад 01/10) */
         .sticker .text-icon {
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 2rem; /* Збільшено шрифт для текстових стікерів */
             line-height: 0.85;
             text-align: center;
             text-shadow: 0 0 5px currentColor, 0 0 12px currentColor;
@@ -69,7 +72,7 @@
 
         @keyframes pulse-glow {
             0% { opacity: 0.4; filter: brightness(0.9); }
-            100% { opacity: 0.8; filter: brightness(1.2); }
+            100% { opacity: 0.8; filter: brightness(1.3); }
         }
 
         /* Контейнери екранів */
@@ -85,12 +88,7 @@
         p { font-size: 1.5rem; }
 
         /* Головне меню - Кнопки предметів */
-        .subject-menu {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        .subject-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 
         .btn {
             background: rgba(13, 8, 28, 0.7); 
@@ -101,25 +99,13 @@
             backdrop-filter: blur(5px);
         }
 
-        .btn-algebra {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(181, 0, 255, 0.4), inset 0 0 10px rgba(181, 0, 255, 0.2);
-            text-shadow: 0 0 8px var(--neon-purple);
-        }
+        .btn-algebra { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(181, 0, 255, 0.4), inset 0 0 10px rgba(181, 0, 255, 0.2); text-shadow: 0 0 8px var(--neon-purple); }
         .btn-algebra:hover { background: rgba(181, 0, 255, 0.2); box-shadow: 0 0 25px var(--neon-purple), inset 0 0 15px var(--neon-purple); transform: scale(1.05); }
 
-        .btn-geometry {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
-            text-shadow: 0 0 8px var(--neon-cyan);
-        }
+        .btn-geometry { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-geometry:hover { background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 15px var(--neon-cyan); transform: scale(1.05); }
 
-        .btn-physics {
-            border-color: var(--neon-red);
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 10px rgba(255, 0, 85, 0.2);
-            text-shadow: 0 0 8px var(--neon-red);
-        }
+        .btn-physics { border-color: var(--neon-red); box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 10px rgba(255, 0, 85, 0.2); text-shadow: 0 0 8px var(--neon-red); }
         .btn-physics:hover { background: rgba(255, 0, 85, 0.2); box-shadow: 0 0 25px var(--neon-red), inset 0 0 15px var(--neon-red); transform: scale(1.05); }
 
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
@@ -127,7 +113,7 @@
         
         .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555; box-shadow: none; text-shadow: none; }
 
-        /* Інші стилі (залишені без змін) */
+        /* Вибір кількості та часу */
         .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
         input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
@@ -136,6 +122,8 @@
         .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
         .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
         .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
+        
+        /* Тест та інтерфейс */
         .quiz-container { background: var(--panel-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05); position: relative; backdrop-filter: blur(15px); }
         .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 1.5rem;}
         #quiz-progress { color: #ccc; font-weight: bold; }
@@ -149,6 +137,8 @@
         .option-btn.wrong { background: rgba(255, 0, 85, 0.2); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
         .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
+        
+        /* Модалки та результати */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
         .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
         #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
@@ -157,6 +147,7 @@
         .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); }
         .res-status-skipped { color: #f39c12; font-weight: bold; }
         .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
+        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
@@ -165,10 +156,8 @@
 </head>
 <body>
 
-    <!-- Задній фон зі стікерами -->
     <div id="bg-stickers"></div>
 
-    <!-- ЕКРАН 1: Меню предметів -->
     <div id="screen-menu" class="screen active">
         <h1>Оберіть предмет</h1>
         <div class="subject-menu">
@@ -178,7 +167,6 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 2: Кількість завдань -->
     <div id="screen-count" class="screen">
         <h2>Виберіть кількість завдань</h2>
         <div class="grid-options" id="preset-counts">
@@ -199,7 +187,6 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 3: Вибір часу -->
     <div id="screen-time" class="screen">
         <h2>Виберіть час тесту</h2>
         <div class="grid-options" id="preset-times">
@@ -224,7 +211,6 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 4: Сам Тест -->
     <div id="screen-quiz" class="screen">
         <div class="quiz-container">
             <div class="quiz-header">
@@ -243,7 +229,6 @@
         </div>
     </div>
 
-    <!-- ЕКРАН 5: Результати -->
     <div id="screen-results" class="screen">
         <div class="quiz-container" style="max-width: 1000px; text-align: center;">
             <h2>Результати тесту</h2>
@@ -272,56 +257,58 @@
     </div>
 
     <script>
-        /* Генерація фонових стікерів як на фото */
+        /* Генерація фонових стікерів (Grid system - без накладання) */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             
-            // Векторні іконки (SVG), які точно повторюють контури з фото
             const icons = [
-                // Калькулятор
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><rect x="8" y="6" width="8" height="4"></rect><circle cx="8" cy="14" r="1"></circle><circle cx="12" cy="14" r="1"></circle><circle cx="16" cy="14" r="1"></circle><circle cx="8" cy="18" r="1"></circle><circle cx="12" cy="18" r="1"></circle><circle cx="16" cy="18" r="1"></circle></svg>`,
-                // Відсоток (%)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>`,
-                // Хештег (#)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`,
-                // Бінарний код
                 `<div class="text-icon">01<br>10</div>`,
-                // Графік
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"></rect><rect x="10" y="8" width="4" height="13" rx="1"></rect><rect x="2" y="13" width="4" height="8" rx="1"></rect></svg>`,
-                // Стрілка тренду (зигзаг)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>`,
-                // Іскра / Зірочка
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 5.5-4.5 10-10 10 5.5 0 10 4.5 10 10 0-5.5 4.5-10 10-10-5.5 0-10-4.5-10-10z"></path></svg>`,
-                // Атом
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg>`,
-                // Ділення
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><line x1="4" y1="12" x2="20" y2="12"></line><circle cx="12" cy="19" r="2"></circle></svg>`
             ];
             
-            // Кольори точнісінько як на фото
-            const colors = ['var(--neon-cyan)', 'var(--neon-pink)'];
-            const numStickers = 22; // Небагато, щоб не перевантажувати фон
+            // Кольори, включаючи фіолетовий, щоб відповідало фото
+            const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
+            
+            // Налаштування сітки (Grid), щоб іконки ніколи не торкались
+            const cols = 6; 
+            const rows = 4;
+            
+            const cellWidthPct = 100 / cols;
+            const cellHeightPct = 100 / rows;
 
-            for (let i = 0; i < numStickers; i++) {
-                let el = document.createElement('div');
-                el.className = 'sticker';
-                
-                // Випадковий символ та колір
-                el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-                el.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                // Випадковий розмір (трохи різниться)
-                let scale = Math.random() * (1.2 - 0.7) + 0.7; 
-                
-                // Випадкова позиція
-                el.style.left = `${Math.random() * 92}vw`;
-                el.style.top = `${Math.random() * 92}vh`;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let el = document.createElement('div');
+                    el.className = 'sticker';
+                    
+                    el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    let scale = Math.random() * (1.1 - 0.7) + 0.7; 
+                    
+                    // Відступи в межах комірки (щоб не прилягали до країв)
+                    // Генеруємо позицію від 20% до 80% всередині поточної комірки
+                    let randomX = Math.random() * (cellWidthPct * 0.6) + (cellWidthPct * 0.2);
+                    let randomY = Math.random() * (cellHeightPct * 0.6) + (cellHeightPct * 0.2);
+                    
+                    let posX = c * cellWidthPct + randomX;
+                    let posY = r * cellHeightPct + randomY;
+                    
+                    el.style.left = `${posX}vw`;
+                    el.style.top = `${posY}vh`;
 
-                // Одразу задаємо кут повороту ДО додавання в DOM
-                let rotation = Math.random() * 360;
-                el.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+                    let rotation = Math.random() * 360;
+                    el.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
 
-                container.appendChild(el);
+                    container.appendChild(el);
+                }
             }
         }
 
