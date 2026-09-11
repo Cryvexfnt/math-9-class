@@ -258,36 +258,16 @@
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             
-            // Новий тематичний набір неонових іконок
             const icons = [
-                // 1. Квадратний корінь √x
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">x</text></svg>`,
-                
-                // 2. Квадратний корінь √a
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 13h3l3 7 4-15h9"/><text x="13" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">a</text></svg>`,
-                
-                // 3. Кут α (дуга з альфою)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">α</text></svg>`,
-                
-                // 4. Кут 90° (Прямий кут)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><rect x="4" y="12" width="8" height="8"/><text x="11" y="11" font-size="7" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">90°</text></svg>`,
-
-                // 5. Кут 45°
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H4V4"/><path d="M4 20L18 6"/><text x="12" y="18" font-size="8" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">45°</text></svg>`,
-
-                // 6. Кут 180° (Розгорнутий)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h18"/><path d="M18 18 A 9 9 0 0 0 3 18" stroke-dasharray="2 2"/><text x="7" y="13" font-size="7" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">180°</text></svg>`,
-
-                // 7. Формула Фізики: E=mc²
                 `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5" font-family="sans-serif"><text x="0" y="14">E=mc²</text></svg>`,
-
-                // 8. Фізика: Атом / Електронна орбіта
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
-
-                // 9. Фізика: Магніт
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 8h12"/><path d="M6 3h4v4H6z" fill="currentColor"/><path d="M14 3h4v4h-4z" fill="currentColor"/></svg>`,
-
-                // 10. Блискавка / Енергія
                 `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>`
             ];
             
@@ -738,23 +718,24 @@
         
         function forceEndQuiz() {
             closeEndModal();
-            finishQuiz(true);
+            finishQuiz(true, 'manual');
         }
 
         function showTimerEnd() {
             document.getElementById('timer-modal').style.display = 'flex';
             setTimeout(() => {
                 document.getElementById('timer-modal').style.display = 'none';
-                finishQuiz(true);
+                finishQuiz(true, 'timeout');
             }, 3000);
         }
 
-        function finishQuiz(endedEarly = false) {
+        function finishQuiz(endedEarly = false, reason = 'manual') {
             clearInterval(timerInterval);
             
             if(endedEarly && currentIndex < targetQuestionsCount) {
+                const statusType = (reason === 'timeout') ? 'timeout' : 'unanswered';
                 for(let i = currentIndex; i < targetQuestionsCount; i++) {
-                    results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: 'unanswered' });
+                    results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: statusType });
                 }
             }
             buildResultsScreen();
@@ -784,8 +765,11 @@
                 } else if (res.status === 'skipped') {
                     statusText = '⏭ Пропущено';
                     statusClass = 'res-status-skipped';
+                } else if (res.status === 'timeout') {
+                    statusText = '⏰ Час вичерпано';
+                    statusClass = 'res-status-unanswered';
                 } else {
-                    statusText = '⏳ Без відповіді (час вийшов)';
+                    statusText = '⏸ Без відповіді (достроково завершено)';
                     statusClass = 'res-status-unanswered';
                 }
 
