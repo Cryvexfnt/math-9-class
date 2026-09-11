@@ -118,7 +118,12 @@
         #quiz-progress { color: #ccc; font-weight: bold; }
         #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
-        .question-text { font-size: 1.8rem; margin-bottom: 30px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; }
+        .question-text { font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; text-align: center;}
+        
+        /* Зображення для завдань */
+        .question-image { text-align: center; margin-bottom: 30px; }
+        .question-image svg { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
+
         .options-grid { display: flex; flex-direction: column; gap: 15px; }
         .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.3rem; padding: 15px 25px; border-color: rgba(255,255,255,0.2); }
         .option-btn:hover { border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
@@ -207,6 +212,10 @@
                 <div id="timer-display" style="display:none;">00:00</div>
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
+            
+            <!-- Контейнер для візуальних чертежів -->
+            <div id="question-image" class="question-image" style="display:none;"></div>
+            
             <div class="options-grid" id="options-grid"></div>
             <div id="explanation" class="explanation"></div>
             
@@ -251,62 +260,58 @@
             const container = document.getElementById('bg-stickers');
             
             const icons = [
-                // Олівець (Карандаш)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
-                // Лінійка
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 14.6L9.4 4.6c-1.2-1.2-3.1-1.2-4.2 0l-0.6 0.6c-1.2 1.2-1.2 3.1 0 4.2l10 10c1.2 1.2 3.1 1.2 4.2 0l0.6-0.6c1.2-1.2 1.2-3.1 0-4.2z"></path><line x1="12" y1="7" x2="15" y2="10"></line><line x1="9" y1="10" x2="12" y2="13"></line><line x1="6" y1="13" x2="9" y2="16"></line></svg>`,
-                // Зошит/Книга (Блокнот)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
-                // Ластик
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path><path d="M22 21H7"></path><path d="m5 11 9 9"></path></svg>`,
-                // Дзвінок (Колокольчик)
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`
             ];
             
             const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
-            
-            const cols = 6; 
-            const rows = 4;
-            
-            const cellWidthPct = 100 / cols;
-            const cellHeightPct = 100 / rows;
+            const cols = 6; const rows = 4;
+            const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     let el = document.createElement('div');
                     el.className = 'sticker';
-                    
                     el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
                     el.style.color = colors[Math.floor(Math.random() * colors.length)];
-                    
                     let scale = Math.random() * (1.1 - 0.7) + 0.7; 
-                    
                     let randomX = Math.random() * (cellWidthPct * 0.6) + (cellWidthPct * 0.2);
                     let randomY = Math.random() * (cellHeightPct * 0.6) + (cellHeightPct * 0.2);
-                    
-                    let posX = c * cellWidthPct + randomX;
-                    let posY = r * cellHeightPct + randomY;
-                    
-                    el.style.left = `${posX}vw`;
-                    el.style.top = `${posY}vh`;
-
-                    let rotation = Math.random() * 360;
-                    el.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
-
+                    el.style.left = `${c * cellWidthPct + randomX}vw`;
+                    el.style.top = `${r * cellHeightPct + randomY}vh`;
+                    el.style.transform = `scale(${scale}) rotate(${Math.random() * 360}deg)`;
                     container.appendChild(el);
                 }
             }
         }
-
         window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
         // --- ЛОГІКА ТЕСТІВ ---
         const db = {
             geometry: [
-                { q: "Сума кутів опуклого чотирикутника дорівнює:", opts: ["180°", "360°", "540°", "90°"], ans: 1, exp: "За теоремою про суму кутів опуклого чотирикутника вона завжди дорівнює 360°." },
-                { q: "Паралелограм, у якого всі сторони рівні, називається:", opts: ["Прямокутник", "Трапеція", "Ромб", "Дельтоїд"], ans: 2, exp: "За означенням, ромб — це паралелограм, у якого всі сторони рівні." },
-                { q: "Якщо катети прямокутного трикутника дорівнюють 6 см і 8 см, то гіпотенуза дорівнює:", opts: ["10 см", "14 см", "100 см", "12 см"], ans: 0, exp: "За теоремою Піфагора: c² = a² + b² = 6² + 8² = 36 + 64 = 100. Корінь зі 100 — це 10." },
-                { q: "Площа прямокутного трикутника з катетами 'a' та 'b' обчислюється за формулою:", opts: ["S = a*b", "S = (a*b)/2", "S = a+b", "S = (a+b)/2"], ans: 1, exp: "Площа прямокутного трикутника дорівнює половині добутку його катетів." }
+                { 
+                    q: "Сума кутів опуклого чотирикутника дорівнює:", 
+                    img: `<svg width="150" height="150" viewBox="0 0 100 100"><polygon points="10,20 70,10 90,80 20,90" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
+                    opts: ["180°", "360°", "540°", "90°"], ans: 1, exp: "За теоремою про суму кутів опуклого чотирикутника вона завжди дорівнює 360°." 
+                },
+                { 
+                    q: "Паралелограм, у якого всі сторони рівні, називається:", 
+                    img: `<svg width="150" height="150" viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
+                    opts: ["Прямокутник", "Трапеція", "Ромб", "Дельтоїд"], ans: 2, exp: "За означенням, ромб — це паралелограм, у якого всі сторони рівні." 
+                },
+                { 
+                    q: "Якщо катети прямокутного трикутника дорівнюють 6 см і 8 см, то гіпотенуза дорівнює:", 
+                    img: `<svg width="180" height="150" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="14">6</text><text x="45" y="105" fill="white" font-size="14">8</text></svg>`,
+                    opts: ["10 см", "14 см", "100 см", "12 см"], ans: 0, exp: "За теоремою Піфагора: c² = a² + b² = 6² + 8² = 36 + 64 = 100. Корінь зі 100 — це 10." 
+                },
+                { 
+                    q: "Площа прямокутного трикутника з катетами 'a' та 'b' обчислюється за формулою:", 
+                    img: `<svg width="180" height="150" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="16">a</text><text x="45" y="105" fill="white" font-size="16">b</text></svg>`,
+                    opts: ["S = a*b", "S = (a*b)/2", "S = a+b", "S = (a+b)/2"], ans: 1, exp: "Площа прямокутного трикутника дорівнює половині добутку його катетів." 
+                }
             ],
             algebra: [
                 { q: "Яка з нерівностей є правильною, якщо a > b?", opts: ["a - 3 < b - 3", "a + 2 < b + 2", "-a < -b", "-2a > -2b"], ans: 2, exp: "При множенні обох частин правильної нерівності на від'ємне число знак нерівності змінюється на протилежний." },
@@ -357,6 +362,7 @@
         function setPresetCount(num) {
             targetQuestionsCount = num;
             customCountInput.classList.add('disabled');
+            goToTimeSelection(); // Автоматичний перехід на вибір часу
         }
 
         function setSliderCount(val) {
@@ -452,6 +458,18 @@
             
             document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
             document.getElementById('question-text').innerText = qData.q;
+            
+            // Завантаження зображення (якщо є)
+            let qImgContainer = document.getElementById('question-image');
+            if(qData.img) {
+                qImgContainer.innerHTML = qData.img;
+                qImgContainer.style.display = 'block';
+                qImgContainer.style.color = 'var(--neon-cyan)';
+            } else {
+                qImgContainer.innerHTML = '';
+                qImgContainer.style.display = 'none';
+            }
+
             document.getElementById('explanation').style.display = 'none';
             document.getElementById('btn-skip').style.display = 'inline-block';
             document.getElementById('btn-next').style.display = 'none';
