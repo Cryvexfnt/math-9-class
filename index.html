@@ -40,16 +40,16 @@
 
         .sticker {
             position: absolute;
-            width: 55px;
-            height: 55px;
+            width: 65px;
+            height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.55; 
+            opacity: 0.6; 
             user-select: none;
             transform-origin: center center;
-            margin-left: -27px;
-            margin-top: -27px;
+            margin-left: -32px;
+            margin-top: -32px;
             animation: pulse-glow 3s infinite alternate ease-in-out;
         }
 
@@ -60,8 +60,8 @@
         }
 
         @keyframes pulse-glow {
-            0% { opacity: 0.35; filter: brightness(0.8); transform: scale(0.95); }
-            100% { opacity: 0.75; filter: brightness(1.4); transform: scale(1.05); }
+            0% { opacity: 0.4; filter: brightness(0.8); transform: scale(0.95); }
+            100% { opacity: 0.8; filter: brightness(1.4); transform: scale(1.05); }
         }
 
         /* Контейнери екранів */
@@ -254,31 +254,44 @@
     </div>
 
     <script>
-        /* Генерація фонових неонових стікерів як на макеті */
+        /* Генерація фонових неонових стікерів (Корені, кути, фізика) */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             
-            // Набір неонових математичних та технологічних SVG-іконок з макету
+            // Новий тематичний набір неонових іконок
             const icons = [
-                // Відсоток %
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
-                // Решітка / Хештег #
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>`,
-                // Знак ділення ÷
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="6" r="2" fill="currentColor"/><line x1="5" y1="12" x2="19" y2="12"/><circle cx="12" cy="18" r="2" fill="currentColor"/></svg>`,
-                // Графік / Стовпчики
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="8"/><line x1="18" y1="20" x2="18" y2="4"/></svg>`,
-                // Калькулятор
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="3" width="14" height="18" rx="2"/><rect x="8" y="6" width="8" height="3"/><circle cx="8.5" cy="12.5" r="1" fill="currentColor"/><circle cx="12" cy="12.5" r="1" fill="currentColor"/><circle cx="15.5" cy="12.5" r="1" fill="currentColor"/><circle cx="8.5" cy="16.5" r="1" fill="currentColor"/><circle cx="12" cy="16.5" r="1" fill="currentColor"/><circle cx="15.5" cy="16.5" r="1" fill="currentColor"/></svg>`,
-                // Сяюча зірочка ✦
-                `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/></svg>`,
-                // Бінарні числа 01 / 10
-                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="9"><text x="1" y="10" font-family="sans-serif">01</text><text x="1" y="21" font-family="sans-serif">10</text></svg>`,
-                // Стрілка тренду / Зигзаг
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`
+                // 1. Квадратний корінь √x
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">x</text></svg>`,
+                
+                // 2. Квадратний корінь √a
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 13h3l3 7 4-15h9"/><text x="13" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">a</text></svg>`,
+                
+                // 3. Кут α (дуга з альфою)
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">α</text></svg>`,
+                
+                // 4. Кут 90° (Прямий кут)
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><rect x="4" y="12" width="8" height="8"/><text x="11" y="11" font-size="7" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">90°</text></svg>`,
+
+                // 5. Кут 45°
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H4V4"/><path d="M4 20L18 6"/><text x="12" y="18" font-size="8" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">45°</text></svg>`,
+
+                // 6. Кут 180° (Розгорнутий)
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h18"/><path d="M18 18 A 9 9 0 0 0 3 18" stroke-dasharray="2 2"/><text x="7" y="13" font-size="7" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">180°</text></svg>`,
+
+                // 7. Формула Фізики: E=mc²
+                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5" font-family="sans-serif"><text x="0" y="14">E=mc²</text></svg>`,
+
+                // 8. Фізика: Атом / Електронна орбіта
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
+
+                // 9. Фізика: Магніт
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 8h12"/><path d="M6 3h4v4H6z" fill="currentColor"/><path d="M14 3h4v4h-4z" fill="currentColor"/></svg>`,
+
+                // 10. Блискавка / Енергія
+                `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>`
             ];
             
-            const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
+            const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)', 'var(--neon-red)'];
             const cols = 7; const rows = 5;
             const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
 
@@ -288,7 +301,7 @@
                     el.className = 'sticker';
                     el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
                     el.style.color = colors[Math.floor(Math.random() * colors.length)];
-                    let scale = Math.random() * (1.1 - 0.7) + 0.7; 
+                    let scale = Math.random() * (1.15 - 0.75) + 0.75; 
                     let randomX = Math.random() * (cellWidthPct * 0.7) + (cellWidthPct * 0.15);
                     let randomY = Math.random() * (cellHeightPct * 0.7) + (cellHeightPct * 0.15);
                     el.style.left = `${c * cellWidthPct + randomX}vw`;
