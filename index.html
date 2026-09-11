@@ -30,7 +30,6 @@
             position: relative;
         }
 
-        /* Контейнер для стікерів */
         #bg-stickers {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -59,7 +58,6 @@
             100% { opacity: 0.8; filter: brightness(1.4); transform: scale(1.05); }
         }
 
-        /* Контейнери екранів */
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; z-index: 1;}
         .screen.active { display: flex; }
 
@@ -94,7 +92,6 @@
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
         
-        /* Жовта неонова кнопка "Грати без часу" */
         .btn-yellow {
             border-color: var(--neon-yellow);
             box-shadow: 0 0 15px rgba(255, 230, 0, 0.4), inset 0 0 10px rgba(255, 230, 0, 0.2);
@@ -107,7 +104,6 @@
             transform: scale(1.05);
         }
 
-        /* Стиль для активної зеленої кнопки */
         .btn-count-active {
             border-color: var(--neon-green) !important;
             box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green) !important;
@@ -117,7 +113,6 @@
 
         .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555 !important; color: #555 !important; box-shadow: none !important; text-shadow: none !important; }
 
-        /* Вибір кількості та часу */
         .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 10px; }
         .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px; }
         
@@ -132,7 +127,6 @@
         .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
         .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
         
-        /* Тест та інтерфейс */
         .quiz-container { background: var(--panel-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05); position: relative; backdrop-filter: blur(15px); }
         .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 1.5rem;}
         #quiz-progress { color: #ccc; font-weight: bold; }
@@ -151,7 +145,6 @@
         .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
         
-        /* Модалки */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
         .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
         #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
@@ -176,7 +169,7 @@
         <div class="subject-menu">
             <button class="btn btn-algebra" onclick="selectSubject('algebra')">√x Алгебра</button>
             <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠a Геометрія</button>
-            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика</button>
+            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика (9 клас)</button>
         </div>
     </div>
 
@@ -261,7 +254,6 @@
         </div>
     </div>
 
-    <!-- Модальні вікна -->
     <div class="modal-overlay" id="end-modal">
         <div class="modal-content">
             <h2>Дійсно завершити тест?</h2>
@@ -472,58 +464,64 @@
             }
         }
 
+        /* --- ОНОВЛЕНІ ЗАВДАННЯ З ФІЗИКИ 9 КЛАСУ --- */
         function createPhysicsQuestion() {
             const type = Math.floor(Math.random() * 5);
+            
             if (type === 0) {
-                let I = Math.floor(Math.random() * 5) + 1;
-                let R = (Math.floor(Math.random() * 8) + 2) * 5;
-                let U = I * R;
-                let correctOpt = `${U} В`;
-                let opts = shuffle([correctOpt, `${R / I} В`, `${U + 10} В`, `${I + R} В`]);
+                // Рівноприскорений рух: s = (a * t^2) / 2
+                let a = Math.floor(Math.random() * 4) + 1; // 1..4 м/с²
+                let t = (Math.floor(Math.random() * 4) + 2) * 2; // 4, 6, 8, 10 с
+                let s = (a * t * t) / 2;
+                let correctOpt = `${s} м`;
+                let opts = shuffle([correctOpt, `${a * t} м`, `${s + 10} м`, `${s / 2} м`]);
                 return {
-                    q: `Яка напруга на ділянці кола, якщо сила струму дорівнює ${I} А, а опір — ${R} Ом?`,
+                    q: `Тіло рухається зі стану спокою з прискоренням ${a} м/с². Який шлях воно подолає за ${t} с?`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За законом Ома для ділянки кола: U = I · R = ${I} · ${R} = ${U} В.`
+                    exp: `За формулою шляху при рівноприскореному русі (без v₀): s = (a · t²) / 2 = (${a} · ${t}²) / 2 = ${s} м.`
                 };
             } else if (type === 1) {
-                let v = (Math.floor(Math.random() * 8) + 2) * 10;
-                let t = Math.floor(Math.random() * 4) + 2;
-                let s = v * t;
-                let correctOpt = `${s} км`;
-                let opts = shuffle([correctOpt, `${v + t} км`, `${s - 20} км`, `${Math.round(v / t)} км`]);
+                // Другий закон Ньютона: F = m * a
+                let m = (Math.floor(Math.random() * 8) + 2) * 100; // 200..900 кг
+                let a = Math.floor(Math.random() * 5) + 1; // 1..5 м/с²
+                let F = m * a;
+                let correctOpt = `${F} Н`;
+                let opts = shuffle([correctOpt, `${m + a} Н`, `${Math.round(m / a)} Н`, `${F + 200} Н`]);
                 return {
-                    q: `Автомобіль рухається зі швидкістю ${v} км/год. Яку відстань він подолає за ${t} год?`,
+                    q: `Яка рівнодійна сил діє на тіло масою ${m} кг, якщо воно рухається з прискоренням ${a} м/с²?`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Формула шляху: s = v · t = ${v} · ${t} = ${s} км.`
+                    exp: `За II законом Ньютона: F = m · a = ${m} кг · ${a} м/с² = ${F} Н.`
                 };
             } else if (type === 2) {
-                let rho = 1000;
-                let V = Math.floor(Math.random() * 5) + 1;
-                let m = rho * V;
-                let correctOpt = `${m} кг`;
-                let opts = shuffle([correctOpt, `${V * 100} кг`, `${m + 500} кг`, `${rho / V} кг`]);
+                // Імпульс тіла: p = m * v
+                let m = (Math.floor(Math.random() * 5) + 1) * 2; // 2..10 кг
+                let v = (Math.floor(Math.random() * 6) + 2) * 5; // 10..35 м/с
+                let p = m * v;
+                let correctOpt = `${p} кг·м/с`;
+                let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
                 return {
-                    q: `Обчисліть масу води об'ємом ${V} м³, якщо густина води дорівнює ${rho} кг/м³:`,
+                    q: `Знайдіть імпульс тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Маса обчислюється за формулою: m = ρ · V = ${rho} · ${V} = ${m} кг.`
+                    exp: `Імпульс тіла обчислюється за формулою: p = m · v = ${m} · ${v} = ${p} кг·м/с.`
                 };
             } else if (type === 3) {
-                let A = (Math.floor(Math.random() * 8) + 2) * 100;
-                let t = Math.floor(Math.random() * 5) + 2;
-                let P = Math.round(A / t);
-                let correctOpt = `${P} Вт`;
-                let opts = shuffle([correctOpt, `${A * t} Вт`, `${P + 15} Вт`, `${A - t} Вт`]);
+                // Кінетична енергія: Ek = (m * v^2) / 2
+                let m = Math.floor(Math.random() * 5) + 2; // 2..6 кг
+                let v = (Math.floor(Math.random() * 4) + 1) * 2; // 2, 4, 6, 8 м/с
+                let Ek = (m * v * v) / 2;
+                let correctOpt = `${Ek} Дж`;
+                let opts = shuffle([correctOpt, `${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 12} Дж`]);
                 return {
-                    q: `Двигун виконав роботу ${A} Дж за ${t} с. Знайдіть його потужність:`,
+                    q: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Потужність обчислюється за формулою: P = A / t = ${A} / ${t} = ${P} Вт.`
+                    exp: `Кінетична енергія Eₖ = (m · v²) / 2 = (${m} · ${v}²) / 2 = ${Ek} Дж.`
                 };
             } else {
                 const conceptQuestions = [
-                    { q: "Що є носіями електричного струму в металах?", opts: ["Вільні електрони", "Позитивні йони", "Негативні йони", "Протони"], exp: "Вільні електрони в металах легко переміщуються, створюючи струм." },
-                    { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Збільшується", "Зменшується", "Не змінюється", "Падає до нуля"], exp: "При нагріванні іони решітки коливаються інтенсивніше, частіше стикаючись з электронами, що збільшує опір." },
-                    { q: "Хто відкрив явище надпровідності?", opts: ["Гейке Камерлінг-Оннес", "Георг Ом", "Алессандро Вольта", "Джеймс Максвелл"], exp: "Явище надпровідності (різке падіння опору до нуля) відкрив Г. Камерлінг-Оннес у 1911 році." },
-                    { q: "Одиницею вимірювання електричного опору в SІ є:", opts: ["Ом", "Вольт", "Ампер", "Ват"], exp: "Електричний опір вимірюється в Омах (Ом)." }
+                    { q: "Як називається закон, який стверджує: існують такі системи відліку, в яких тіло зберігає стан спокою або прямолінійного рівномірного руху?", opts: ["Перший закон Ньютона", "Другий закон Ньютона", "Третій закон Ньютона", "Закон всесвітнього тяжіння"], exp: "Це формулювання першого закону Ньютона (закону інерції)." },
+                    { q: "Яка одиниця вимірювання прискорення в системі SI?", opts: ["м/с²", "м/с", "Н/кг", "кг·м/с"], exp: "Прискорення вимірюється в метрах за секунду в квадраті (м/с²)." },
+                    { q: "За якою формулою обчислюється модуль сили тяжіння біля поверхні Землі?", opts: ["F = mg", "F = kx", "F = ma", "F = G(m₁·m₂)/r²"], exp: "Сила тяжіння біля поверхні Землі обчислюється за формулою F = mg." },
+                    { q: "Як зміниться кінетична енергія тіла, якщо його швидкість збільшиться у 2 рази?", opts: ["Збільшиться в 4 рази", "Збільшиться в 2 рази", "Зменшиться в 2 рази", "Не зміниться"], exp: "Оскільки Eₖ залежить від квадрата швидкості (v²), при збільшенні v у 2 рази енергія зросте в 2² = 4 рази." }
                 ];
                 let item = conceptQuestions[Math.floor(Math.random() * conceptQuestions.length)];
                 let correctOpt = item.opts[0];
@@ -549,7 +547,6 @@
             return list;
         }
 
-        /* --- СТАН ТА ЛОГІКА --- */
         let currentSubject = '';
         let targetQuestionsCount = 0;
         let selectedPresetCount = null;
@@ -572,7 +569,6 @@
             switchScreen('screen-count');
         }
 
-        /* --- ВИБІР КІЛЬКОСТІ ЗАВДАНЬ --- */
         function resetCountSelection() {
             selectedPresetCount = null;
             targetQuestionsCount = 0;
@@ -641,7 +637,6 @@
             }
         }
 
-        /* --- ВИБІР ЧАСУ --- */
         function goToTimeSelection() {
             if (targetQuestionsCount <= 0) return;
             resetTimeSelection();
@@ -747,7 +742,6 @@
             }
         }
 
-        /* --- ПЕРЕБІГ ТЕСТУ --- */
         function startQuiz(timeSec) {
             selectedTime = timeSec;
             currentQuestions = generateUniqueQuizQuestions(currentSubject, targetQuestionsCount);
