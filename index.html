@@ -13,6 +13,7 @@
             --neon-pink: #ff00a0;
             --neon-red: #ff0055;
             --neon-green: #00ff66;
+            --neon-yellow: #ffe600;
             --bg-color: #0d081c; 
             --panel-bg: rgba(13, 8, 28, 0.85);
         }
@@ -29,7 +30,7 @@
             position: relative;
         }
 
-        /* Контейнер для стікерів (на задньому плані) */
+        /* Контейнер для стікерів */
         #bg-stickers {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -40,22 +41,16 @@
 
         .sticker {
             position: absolute;
-            width: 65px;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.6; 
-            user-select: none;
+            width: 65px; height: 65px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0.6; user-select: none;
             transform-origin: center center;
-            margin-left: -32px;
-            margin-top: -32px;
+            margin-left: -32px; margin-top: -32px;
             animation: pulse-glow 3s infinite alternate ease-in-out;
         }
 
         .sticker svg {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 15px currentColor);
         }
 
@@ -73,10 +68,9 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px var(--neon-purple); 
             text-align: center; margin-bottom: 40px; 
         }
-        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 30px; }
-        p { font-size: 1.5rem; }
+        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 20px; }
+        p { font-size: 1.3rem; margin: 5px 0; }
 
-        /* Головне меню - Кнопки предметів */
         .subject-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 
         .btn {
@@ -100,7 +94,20 @@
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
         
-        /* Стиль для вибраної зеленої кнопки кількості */
+        /* Жовта неонова кнопка "Грати без часу" */
+        .btn-yellow {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.4), inset 0 0 10px rgba(255, 230, 0, 0.2);
+            text-shadow: 0 0 8px var(--neon-yellow);
+            color: var(--neon-yellow);
+        }
+        .btn-yellow:hover {
+            background: rgba(255, 230, 0, 0.2);
+            box-shadow: 0 0 25px var(--neon-yellow), inset 0 0 15px var(--neon-yellow);
+            transform: scale(1.05);
+        }
+
+        /* Стиль для активної зеленої кнопки */
         .btn-count-active {
             border-color: var(--neon-green) !important;
             box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green) !important;
@@ -111,13 +118,17 @@
         .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555 !important; color: #555 !important; box-shadow: none !important; text-shadow: none !important; }
 
         /* Вибір кількості та часу */
-        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
+        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 10px; }
+        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px; }
+        
         input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
         input[type="range"].disabled { opacity: 0.3; pointer-events: none; }
-        .time-inputs { display: flex; gap: 10px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
-        .time-inputs input { width: 80px; height: 60px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        
+        .time-inputs { display: flex; gap: 8px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        .time-inputs input { width: 75px; height: 55px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 1.8rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+        .time-inputs input:disabled { opacity: 0.3; border-color: #555; box-shadow: none; }
+
         .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
         .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
         
@@ -129,7 +140,6 @@
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
         .question-text { font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; text-align: center;}
         
-        /* Зображення для завдань */
         .question-image { text-align: center; margin-bottom: 30px; }
         .question-image svg { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
 
@@ -141,7 +151,7 @@
         .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
         
-        /* Модалки та результати */
+        /* Модалки */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
         .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
         #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
@@ -183,7 +193,7 @@
         <div class="custom-input-area">
             <p>Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan);">0</span></p>
             <input type="range" id="custom-count" min="0" max="50" value="0" oninput="handleSliderInput(this.value)">
-            <button class="btn btn-default disabled" id="btn-count-next" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
+            <button class="btn btn-default disabled" id="btn-count-next" style="margin-top:20px;" onclick="goToTimeSelection()">Далі ➔</button>
         </div>
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
@@ -193,22 +203,30 @@
     <div id="screen-time" class="screen">
         <h2>Виберіть час тесту</h2>
         <div class="grid-options" id="preset-times">
-            <button class="btn btn-default time-btn" onclick="setPresetTime(30)">00:30</button>
-            <button class="btn btn-default time-btn" onclick="setPresetTime(60)">01:00</button>
-            <button class="btn btn-default time-btn" onclick="setPresetTime(300)">05:00</button>
-            <button class="btn btn-default time-btn" onclick="setPresetTime(600)">10:00</button>
-            <button class="btn btn-default time-btn" onclick="setPresetTime(900)">15:00</button>
-            <button class="btn btn-default time-btn" onclick="setPresetTime(1200)">20:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(900, this)">15:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(1200, this)">20:00</button>
         </div>
+        
         <div class="custom-input-area">
             <p>Або напишіть свій час</p>
-            <div class="time-inputs">
-                <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="checkMinInput()"> : 
-                <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="disableTimePresets()">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn" id="btn-reset-time" onclick="resetManualTime()" style="display: none; border-color: var(--neon-red); color: var(--neon-red); padding: 10px 18px; font-size: 1rem; margin: 0;">Скинути час</button>
+                <div class="time-inputs">
+                    <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="handleManualTimeInput()"> : 
+                    <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="handleManualTimeInput()">
+                </div>
             </div>
-            <button class="btn btn-default" onclick="startQuizWithCustomTime()" style="margin-top: 25px;">Запустити з цим часом</button>
-            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: rgba(255,255,255,0.2); color: #ccc;">Грати без часу</button>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
+                <button class="btn btn-default disabled" id="btn-start-with-time" onclick="startQuizWithSelectedTime()">Запустити з цим часом</button>
+                <button class="btn btn-yellow" onclick="startQuiz(0)">Грати без часу</button>
+            </div>
         </div>
+        
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-count')">⮌ Назад</button>
         </div>
@@ -221,7 +239,6 @@
                 <div id="timer-display" style="display:none;">00:00</div>
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
-            
             <div id="question-image" class="question-image" style="display:none;"></div>
             
             <div class="options-grid" id="options-grid"></div>
@@ -263,7 +280,6 @@
     </div>
 
     <script>
-        /* Генерація фонових неонових стікерів (Корені, кути, фізика) */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             
@@ -302,7 +318,6 @@
         }
         window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
-        /* --- ГЕНЕРАТОРИ ВИПАДКОВИХ ПИТАНЬ --- */
         function shuffle(arr) {
             let res = [...arr];
             for (let i = res.length - 1; i > 0; i--) {
@@ -534,10 +549,11 @@
             return list;
         }
 
-        /* --- УПРАВЛІННЯ ІНТЕРФЕЙСОМ ТА СТАНОМ ТЕСТУ --- */
+        /* --- СТАН ТА ЛОГІКА --- */
         let currentSubject = '';
         let targetQuestionsCount = 0;
         let selectedPresetCount = null;
+        let selectedPresetTimeSec = null;
         let selectedTime = 0;
         let timerInterval;
         let currentQuestions = [];
@@ -556,15 +572,13 @@
             switchScreen('screen-count');
         }
 
-        /* Управління вибором кількості завдань */
+        /* --- ВИБІР КІЛЬКОСТІ ЗАВДАНЬ --- */
         function resetCountSelection() {
             selectedPresetCount = null;
             targetQuestionsCount = 0;
 
             const presetBtns = document.querySelectorAll('.count-btn');
-            presetBtns.forEach(btn => {
-                btn.classList.remove('disabled', 'btn-count-active');
-            });
+            presetBtns.forEach(btn => btn.classList.remove('disabled', 'btn-count-active'));
 
             const customCountInput = document.getElementById('custom-count');
             customCountInput.disabled = false;
@@ -572,8 +586,7 @@
             customCountInput.value = 0;
             document.getElementById('slider-val').innerText = '0';
 
-            const btnNext = document.getElementById('btn-count-next');
-            btnNext.classList.add('disabled');
+            document.getElementById('btn-count-next').classList.add('disabled');
         }
 
         function togglePresetCount(num, btnElement) {
@@ -582,33 +595,25 @@
             const presetBtns = document.querySelectorAll('.count-btn');
 
             if (selectedPresetCount === num) {
-                // Повторне натискання — знімаємо вибір
                 selectedPresetCount = null;
                 targetQuestionsCount = 0;
                 btnElement.classList.remove('btn-count-active');
 
-                // Розблоковуємо ползунок
                 customCountInput.disabled = false;
                 customCountInput.classList.remove('disabled');
-
-                // Вимикаємо кнопку "Далі"
                 btnNext.classList.add('disabled');
             } else {
-                // Новий вибір кнопкою
                 selectedPresetCount = num;
                 targetQuestionsCount = num;
 
-                // Знімаємо підсвітку з усіх та ставимо на поточну
                 presetBtns.forEach(b => b.classList.remove('btn-count-active'));
                 btnElement.classList.add('btn-count-active');
 
-                // Скидаємо та блокуємо ползунок
                 customCountInput.value = 0;
                 document.getElementById('slider-val').innerText = '0';
                 customCountInput.disabled = true;
                 customCountInput.classList.add('disabled');
 
-                // Вмикаємо кнопку "Далі"
                 btnNext.classList.remove('disabled');
             }
         }
@@ -624,53 +629,125 @@
                 selectedPresetCount = null;
                 targetQuestionsCount = numVal;
 
-                // Заблокувати та деактивувати кнопки-пресети
                 presetBtns.forEach(b => {
                     b.classList.remove('btn-count-active');
                     b.classList.add('disabled');
                 });
-
-                // Увімкнути кнопку далі
                 btnNext.classList.remove('disabled');
             } else {
-                // Якщо 0 — розблоковуємо пресети
                 targetQuestionsCount = 0;
                 presetBtns.forEach(b => b.classList.remove('disabled'));
                 btnNext.classList.add('disabled');
             }
         }
 
+        /* --- ВИБІР ЧАСУ --- */
         function goToTimeSelection() {
             if (targetQuestionsCount <= 0) return;
-            document.getElementById('custom-min').value = '';
-            document.getElementById('custom-sec').value = '';
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('disabled'));
+            resetTimeSelection();
             switchScreen('screen-time');
         }
 
-        function setPresetTime(sec) {
-            selectedTime = sec;
-            document.getElementById('custom-min').value = '';
-            document.getElementById('custom-sec').value = '';
-            startQuiz(sec);
+        function resetTimeSelection() {
+            selectedPresetTimeSec = null;
+            selectedTime = 0;
+
+            const timeBtns = document.querySelectorAll('.time-btn');
+            timeBtns.forEach(b => b.classList.remove('disabled', 'btn-count-active'));
+
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            minInp.value = '';
+            secInp.value = '';
+            minInp.disabled = false;
+            secInp.disabled = false;
+
+            document.getElementById('btn-reset-time').style.display = 'none';
+            document.getElementById('btn-start-with-time').classList.add('disabled');
         }
 
-        function checkMinInput() {
-            let minInp = document.getElementById('custom-min');
-            disableTimePresets();
-            if(minInp.value.length >= 2) document.getElementById('custom-sec').focus();
+        function togglePresetTime(sec, btnElement) {
+            const btnStart = document.getElementById('btn-start-with-time');
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
+
+            if (selectedPresetTimeSec === sec) {
+                selectedPresetTimeSec = null;
+                selectedTime = 0;
+                btnElement.classList.remove('btn-count-active');
+
+                minInp.disabled = false;
+                secInp.disabled = false;
+                btnStart.classList.add('disabled');
+            } else {
+                selectedPresetTimeSec = sec;
+                selectedTime = sec;
+
+                minInp.value = '';
+                secInp.value = '';
+                resetBtn.style.display = 'none';
+
+                minInp.disabled = true;
+                secInp.disabled = true;
+
+                timeBtns.forEach(b => b.classList.remove('btn-count-active'));
+                btnElement.classList.add('btn-count-active');
+
+                btnStart.classList.remove('disabled');
+            }
         }
 
-        function disableTimePresets() { document.querySelectorAll('.time-btn').forEach(b => b.classList.add('disabled')); }
+        function handleManualTimeInput() {
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const btnStart = document.getElementById('btn-start-with-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
 
-        function startQuizWithCustomTime() {
-            let m = parseInt(document.getElementById('custom-min').value) || 0;
-            let s = parseInt(document.getElementById('custom-sec').value) || 0;
+            let mVal = minInp.value.trim();
+            let sVal = secInp.value.trim();
+
+            if (mVal.length >= 2 && document.activeElement === minInp) {
+                secInp.focus();
+            }
+
+            let m = parseInt(mVal) || 0;
+            let s = parseInt(sVal) || 0;
             let totalSec = (m * 60) + s;
-            if(totalSec > 0) startQuiz(totalSec);
-            else alert("Введіть коректний час!");
+
+            if (mVal !== '' && sVal !== '' && totalSec > 0) {
+                resetBtn.style.display = 'inline-flex';
+                btnStart.classList.remove('disabled');
+                selectedTime = totalSec;
+
+                timeBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+            } else if (mVal !== '' || sVal !== '') {
+                timeBtns.forEach(b => b.classList.add('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
+            } else {
+                timeBtns.forEach(b => b.classList.remove('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
+            }
         }
 
+        function resetManualTime() {
+            resetTimeSelection();
+        }
+
+        function startQuizWithSelectedTime() {
+            if (selectedTime > 0) {
+                startQuiz(selectedTime);
+            }
+        }
+
+        /* --- ПЕРЕБІГ ТЕСТУ --- */
         function startQuiz(timeSec) {
             selectedTime = timeSec;
             currentQuestions = generateUniqueQuizQuestions(currentSubject, targetQuestionsCount);
