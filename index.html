@@ -213,7 +213,6 @@
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
             
-            <!-- Контейнер для візуальних креслень -->
             <div id="question-image" class="question-image" style="display:none;"></div>
             
             <div class="options-grid" id="options-grid"></div>
@@ -236,7 +235,7 @@
         </div>
     </div>
 
-    <!-- Модалки -->
+    <!-- Модальні вікна -->
     <div class="modal-overlay" id="end-modal">
         <div class="modal-content">
             <h2>Дійсно завершити тест?</h2>
@@ -255,10 +254,9 @@
     </div>
 
     <script>
-        /* Генерація фонових стікерів (Grid system - Карандаш, лінійка, блокнот, ластик, дзвінок) */
+        /* Генерація фонових стікерів */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
-            
             const icons = [
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 14.6L9.4 4.6c-1.2-1.2-3.1-1.2-4.2 0l-0.6 0.6c-1.2 1.2-1.2 3.1 0 4.2l10 10c1.2 1.2 3.1 1.2 4.2 0l0.6-0.6c1.2-1.2 1.2-3.1 0-4.2z"></path><line x1="12" y1="7" x2="15" y2="10"></line><line x1="9" y1="10" x2="12" y2="13"></line><line x1="6" y1="13" x2="9" y2="16"></line></svg>`,
@@ -289,44 +287,255 @@
         }
         window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
-        // --- ЛОГІКА ТЕСТІВ ---
-        const db = {
-            geometry: [
-                { 
-                    q: "Сума кутів опуклого чотирикутника дорівнює:", 
-                    img: `<svg width="150" height="150" viewBox="0 0 100 100"><polygon points="10,20 70,10 90,80 20,90" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-                    opts: ["180°", "360°", "540°", "90°"], ans: 1, exp: "За теоремою про суму кутів опуклого чотирикутника вона завжди дорівнює 360°." 
-                },
-                { 
-                    q: "Паралелограм, у якого всі сторони рівні, називається:", 
-                    img: `<svg width="150" height="150" viewBox="0 0 100 100"><polygon points="50,10 90,50 50,90 10,50" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-                    opts: ["Прямокутник", "Трапеція", "Ромб", "Дельтоїд"], ans: 2, exp: "За означенням, ромб — це паралелограм, у якого всі сторони рівні." 
-                },
-                { 
-                    q: "Якщо катети прямокутного трикутника дорівнюють 6 см і 8 см, то гіпотенуза дорівнює:", 
-                    img: `<svg width="180" height="150" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="14">6</text><text x="45" y="105" fill="white" font-size="14">8</text></svg>`,
-                    opts: ["10 см", "14 см", "100 см", "12 см"], ans: 0, exp: "За теоремою Піфагора: c² = a² + b² = 6² + 8² = 36 + 64 = 100. Корінь зі 100 — це 10." 
-                },
-                { 
-                    q: "Площа прямокутного трикутника з катетами 'a' та 'b' обчислюється за формулою:", 
-                    img: `<svg width="180" height="150" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="16">a</text><text x="45" y="105" fill="white" font-size="16">b</text></svg>`,
-                    opts: ["S = a*b", "S = (a*b)/2", "S = a+b", "S = (a+b)/2"], ans: 1, exp: "Площа прямокутного трикутника дорівнює половині добутку його катетів." 
-                }
-            ],
-            algebra: [
-                { q: "Яка з нерівностей є правильною, якщо a > b?", opts: ["a - 3 < b - 3", "a + 2 < b + 2", "-a < -b", "-2a > -2b"], ans: 2, exp: "При множенні обох частин правильної нерівності на від'ємне число знак нерівності змінюється на протилежний." },
-                { q: "Розв'яжіть нерівність: -3x > 12", opts: ["x > -4", "x < -4", "x > 4", "x < 4"], ans: 1, exp: "Ділимо обидві частини на -3. Знак нерівності змінюється на протилежний: x < -4." },
-                { q: "Знайдіть переріз проміжків [-2; 7] та (3; 10)", opts: ["[-2; 10]", "(3; 7]", "[-2; 3)", "[7; 10)"], ans: 1, exp: "Переріз — це спільна частина. Від 3 (не включаючи) до 7 (включаючи): (3; 7]." },
-                { q: "Що є об'єднанням проміжків (-∞; 2] і [2; +∞)?", opts: ["Тільки точка 2", "∅", "(-∞; +∞)", "(-∞; 2)"], ans: 2, exp: "Об'єднання покриває всю числову пряму від мінус нескінченності до плюс нескінченності." }
-            ],
-            physics: [
-                { q: "Що є носіями електричного струму в металах?", opts: ["Позитивні йони", "Негативні йони", "Вільні електрони", "Протони"], ans: 2, exp: "Вільні електрони в металах можуть легко переміщуватися, утворюючи електронний газ, який і створює струм." },
-                { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Зменшується", "Збільшується", "Не змінюється", "Стає нульовим"], ans: 1, exp: "При нагріванні іони кристалічної решітки коливаються інтенсивніше, частіше стикаються з електронами, що збільшує опір." },
-                { q: "Хто відкрив явище надпровідності?", opts: ["Георг Ом", "Алессандро Вольта", "Гейке Камерлінг-Оннес", "Джеймс Максвелл"], ans: 2, exp: "Явище надпровідності (різке падіння опору до нуля) відкрив Г. Камерлінг-Оннес у 1911 році, охолоджуючи ртуть." },
-                { q: "Надпровідність — це властивість матеріалів втрачати електричний опір при...", opts: ["Дуже високих температурах", "Опроміненні світлом", "Охолодженні до температур, близьких до абсолютного нуля", "Протіканні дуже сильного струму"], ans: 2, exp: "Надпровідність виникає при охолодженні матеріалу нижче критичної температури (зазвичай дуже близької до 0 Кельвінів)." }
-            ]
-        };
+        /* --- ГЕНЕРАТОРИ ВИПАДКОВИХ ПИТАНЬ (БЕЗ НЕСКІНЧЕННОСТЕЙ ТА ПОВТОРІВ) --- */
+        function shuffle(arr) {
+            let res = [...arr];
+            for (let i = res.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [res[i], res[j]] = [res[j], res[i]];
+            }
+            return res;
+        }
 
+        function createQuestionForSubject(subject) {
+            if (subject === 'algebra') return createAlgebraQuestion();
+            if (subject === 'geometry') return createGeometryQuestion();
+            return createPhysicsQuestion();
+        }
+
+        function createAlgebraQuestion() {
+            const type = Math.floor(Math.random() * 6);
+            if (type === 0) {
+                // Нерівність ax + b > c
+                let a = Math.floor(Math.random() * 5) + 2;
+                let xVal = Math.floor(Math.random() * 8) + 1;
+                let b = Math.floor(Math.random() * 10) + 1;
+                let c = a * xVal + b;
+                let correctOpt = `x > ${xVal}`;
+                let opts = shuffle([correctOpt, `x < ${xVal}`, `x > ${xVal + b}`, `x < ${xVal + a}`]);
+                return {
+                    q: `Розв'яжіть нерівність: ${a}x + ${b} > ${c}`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `${a}x > ${c} - ${b} ➔ ${a}x > ${c - b} ➔ x > ${xVal}.`
+                };
+            } else if (type === 1) {
+                // Від'ємна нерівність -ax + b > c
+                let a = Math.floor(Math.random() * 4) + 2;
+                let xVal = Math.floor(Math.random() * 6) + 1;
+                let b = Math.floor(Math.random() * 12) + 5;
+                let c = -a * xVal + b;
+                let correctOpt = `x < ${xVal}`;
+                let opts = shuffle([correctOpt, `x > ${xVal}`, `x < ${-xVal}`, `x > ${-xVal}`]);
+                return {
+                    q: `Розв'яжіть нерівність: -${a}x + ${b} > ${c}`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `-${a}x > ${c} - ${b} ➔ -${a}x > ${c - b}. При діленні на -${a} знак нерівності змінюється: x < ${xVal}.`
+                };
+            } else if (type === 2) {
+                // Властивості степеня
+                let base = ['a', 'x', 'y', 'b'][Math.floor(Math.random()*4)];
+                let n = Math.floor(Math.random() * 6) + 3;
+                let m = Math.floor(Math.random() * 6) + 2;
+                let k = Math.floor(Math.random() * (n + m - 2)) + 1;
+                let res = n + m - k;
+                let correctOpt = `${base}^${res}`;
+                let opts = shuffle([correctOpt, `${base}^${n + m + k}`, `${base}^${n * m - k}`, `${base}^${res + 2}`]);
+                return {
+                    q: `Спростіть вираз: (${base}^${n} · ${base}^${m}) / ${base}^${k}`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За властивостями степеня: ${base}^(${n} + ${m} - ${k}) = ${base}^${res}.`
+                };
+            } else if (type === 3) {
+                // Теорема Вієта
+                let x1 = Math.floor(Math.random() * 7) + 1;
+                let x2 = Math.floor(Math.random() * 7) + 1;
+                let sum = x1 + x2;
+                let prod = x1 * x2;
+                let correctOpt = `${sum}`;
+                let opts = shuffle([correctOpt, `-${sum}`, `${prod}`, `-${prod}`]);
+                return {
+                    q: `Знайдіть суму коренів рівняння: x² - ${sum}x + ${prod} = 0`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За теоремою Вієта сума коренів зведеного квадратного рівняння дорівнює другому коефіцієнту з протилежним знаком: x₁ + x₂ = ${sum}.`
+                };
+            } else if (type === 4) {
+                // Значення функції f(x) = kx + b
+                let k = Math.floor(Math.random() * 5) + 2;
+                let b = Math.floor(Math.random() * 10) - 5;
+                let x0 = Math.floor(Math.random() * 6) + 1;
+                let val = k * x0 + b;
+                let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+                let correctOpt = `${val}`;
+                let opts = shuffle([correctOpt, `${val + k}`, `${val - 2}`, `${val * 2}`]);
+                return {
+                    q: `Обчисліть значення функції f(x) = ${k}x ${bStr} у точці x = ${x0}:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Підставляємо x = ${x0}: f(${x0}) = ${k} · ${x0} ${bStr} = ${val}.`
+                };
+            } else {
+                // Переріз числових проміжків (БЕЗ НЕСКІНЧЕННОСТЕЙ)
+                let a = Math.floor(Math.random() * 5) - 5;
+                let b = a + Math.floor(Math.random() * 4) + 6;
+                let c = a + Math.floor(Math.random() * 3) + 2;
+                let d = b + Math.floor(Math.random() * 4) + 2;
+                let correctOpt = `(${c}; ${b}]`;
+                let opts = shuffle([correctOpt, `[${a}; ${d})`, `[${a}; ${c})`, `[${b}; ${d})`]);
+                return {
+                    q: `Знайдіть переріз числових проміжків [${a}; ${b}] та (${c}; ${d}):`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Переріз — це спільна частина від ${c} (не включаючи) до ${b} (включаючи): (${c}; ${b}].`
+                };
+            }
+        }
+
+        function createGeometryQuestion() {
+            const type = Math.floor(Math.random() * 5);
+            if (type === 0) {
+                // Теорема Піфагора
+                const triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20]];
+                let t = triples[Math.floor(Math.random() * triples.length)];
+                let a = t[0], b = t[1], c = t[2];
+                let correctOpt = `${c} см`;
+                let opts = shuffle([correctOpt, `${a + b} см`, `${c + 2} см`, `${c - 1} см`]);
+                let svg = `<svg width="180" height="130" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="14">${a}</text><text x="45" y="105" fill="white" font-size="14">${b}</text></svg>`;
+                return {
+                    q: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу:`,
+                    img: svg, opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За теоремою Піфагора: c² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. c = ${c} см.`
+                };
+            } else if (type === 1) {
+                // Сума кутів багатокутника
+                let n = [4, 5, 6, 8, 10][Math.floor(Math.random() * 5)];
+                let sum = (n - 2) * 180;
+                let correctOpt = `${sum}°`;
+                let opts = shuffle([correctOpt, `${sum - 180}°`, `${sum + 180}°`, `${n * 180}°`]);
+                let names = {4: "чотирикутника", 5: "п'ятикутника", 6: "шестикутника", 8: "восьмикутника", 10: "десятикутника"};
+                return {
+                    q: `Сума внутрішніх кутів опуклого ${names[n]} дорівнює:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Формула суми кутів n-кутника: S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
+                };
+            } else if (type === 2) {
+                // Кути рівнобедреного трикутника
+                let vertexAngle = (Math.floor(Math.random() * 12) + 2) * 10;
+                let baseAngle = (180 - vertexAngle) / 2;
+                let correctOpt = `${baseAngle}°`;
+                let opts = shuffle([correctOpt, `${vertexAngle}°`, `${baseAngle + 10}°`, `${180 - vertexAngle}°`]);
+                return {
+                    q: `Кут при вершині рівнобедреного трикутника дорівнює ${vertexAngle}°. Знайдіть кут при основі:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Сума кутів трикутника 180°. Кути при основі рівні: (180° - ${vertexAngle}°) / 2 = ${baseAngle}°.`
+                };
+            } else if (type === 3) {
+                // Середня лінія трапеції
+                let a = (Math.floor(Math.random() * 5) + 2) * 2;
+                let b = a + (Math.floor(Math.random() * 4) + 2) * 2;
+                let m = (a + b) / 2;
+                let correctOpt = `${m} см`;
+                let opts = shuffle([correctOpt, `${a + b} см`, `${m + 2} см`, `${m - 1} см`]);
+                return {
+                    q: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть її середню лінію:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Середня лінія трапеції дорівнює півсумі її основ: (${a} + ${b}) / 2 = ${m} см.`
+                };
+            } else {
+                // Площа прямокутника
+                let w = Math.floor(Math.random() * 8) + 3;
+                let h = Math.floor(Math.random() * 8) + 3;
+                let area = w * h;
+                let correctOpt = `${area} см²`;
+                let opts = shuffle([correctOpt, `${(w + h) * 2} см²`, `${w + h} см²`, `${area + 5} см²`]);
+                return {
+                    q: `Знайдіть площу прямокутника зі сторонами ${w} см і ${h} см:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Площа прямокутника обчислюється за формулою S = a · b = ${w} · ${h} = ${area} см².`
+                };
+            }
+        }
+
+        function createPhysicsQuestion() {
+            const type = Math.floor(Math.random() * 5);
+            if (type === 0) {
+                // Закон Ома
+                let I = Math.floor(Math.random() * 5) + 1;
+                let R = (Math.floor(Math.random() * 8) + 2) * 5;
+                let U = I * R;
+                let correctOpt = `${U} В`;
+                let opts = shuffle([correctOpt, `${R / I} В`, `${U + 10} В`, `${I + R} В`]);
+                return {
+                    q: `Яка напруга на ділянці кола, якщо сила струму дорівнює ${I} А, а опір — ${R} Ом?`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За законом Ома для ділянки кола: U = I · R = ${I} · ${R} = ${U} В.`
+                };
+            } else if (type === 1) {
+                // Шлях і швидкість
+                let v = (Math.floor(Math.random() * 8) + 2) * 10;
+                let t = Math.floor(Math.random() * 4) + 2;
+                let s = v * t;
+                let correctOpt = `${s} км`;
+                let opts = shuffle([correctOpt, `${v + t} км`, `${s - 20} км`, `${Math.round(v / t)} км`]);
+                return {
+                    q: `Автомобіль рухається зі швидкістю ${v} км/год. Яку відстань він подолає за ${t} год?`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Формула шляху: s = v · t = ${v} · ${t} = ${s} км.`
+                };
+            } else if (type === 2) {
+                // Густина та маса
+                let rho = 1000;
+                let V = Math.floor(Math.random() * 5) + 1;
+                let m = rho * V;
+                let correctOpt = `${m} кг`;
+                let opts = shuffle([correctOpt, `${V * 100} кг`, `${m + 500} кг`, `${rho / V} кг`]);
+                return {
+                    q: `Обчисліть масу води об'ємом ${V} м³, якщо густина води дорівнює ${rho} кг/м³:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Маса обчислюється за формулою: m = ρ · V = ${rho} · ${V} = ${m} кг.`
+                };
+            } else if (type === 3) {
+                // Потужність
+                let A = (Math.floor(Math.random() * 8) + 2) * 100;
+                let t = Math.floor(Math.random() * 5) + 2;
+                let P = Math.round(A / t);
+                let correctOpt = `${P} Вт`;
+                let opts = shuffle([correctOpt, `${A * t} Вт`, `${P + 15} Вт`, `${A - t} Вт`]);
+                return {
+                    q: `Двигун виконав роботу ${A} Дж за ${t} с. Знайдіть його потужність:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Потужність обчислюється за формулою: P = A / t = ${A} / ${t} = ${P} Вт.`
+                };
+            } else {
+                // Теоретичні питання фізики
+                const conceptQuestions = [
+                    { q: "Що є носіями електричного струму в металах?", opts: ["Вільні електрони", "Позитивні йони", "Негативні йони", "Протони"], exp: "Вільні електрони в металах легко переміщуються, створюючи струм." },
+                    { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Збільшується", "Зменшується", "Не змінюється", "Падає до нуля"], exp: "При нагріванні іони решітки коливаються інтенсивніше, частіше стикаючись з електронами, що збільшує опір." },
+                    { q: "Хто відкрив явище надпровідності?", opts: ["Гейке Камерлінг-Оннес", "Георг Ом", "Алессандро Вольта", "Джеймс Максвелл"], exp: "Явище надпровідності (різке падіння опору до нуля) відкрив Г. Камерлінг-Оннес у 1911 році." },
+                    { q: "Одиницею вимірювання електричного опору в SІ є:", opts: ["Ом", "Вольт", "Ампер", "Ват"], exp: "Електричний опір вимірюється в Омах (Ом)." }
+                ];
+                let item = conceptQuestions[Math.floor(Math.random() * conceptQuestions.length)];
+                let correctOpt = item.opts[0];
+                let opts = shuffle(item.opts);
+                return {
+                    q: item.q, opts: opts, ans: opts.indexOf(correctOpt), exp: item.exp
+                };
+            }
+        }
+
+        function generateUniqueQuizQuestions(subject, count) {
+            let list = [];
+            let seen = new Set();
+            let attempts = 0;
+            while (list.length < count && attempts < 1000) {
+                attempts++;
+                let qObj = createQuestionForSubject(subject);
+                if (!seen.has(qObj.q)) {
+                    seen.add(qObj.q);
+                    list.push(qObj);
+                }
+            }
+            return list;
+        }
+
+        /* --- УПРАВЛІННЯ ІНТЕРФЕЙСОМ ТА СТАНOM ТЕСТУ --- */
         let currentSubject = '';
         let targetQuestionsCount = 5;
         let selectedTime = 0;
@@ -362,7 +571,7 @@
         function setPresetCount(num) {
             targetQuestionsCount = num;
             customCountInput.classList.add('disabled');
-            goToTimeSelection(); // Автоматичний перехід на вибір часу
+            goToTimeSelection();
         }
 
         function setSliderCount(val) {
@@ -404,15 +613,8 @@
         function startQuiz(timeSec) {
             selectedTime = timeSec;
             
-            let baseArray = [...db[currentSubject]];
-            baseArray.sort(() => Math.random() - 0.5);
-            
-            currentQuestions = [];
-            while(currentQuestions.length < targetQuestionsCount) {
-                let batch = [...db[currentSubject]].sort(() => Math.random() - 0.5);
-                currentQuestions = currentQuestions.concat(batch);
-            }
-            currentQuestions = currentQuestions.slice(0, targetQuestionsCount);
+            // Генерація унікальних випадкових завдань для цього сеансу
+            currentQuestions = generateUniqueQuizQuestions(currentSubject, targetQuestionsCount);
 
             currentIndex = 0;
             results = [];
@@ -459,7 +661,6 @@
             document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
             document.getElementById('question-text').innerText = qData.q;
             
-            // Завантаження зображення (якщо є)
             let qImgContainer = document.getElementById('question-image');
             if(qData.img) {
                 qImgContainer.innerHTML = qData.img;
