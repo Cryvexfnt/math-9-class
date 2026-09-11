@@ -100,12 +100,21 @@
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
         
-        .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555; box-shadow: none; text-shadow: none; }
+        /* Стиль для вибраної зеленої кнопки кількості */
+        .btn-count-active {
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green) !important;
+            text-shadow: 0 0 10px var(--neon-green) !important;
+            color: #fff !important;
+        }
+
+        .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555 !important; color: #555 !important; box-shadow: none !important; text-shadow: none !important; }
 
         /* Вибір кількості та часу */
         .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
         input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
+        input[type="range"].disabled { opacity: 0.3; pointer-events: none; }
         .time-inputs { display: flex; gap: 10px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
         .time-inputs input { width: 80px; height: 60px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
@@ -164,17 +173,17 @@
     <div id="screen-count" class="screen">
         <h2>Виберіть кількість завдань</h2>
         <div class="grid-options" id="preset-counts">
-            <button class="btn btn-default count-btn" onclick="setPresetCount(5)">5</button>
-            <button class="btn btn-default count-btn" onclick="setPresetCount(10)">10</button>
-            <button class="btn btn-default count-btn" onclick="setPresetCount(15)">15</button>
-            <button class="btn btn-default count-btn" onclick="setPresetCount(20)">20</button>
-            <button class="btn btn-default count-btn" onclick="setPresetCount(25)">25</button>
-            <button class="btn btn-default count-btn" onclick="setPresetCount(30)">30</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(5, this)">5</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(10, this)">10</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(15, this)">15</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(20, this)">20</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(25, this)">25</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(30, this)">30</button>
         </div>
         <div class="custom-input-area">
-            <p>Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan);">1</span></p>
-            <input type="range" id="custom-count" min="1" max="50" value="1" oninput="setSliderCount(this.value)">
-            <button class="btn btn-default" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
+            <p>Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan);">0</span></p>
+            <input type="range" id="custom-count" min="0" max="50" value="0" oninput="handleSliderInput(this.value)">
+            <button class="btn btn-default disabled" id="btn-count-next" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
         </div>
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
@@ -527,7 +536,8 @@
 
         /* --- УПРАВЛІННЯ ІНТЕРФЕЙСОМ ТА СТАНОМ ТЕСТУ --- */
         let currentSubject = '';
-        let targetQuestionsCount = 5;
+        let targetQuestionsCount = 0;
+        let selectedPresetCount = null;
         let selectedTime = 0;
         let timerInterval;
         let currentQuestions = [];
@@ -546,31 +556,92 @@
             switchScreen('screen-count');
         }
 
-        const presetBtns = document.querySelectorAll('.count-btn');
-        const customCountInput = document.getElementById('custom-count');
-        const sliderVal = document.getElementById('slider-val');
-
+        /* Управління вибором кількості завдань */
         function resetCountSelection() {
-            presetBtns.forEach(btn => btn.classList.remove('disabled'));
+            selectedPresetCount = null;
+            targetQuestionsCount = 0;
+
+            const presetBtns = document.querySelectorAll('.count-btn');
+            presetBtns.forEach(btn => {
+                btn.classList.remove('disabled', 'btn-count-active');
+            });
+
+            const customCountInput = document.getElementById('custom-count');
+            customCountInput.disabled = false;
             customCountInput.classList.remove('disabled');
-            customCountInput.value = 1;
-            sliderVal.innerText = 1;
-            targetQuestionsCount = 5;
+            customCountInput.value = 0;
+            document.getElementById('slider-val').innerText = '0';
+
+            const btnNext = document.getElementById('btn-count-next');
+            btnNext.classList.add('disabled');
         }
 
-        function setPresetCount(num) {
-            targetQuestionsCount = num;
-            customCountInput.classList.add('disabled');
-            goToTimeSelection();
+        function togglePresetCount(num, btnElement) {
+            const btnNext = document.getElementById('btn-count-next');
+            const customCountInput = document.getElementById('custom-count');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
+            if (selectedPresetCount === num) {
+                // Повторне натискання — знімаємо вибір
+                selectedPresetCount = null;
+                targetQuestionsCount = 0;
+                btnElement.classList.remove('btn-count-active');
+
+                // Розблоковуємо ползунок
+                customCountInput.disabled = false;
+                customCountInput.classList.remove('disabled');
+
+                // Вимикаємо кнопку "Далі"
+                btnNext.classList.add('disabled');
+            } else {
+                // Новий вибір кнопкою
+                selectedPresetCount = num;
+                targetQuestionsCount = num;
+
+                // Знімаємо підсвітку з усіх та ставимо на поточну
+                presetBtns.forEach(b => b.classList.remove('btn-count-active'));
+                btnElement.classList.add('btn-count-active');
+
+                // Скидаємо та блокуємо ползунок
+                customCountInput.value = 0;
+                document.getElementById('slider-val').innerText = '0';
+                customCountInput.disabled = true;
+                customCountInput.classList.add('disabled');
+
+                // Вмикаємо кнопку "Далі"
+                btnNext.classList.remove('disabled');
+            }
         }
 
-        function setSliderCount(val) {
-            sliderVal.innerText = val;
-            targetQuestionsCount = parseInt(val);
-            presetBtns.forEach(btn => btn.classList.add('disabled'));
+        function handleSliderInput(val) {
+            const numVal = parseInt(val);
+            document.getElementById('slider-val').innerText = numVal;
+
+            const btnNext = document.getElementById('btn-count-next');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
+            if (numVal > 0) {
+                selectedPresetCount = null;
+                targetQuestionsCount = numVal;
+
+                // Заблокувати та деактивувати кнопки-пресети
+                presetBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+
+                // Увімкнути кнопку далі
+                btnNext.classList.remove('disabled');
+            } else {
+                // Якщо 0 — розблоковуємо пресети
+                targetQuestionsCount = 0;
+                presetBtns.forEach(b => b.classList.remove('disabled'));
+                btnNext.classList.add('disabled');
+            }
         }
 
         function goToTimeSelection() {
+            if (targetQuestionsCount <= 0) return;
             document.getElementById('custom-min').value = '';
             document.getElementById('custom-sec').value = '';
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('disabled'));
