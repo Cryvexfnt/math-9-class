@@ -12,26 +12,20 @@
             --neon-purple: #b500ff;
             --neon-green: #00ff66;
             --neon-red: #ff003c;
-            --panel-bg: rgba(13, 8, 33, 0.85); /* Напівпрозорий темний фон для читабельності тексту в тестах */
+            --panel-bg: rgba(13, 8, 33, 0.85);
         }
 
         * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body {
             margin: 0; padding: 0; 
-            /* Яскравий неоновий синьо-фіолетовий градієнт */
-            background: linear-gradient(45deg, #2b00ff, #8a2be2, #0037b8, #4a00e0);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite; /* Анімація переливання */
+            /* Очень тёмный фиолетовый с мягким неоновым синим свечением */
+            background-color: #06020d;
+            background-image: 
+                radial-gradient(circle at top left, rgba(0, 243, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, rgba(181, 0, 255, 0.1) 0%, transparent 50%);
             color: white;
             overflow-x: hidden; height: 100vh; display: flex; flex-direction: column;
-        }
-
-        /* Анімація для фону */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         /* Контейнери екранів */
@@ -44,7 +38,7 @@
 
         /* Кнопки */
         .btn {
-            background: rgba(10, 5, 30, 0.6); /* Трохи темніший фон для кнопок, щоб виділялися на яскравому фоні */
+            background: rgba(10, 5, 30, 0.6); 
             color: var(--neon-cyan); border: 3px solid var(--neon-purple);
             padding: 20px 40px; margin: 15px; font-size: 1.5rem; font-weight: 800; border-radius: 15px;
             cursor: pointer; transition: all 0.3s; box-shadow: 0 0 25px rgba(181, 0, 255, 0.5);
@@ -78,7 +72,7 @@
         /* Вікно тесту */
         .quiz-container {
             background: var(--panel-bg); border: 3px solid var(--neon-cyan); border-radius: 25px;
-            padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 50px rgba(0, 243, 255, 0.3), inset 0 0 25px rgba(181, 0, 255, 0.2);
+            padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 50px rgba(0, 243, 255, 0.2), inset 0 0 25px rgba(181, 0, 255, 0.15);
             position: relative; backdrop-filter: blur(10px);
         }
         .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid var(--neon-cyan); padding-bottom: 15px; font-size: 1.5rem;}
@@ -87,7 +81,7 @@
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
         .question-text { font-size: 2rem; margin-bottom: 30px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.4); line-height: 1.4; }
         .options-grid { display: flex; flex-direction: column; gap: 20px; }
-        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.4rem; padding: 20px 30px; border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);}
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.4rem; padding: 20px 30px; border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);}
         .option-btn.correct { background: var(--neon-green); color: #000; border-color: var(--neon-green); box-shadow: 0 0 30px var(--neon-green); text-shadow: none; transform: scale(1.02); }
         .option-btn.wrong { background: var(--neon-red); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); text-shadow: none; transform: scale(1.02); }
         .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.3rem; border-left: 5px solid var(--neon-purple); background: rgba(181,0,255,0.15); line-height: 1.5; }
