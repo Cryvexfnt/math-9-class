@@ -169,7 +169,7 @@
         <div class="subject-menu">
             <button class="btn btn-algebra" onclick="selectSubject('algebra')">√x Алгебра</button>
             <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠a Геометрія</button>
-            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика (9 клас)</button>
+            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика</button>
         </div>
     </div>
 
@@ -464,14 +464,12 @@
             }
         }
 
-        /* --- ОНОВЛЕНІ ЗАВДАННЯ З ФІЗИКИ 9 КЛАСУ --- */
         function createPhysicsQuestion() {
             const type = Math.floor(Math.random() * 5);
             
             if (type === 0) {
-                // Рівноприскорений рух: s = (a * t^2) / 2
-                let a = Math.floor(Math.random() * 4) + 1; // 1..4 м/с²
-                let t = (Math.floor(Math.random() * 4) + 2) * 2; // 4, 6, 8, 10 с
+                let a = Math.floor(Math.random() * 4) + 1;
+                let t = (Math.floor(Math.random() * 4) + 2) * 2;
                 let s = (a * t * t) / 2;
                 let correctOpt = `${s} м`;
                 let opts = shuffle([correctOpt, `${a * t} м`, `${s + 10} м`, `${s / 2} м`]);
@@ -481,9 +479,8 @@
                     exp: `За формулою шляху при рівноприскореному русі (без v₀): s = (a · t²) / 2 = (${a} · ${t}²) / 2 = ${s} м.`
                 };
             } else if (type === 1) {
-                // Другий закон Ньютона: F = m * a
-                let m = (Math.floor(Math.random() * 8) + 2) * 100; // 200..900 кг
-                let a = Math.floor(Math.random() * 5) + 1; // 1..5 м/с²
+                let m = (Math.floor(Math.random() * 8) + 2) * 100;
+                let a = Math.floor(Math.random() * 5) + 1;
                 let F = m * a;
                 let correctOpt = `${F} Н`;
                 let opts = shuffle([correctOpt, `${m + a} Н`, `${Math.round(m / a)} Н`, `${F + 200} Н`]);
@@ -493,9 +490,8 @@
                     exp: `За II законом Ньютона: F = m · a = ${m} кг · ${a} м/с² = ${F} Н.`
                 };
             } else if (type === 2) {
-                // Імпульс тіла: p = m * v
-                let m = (Math.floor(Math.random() * 5) + 1) * 2; // 2..10 кг
-                let v = (Math.floor(Math.random() * 6) + 2) * 5; // 10..35 м/с
+                let m = (Math.floor(Math.random() * 5) + 1) * 2;
+                let v = (Math.floor(Math.random() * 6) + 2) * 5;
                 let p = m * v;
                 let correctOpt = `${p} кг·м/с`;
                 let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
@@ -505,9 +501,8 @@
                     exp: `Імпульс тіла обчислюється за формулою: p = m · v = ${m} · ${v} = ${p} кг·м/с.`
                 };
             } else if (type === 3) {
-                // Кінетична енергія: Ek = (m * v^2) / 2
-                let m = Math.floor(Math.random() * 5) + 2; // 2..6 кг
-                let v = (Math.floor(Math.random() * 4) + 1) * 2; // 2, 4, 6, 8 м/с
+                let m = Math.floor(Math.random() * 5) + 2;
+                let v = (Math.floor(Math.random() * 4) + 1) * 2;
                 let Ek = (m * v * v) / 2;
                 let correctOpt = `${Ek} Дж`;
                 let opts = shuffle([correctOpt, `${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 12} Дж`]);
