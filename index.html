@@ -213,7 +213,7 @@
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
             
-            <!-- Контейнер для візуальних чертежів -->
+            <!-- Контейнер для візуальних креслень -->
             <div id="question-image" class="question-image" style="display:none;"></div>
             
             <div class="options-grid" id="options-grid"></div>
@@ -564,18 +564,32 @@
                 let div = document.createElement('div');
                 div.className = 'res-item';
                 
-                let statusText = ''; let statusClass = '';
-                switch(res.status) {
-                    case 'correct': statusText = 'Правильно'; statusClass = 'res-status-correct'; break;
-                    case 'wrong': statusText = 'Неправильно'; statusClass = 'res-status-wrong'; break;
-                    case 'skipped': statusText = 'Пропущено'; statusClass = 'res-status-skipped'; break;
-                    case 'unanswered': statusText = 'Не зроблено'; statusClass = 'res-status-unanswered'; break;
+                let statusText = '';
+                let statusClass = '';
+                
+                if (res.status === 'correct') {
+                    statusText = '✔ Правильно';
+                    statusClass = 'res-status-correct';
+                } else if (res.status === 'wrong') {
+                    statusText = '✖ Неправильно';
+                    statusClass = 'res-status-wrong';
+                } else if (res.status === 'skipped') {
+                    statusText = '⏭ Пропущено';
+                    statusClass = 'res-status-skipped';
+                } else {
+                    statusText = '⏳ Без відповіді (час вийшов)';
+                    statusClass = 'res-status-unanswered';
+                }
+
+                let explanationHtml = '';
+                if (res.status !== 'correct') {
+                    explanationHtml = `<div style="margin-top: 10px; font-size: 1.1rem; color: #bbb;"><b>Пояснення:</b> ${res.exp}</div>`;
                 }
 
                 div.innerHTML = `
-                    <div style="font-size: 1.2rem; margin-bottom: 5px;"><b>${i+1}.</b> ${res.q}</div>
+                    <div style="font-size: 1.3rem; margin-bottom: 10px;"><b>${i + 1}.</b> ${res.q}</div>
                     <div class="${statusClass}">${statusText}</div>
-                    <div style="margin-top: 5px; font-size: 1rem; color: #aaa;"><i>Пояснення: ${res.exp}</i></div>
+                    ${explanationHtml}
                 `;
                 listDiv.appendChild(div);
             });
