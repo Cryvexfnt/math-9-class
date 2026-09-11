@@ -3,1372 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Інтерактивний Тренажер — Математика & Фізика</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Шкільні Міні-Тести</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
+
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #b500ff;
+            --neon-red: #ff0055;
+            --neon-green: #00ff66;
+            --bg-color: #0b071a;
+            --panel-bg: rgba(11, 7, 26, 0.85);
         }
+
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body {
-            min-height: 100vh;
-            width: 100vw;
-            background: radial-gradient(circle at center, #1b0933 0%, #070314 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
+            margin: 0; padding: 0; 
+            background-color: var(--bg-color);
+            color: white;
+            overflow-x: hidden; 
+            height: 100vh; 
+            display: flex; flex-direction: column;
             position: relative;
-            color: #ffffff;
         }
 
-        .background-objects {
+        /* Контейнер для стікерів (на задньому плані) */
+        #bg-stickers {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
             pointer-events: none;
-            z-index: 1;
             overflow: hidden;
         }
 
-        .bg-item {
+        .sticker {
             position: absolute;
-            user-select: none;
-            transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-            animation: float 6s infinite alternate ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .neon-icon {
-            width: 44px;
-            height: 44px;
-            stroke-width: 2.2px;
-            opacity: 0.55;
-        }
-
-        .neon-cyan {
-            stroke: #00f3ff;
-            color: #00f3ff;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #00f3ff) drop-shadow(0 0 14px #00f3ff);
-        }
-
-        .neon-purple {
-            stroke: #bf00ff;
-            color: #bf00ff;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #bf00ff) drop-shadow(0 0 14px #bf00ff);
-        }
-
-        .neon-pink {
-            stroke: #ff007f;
-            color: #ff007f;
-            filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ff007f) drop-shadow(0 0 14px #ff007f);
-        }
-
-        .d-1 { animation-duration: 5.2s; animation-delay: 0s; }
-        .d-2 { animation-duration: 6.8s; animation-delay: 1.2s; }
-        .d-3 { animation-duration: 5.8s; animation-delay: 2.1s; }
-        .d-4 { animation-duration: 7.4s; animation-delay: 0.6s; }
-
-        @keyframes float {
-            0% { transform: translate(-50%, -50%) translateY(0px) rotate(var(--rot, 0deg)) scale(1); }
-            100% { transform: translate(-50%, -50%) translateY(-16px) rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.06); }
-        }
-
-        /* АНИМАЦИЯ ПЕРЕХОДА ЭКРАНОВ */
-        @keyframes screenIn {
-            0% {
-                opacity: 0;
-                transform: translateY(25px) scale(0.96);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .screen {
-            display: none;
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 1000px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .screen.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: screenIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .title {
-            font-size: 2.5rem;
             font-weight: 900;
-            margin-bottom: 30px;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #bf00ff, 0 0 20px #bf00ff, 0 0 40px #00f3ff;
-        }
-
-        .buttons-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 750px;
-        }
-
-        .subjects-row {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .btn-subject {
-            flex: 1;
-            background: rgba(15, 8, 35, 0.85);
-            border: 3px solid;
-            border-radius: 20px;
-            padding: 18px 15px;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            outline: none;
+            opacity: 0.4;
             user-select: none;
+            /* Легке, плавне світіння без зміни трансформації (щоб не збивати кут) */
+            animation: pulse-glow 4s infinite alternate ease-in-out;
         }
 
-        .subject-icon {
-            font-family: 'Times New Roman', Times, serif;
-            font-style: italic;
-            font-weight: bold;
-            font-size: 1.6rem;
-            line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 45px;
+        @keyframes pulse-glow {
+            0% { filter: brightness(0.8); }
+            100% { filter: brightness(1.3); }
         }
 
-        .btn-algebra { border-color: #bf00ff; box-shadow: 0 0 15px rgba(191, 0, 255, 0.4); }
-        .btn-geometry { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
-        .btn-physics { border-color: #ff007f; box-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
+        /* Контейнери екранів */
+        .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; z-index: 1;}
+        .screen.active { display: flex; }
 
-        .btn-algebra:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(191, 0, 255, 0.9); background: rgba(191, 0, 255, 0.2); }
-        .btn-geometry:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 243, 255, 0.9); background: rgba(0, 243, 255, 0.2); }
-        .btn-physics:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 0, 127, 0.9); background: rgba(255, 0, 127, 0.2); }
-
-        .count-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            width: 100%;
-            max-width: 650px;
+        h1 { 
+            font-size: 3.5rem; text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px var(--neon-purple); 
+            text-align: center; margin-bottom: 40px; 
         }
+        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 30px; }
+        p { font-size: 1.5rem; }
 
-        .btn-count {
-            background: rgba(20, 10, 45, 0.85);
-            border: 2.5px solid #bf00ff;
-            border-radius: 16px;
-            padding: 15px 0;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ffffff;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 0 12px rgba(191, 0, 255, 0.3);
-            transition: all 0.25s ease;
-        }
-
-        .btn-count:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 0 25px #bf00ff;
-            background: rgba(191, 0, 255, 0.25);
-        }
-
-        /* КНОПКА ВОЗВРАТА */
-        .btn-back {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            transition: all 0.25s ease;
-            outline: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-back:hover {
-            border-color: #00f3ff;
-            box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
-            background: rgba(0, 243, 255, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .quiz-card {
-            background: rgba(18, 9, 38, 0.9);
-            border: 2.5px solid #00f3ff;
-            box-shadow: 0 0 35px rgba(0, 243, 255, 0.35);
-            border-radius: 26px;
-            padding: 35px 40px;
-            width: 100%;
-            backdrop-filter: blur(15px);
-            text-align: left;
-            position: relative;
-        }
-
-        .quiz-header {
+        /* Головне меню - Кнопки предметів */
+        .subject-menu {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-weight: 800;
-            color: #00f3ff;
-            font-size: 1.15rem;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
-        }
-
-        .btn-finish-top {
-            background: rgba(255, 0, 85, 0.15);
-            border: 2px solid #ff0055;
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
-            outline: none;
-        }
-
-        .btn-finish-top:hover {
-            background: rgba(255, 0, 85, 0.4);
-            box-shadow: 0 0 25px #ff0055;
-            transform: scale(1.05);
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            color: #ffffff;
-        }
-
-        .diagram-container {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 16px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 25px;
+        .btn {
+            background: rgba(11, 7, 26, 0.7); 
+            color: #fff; border: 3px solid transparent;
+            padding: 15px 35px; margin: 10px; font-size: 1.3rem; font-weight: 800; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            backdrop-filter: blur(5px);
         }
 
-        .btn-option {
-            background: rgba(30, 15, 60, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 18px 22px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #ffffff;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s ease;
-            outline: none;
+        /* Стилізовані кнопки для скріншоту */
+        .btn-algebra {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(181, 0, 255, 0.4), inset 0 0 10px rgba(181, 0, 255, 0.2);
+            text-shadow: 0 0 8px var(--neon-purple);
         }
+        .btn-algebra:hover { background: rgba(181, 0, 255, 0.2); box-shadow: 0 0 25px var(--neon-purple), inset 0 0 15px var(--neon-purple); transform: scale(1.05); }
 
-        .btn-option:hover:not(:disabled) {
-            border-color: #00f3ff;
-            background: rgba(0, 243, 255, 0.15);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        .btn-geometry {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
+        .btn-geometry:hover { background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 15px var(--neon-cyan); transform: scale(1.05); }
 
-        .btn-option.correct {
-            border-color: #00ff66 !important;
-            background: rgba(0, 255, 102, 0.25) !important;
-            box-shadow: 0 0 20px #00ff66 !important;
-            color: #ffffff !important;
+        .btn-physics {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 10px rgba(255, 0, 85, 0.2);
+            text-shadow: 0 0 8px var(--neon-red);
         }
+        .btn-physics:hover { background: rgba(255, 0, 85, 0.2); box-shadow: 0 0 25px var(--neon-red), inset 0 0 15px var(--neon-red); transform: scale(1.05); }
 
-        .btn-option.incorrect {
-            border-color: #ff0055 !important;
-            background: rgba(255, 0, 85, 0.25) !important;
-            box-shadow: 0 0 20px #ff0055 !important;
-            color: #ffffff !important;
+        /* Звичайні кнопки меню та інтерфейсу */
+        .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
+        .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
+        
+        .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555; color: #555; box-shadow: none; text-shadow: none; }
+
+        /* Вибір кількості та часу */
+        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 30px; }
+        input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
+        .time-inputs { display: flex; gap: 10px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        .time-inputs input {
+            width: 80px; height: 60px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-size: 2rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
         }
+        .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+        
+        .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
+        .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
 
-        .explanation-box {
-            display: none;
-            background: rgba(255, 0, 85, 0.1);
-            border: 2px solid #ff0055;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 15px;
-            margin-bottom: 25px;
-            font-size: 1.05rem;
-            line-height: 1.5;
-            color: #ffe6ee;
-            animation: screenIn 0.3s ease-out;
+        /* Вікно тесту */
+        .quiz-container {
+            background: var(--panel-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px;
+            padding: 40px; width: 90%; max-width: 1000px; 
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05);
+            position: relative; backdrop-filter: blur(15px);
         }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 1.5rem;}
+        #quiz-progress { color: #ccc; font-weight: bold; }
+        #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
+        .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
+        .question-text { font-size: 1.8rem; margin-bottom: 30px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.3rem; padding: 15px 25px; border-color: rgba(255,255,255,0.2); }
+        .option-btn:hover { border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
+        
+        .option-btn.correct { background: rgba(0, 255, 102, 0.2); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 102, 0.4); }
+        .option-btn.wrong { background: rgba(255, 0, 85, 0.2); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+        
+        .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
+        
+        .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
 
-        .explanation-box.active {
-            display: block;
-        }
-
-        .explanation-title {
-            font-weight: 800;
-            color: #ff0055;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-        }
-
-        .quiz-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-        }
-
-        .btn-next {
-            background: rgba(15, 8, 35, 0.95);
-            border: 2.5px solid #ffd700;
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.5);
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
-        }
-
-        .btn-next:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px #ffd700;
-            background: rgba(255, 215, 0, 0.25);
-        }
-
-        .results-list {
-            width: 100%;
-            max-height: 60vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-right: 10px;
-            margin-bottom: 25px;
-        }
-
-        .result-item-card {
-            background: rgba(20, 10, 45, 0.85);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: left;
-        }
-
-        .result-item-card.is-correct { border-color: #00ff66; box-shadow: 0 0 10px rgba(0, 255, 102, 0.2); }
-        .result-item-card.is-incorrect { border-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.2); }
-        .result-item-card.is-skipped { border-color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .badge-correct { background: rgba(0, 255, 102, 0.2); color: #00ff66; border: 1px solid #00ff66; }
-        .badge-incorrect { background: rgba(255, 0, 85, 0.2); color: #ff0055; border: 1px solid #ff0055; }
-        .badge-skipped { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid #ffd700; }
-
-        .btn-restart {
-            background: rgba(191, 0, 255, 0.2);
-            border: 2.5px solid #bf00ff;
-            box-shadow: 0 0 20px rgba(191, 0, 255, 0.5);
-            color: #ffffff;
-            padding: 15px 40px;
-            border-radius: 18px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-restart:hover {
-            transform: scale(1.06);
-            box-shadow: 0 0 35px #bf00ff;
-            background: rgba(191, 0, 255, 0.4);
-        }
-
-        .toast {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: rgba(20, 10, 40, 0.95);
-            border: 2px solid #ff007f;
-            box-shadow: 0 0 20px #ff007f;
-            color: #fff;
-            padding: 14px 28px;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
+        /* Модальні вікна */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(5, 2, 15, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px);
         }
-
-        .modal-overlay.active {
-            display: flex;
-            animation: screenIn 0.25s ease-out;
-        }
-
-        .modal-card {
-            background: rgba(18, 9, 38, 0.95);
-            border: 2.5px solid #ff007f;
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
-            border-radius: 22px;
-            padding: 30px;
-            max-width: 420px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 25px;
-            color: #ffffff;
-            line-height: 1.4;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .btn-modal {
-            flex: 1;
-            padding: 14px 20px;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
-            border: 2.5px solid;
-            transition: all 0.25s ease;
-            outline: none;
-        }
-
-        .btn-modal-yes {
-            background: rgba(0, 255, 102, 0.2);
-            border-color: #00ff66;
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(0, 255, 102, 0.3);
-        }
-
-        .btn-modal-yes:hover {
-            background: rgba(0, 255, 102, 0.45);
-            box-shadow: 0 0 25px #00ff66;
-            transform: scale(1.05);
-        }
-
-        .btn-modal-no {
-            background: rgba(255, 0, 85, 0.2);
-            border-color: #ff0055;
-            color: #ffffff;
-            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
-        }
-
-        .btn-modal-no:hover {
-            background: rgba(255, 0, 85, 0.45);
-            box-shadow: 0 0 25px #ff0055;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 650px) {
-            .title { font-size: 1.8rem; }
-            .subjects-row { flex-direction: column; }
-            .count-grid { grid-template-columns: repeat(2, 1fr); }
-            .options-grid { grid-template-columns: 1fr; }
-            .quiz-footer { flex-direction: column-reverse; gap: 15px; }
-            .btn-next, .btn-finish-top { width: 100%; justify-content: center; }
-            .quiz-card { padding: 25px 20px; }
-        }
+        .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
+        
+        /* Результати */
+        #results-list { max-height: 60vh; overflow-y: auto; text-align: left; padding-right: 15px; }
+        .res-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; }
+        .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 8px var(--neon-green); }
+        .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); }
+        .res-status-skipped { color: #f39c12; font-weight: bold; }
+        .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
+        
+        /* Скролбар */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
     </style>
 </head>
 <body>
 
-    <div class="toast" id="toast">Повідомлення</div>
+    <!-- Задній фон зі стікерами -->
+    <div id="bg-stickers"></div>
 
-    <div class="background-objects" id="bg-container"></div>
+    <!-- ЕКРАН 1: Меню предметів -->
+    <div id="screen-menu" class="screen active">
+        <h1>Оберіть предмет</h1>
+        <div class="subject-menu">
+            <button class="btn btn-algebra" onclick="selectSubject('algebra')">√ Алгебра</button>
+            <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠ Геометрія</button>
+            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика</button>
+        </div>
+    </div>
 
-    <!-- 1. ВИБІР ПРЕДМЕТА -->
-    <div class="screen active" id="screen-subject">
-        <h1 class="title">Оберіть предмет</h1>
-        <div class="buttons-wrapper">
-            <div class="subjects-row">
-                <button class="btn-subject btn-algebra" onclick="selectSubject('algebra')">
-                    <span class="subject-icon">√x</span>
-                    <span>Алгебра</span>
-                </button>
-                <button class="btn-subject btn-geometry" onclick="selectSubject('geometry')">
-                    <span class="subject-icon">∠α</span>
-                    <span>Геометрія</span>
-                </button>
-                <button class="btn-subject btn-physics" onclick="selectSubject('physics')">
-                    <span class="subject-icon">E=mc²</span>
-                    <span>Фізика</span>
-                </button>
+    <!-- ЕКРАН 2: Кількість завдань -->
+    <div id="screen-count" class="screen">
+        <h2>Виберіть кількість завдань</h2>
+        <div class="grid-options" id="preset-counts">
+            <button class="btn btn-default count-btn" onclick="setPresetCount(5)">5</button>
+            <button class="btn btn-default count-btn" onclick="setPresetCount(10)">10</button>
+            <button class="btn btn-default count-btn" onclick="setPresetCount(15)">15</button>
+            <button class="btn btn-default count-btn" onclick="setPresetCount(20)">20</button>
+            <button class="btn btn-default count-btn" onclick="setPresetCount(25)">25</button>
+            <button class="btn btn-default count-btn" onclick="setPresetCount(30)">30</button>
+        </div>
+        <div class="custom-input-area">
+            <p>Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan);">1</span></p>
+            <input type="range" id="custom-count" min="1" max="50" value="1" oninput="setSliderCount(this.value)">
+            <button class="btn btn-default" style="margin-top:30px;" onclick="goToTimeSelection()">Далі ➔</button>
+        </div>
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
+        </div>
+    </div>
+
+    <!-- ЕКРАН 3: Вибір часу -->
+    <div id="screen-time" class="screen">
+        <h2>Виберіть час тесту</h2>
+        <div class="grid-options" id="preset-times">
+            <button class="btn btn-default time-btn" onclick="setPresetTime(30)">00:30</button>
+            <button class="btn btn-default time-btn" onclick="setPresetTime(60)">01:00</button>
+            <button class="btn btn-default time-btn" onclick="setPresetTime(300)">05:00</button>
+            <button class="btn btn-default time-btn" onclick="setPresetTime(600)">10:00</button>
+            <button class="btn btn-default time-btn" onclick="setPresetTime(900)">15:00</button>
+            <button class="btn btn-default time-btn" onclick="setPresetTime(1200)">20:00</button>
+        </div>
+        <div class="custom-input-area">
+            <p>Або напишіть свій час</p>
+            <div class="time-inputs">
+                <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="checkMinInput()"> : 
+                <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="disableTimePresets()">
             </div>
+            <button class="btn btn-default" onclick="startQuizWithCustomTime()" style="margin-top: 25px;">Запустити з цим часом</button>
+            <button class="btn" onclick="startQuiz(0)" style="margin-top: 15px; border-color: rgba(255,255,255,0.2); color: #ccc;">Грати без часу</button>
+        </div>
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-count')">⮌ Назад</button>
         </div>
     </div>
 
-    <!-- 2. ВИБІР КІЛЬКОСТІ ЗАВДАНЬ -->
-    <div class="screen" id="screen-count">
-        <h1 class="title">Кількість завдань</h1>
-        <div class="count-grid">
-            <button class="btn-count" onclick="startTest(5)">5</button>
-            <button class="btn-count" onclick="startTest(10)">10</button>
-            <button class="btn-count" onclick="startTest(15)">15</button>
-            <button class="btn-count" onclick="startTest(20)">20</button>
-            <button class="btn-count" onclick="startTest(25)">25</button>
-            <button class="btn-count" onclick="startTest(30)">30</button>
-            <button class="btn-count" onclick="startTest(35)">35</button>
-            <button class="btn-count" onclick="startTest(40)">40</button>
-            <button class="btn-count" onclick="startTest(45)">45</button>
-            <button class="btn-count" onclick="startTest(50)">50</button>
-        </div>
-        <button class="btn-back" onclick="resetToHome()">
-            <span>← Повернутися в меню</span>
-        </button>
-    </div>
-
-    <!-- 3. ТЕСТУВАННЯ -->
-    <div class="screen" id="screen-quiz">
-        <div class="quiz-card">
+    <!-- ЕКРАН 4: Сам Тест -->
+    <div id="screen-quiz" class="screen">
+        <div class="quiz-container">
             <div class="quiz-header">
-                <span id="quiz-progress">Завдання 1 з 10</span>
-                <span id="quiz-topic" style="color: #00f3ff;">Тема: ...</span>
+                <div id="quiz-progress">Завдання 1 / 10</div>
+                <div id="timer-display" style="display:none;">00:00</div>
             </div>
-            
-            <div class="question-text" id="question-text">Текст питання...</div>
-            
-            <div class="diagram-container" id="diagram-container"></div>
-
+            <div id="question-text" class="question-text">Текст питання</div>
             <div class="options-grid" id="options-grid"></div>
-
-            <div class="explanation-box" id="explanation-box">
-                <div class="explanation-title">Пояснення:</div>
-                <div id="explanation-text">...</div>
-            </div>
-
-            <div class="quiz-footer">
-                <button class="btn-finish-top" onclick="showConfirmModal()">Завершити тест</button>
-                <button class="btn-next" id="btn-next" onclick="skipQuestion()">
-                    <span>Пропустити завдання</span>
-                    <span>➔</span>
-                </button>
+            <div id="explanation" class="explanation"></div>
+            
+            <div class="quiz-controls">
+                <button class="btn" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="showEndModal()">Завершити</button>
+                <button class="btn btn-default" onclick="skipQuestion()" id="btn-skip">Пропустити ➔</button>
+                <button class="btn btn-default" style="display:none;" onclick="nextQuestion()" id="btn-next">Наступне ➔</button>
             </div>
         </div>
     </div>
 
-    <!-- 4. ФІНІШ -->
-    <div class="screen" id="screen-results">
-        <h1 class="title">Результати тесту</h1>
-        <div class="results-list" id="results-list"></div>
-        <button class="btn-restart" onclick="resetToHome()">На головну</button>
+    <!-- ЕКРАН 5: Результати -->
+    <div id="screen-results" class="screen">
+        <div class="quiz-container" style="max-width: 1000px; text-align: center;">
+            <h2>Результати тесту</h2>
+            <h1 id="score-display" style="font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan);">Виконано: ? / ?</h1>
+            <div id="results-list"></div>
+            <button class="btn btn-default" style="margin-top: 40px;" onclick="switchScreen('screen-menu')">↩ У головне меню</button>
+        </div>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ -->
-    <div class="modal-overlay" id="confirm-modal">
-        <div class="modal-card">
-            <div class="modal-title">Ви впевнені, що хочете завершити тест?</div>
-            <div class="modal-buttons">
-                <button class="btn-modal btn-modal-yes" onclick="confirmFinishTest()">Так</button>
-                <button class="btn-modal btn-modal-no" onclick="closeConfirmModal()">Ні</button>
+    <!-- Модалки -->
+    <div class="modal-overlay" id="end-modal">
+        <div class="modal-content">
+            <h2>Дійсно завершити тест?</h2>
+            <div style="margin-top: 30px; display: flex; gap: 20px; justify-content: center;">
+                <button class="btn btn-default" style="border-color: var(--neon-green); color: var(--neon-green);" onclick="forceEndQuiz()">Так</button>
+                <button class="btn btn-default" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="closeEndModal()">Ні</button>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="timer-modal">
+        <div class="modal-content">
+            <h1 style="color: var(--neon-cyan);">Час вичерпано!</h1>
+            <div style="font-size: 5rem; margin-top: 20px;">⏰</div>
         </div>
     </div>
 
     <script>
-        const algebraIcons = ['calculator', 'percent', 'hash', 'binary', 'bar-chart-2', 'trending-up', 'sparkles'];
-        const geometryIcons = ['triangle', 'square', 'circle', 'box', 'compass', 'ruler', 'layers'];
-        const physicsIcons = ['zap', 'battery-charging', 'cpu', 'thermometer', 'activity', 'magnet', 'flame'];
+        /* Генерація фонових стікерів (рендеряться ОДРАЗУ поверненими) */
+        function initBackgroundStickers() {
+            const container = document.getElementById('bg-stickers');
+            const icons = ['%', '#', '01\n10', '√', '÷', '+', 'x', '≈', '∠', '∑', '∞', 'Δ', 'π', '⚡', '★'];
+            const colors = ['var(--neon-cyan)', 'var(--neon-purple)', 'var(--neon-red)'];
+            const numStickers = 35; // Кількість значків на фоні
 
-        function renderBackground(iconsList) {
-            const bgContainer = document.getElementById('bg-container');
-            bgContainer.innerHTML = '';
-            
-            const fragment = document.createDocumentFragment();
-            const colorClasses = ['neon-cyan', 'neon-purple', 'neon-pink'];
-            const coords = [
-                {x: 7, y: 10, r: -25}, {x: 22, y: 14, r: 18}, {x: 38, y: 8, r: -12}, {x: 54, y: 12, r: 30}, {x: 72, y: 9, r: -15}, {x: 90, y: 13, r: 22},
-                {x: 12, y: 32, r: 35}, {x: 28, y: 35, r: -20}, {x: 45, y: 28, r: 15}, {x: 62, y: 33, r: -30}, {x: 82, y: 30, r: 10},
-                {x: 6, y: 58, r: -18}, {x: 20, y: 62, r: 25}, {x: 80, y: 55, r: -22}, {x: 94, y: 60, r: 16},
-                {x: 10, y: 85, r: 20}, {x: 26, y: 88, r: -28}, {x: 42, y: 82, r: 14}, {x: 58, y: 89, r: -18}, {x: 74, y: 84, r: 32}, {x: 90, y: 87, r: -10}
-            ];
+            for (let i = 0; i < numStickers; i++) {
+                let el = document.createElement('div');
+                el.className = 'sticker';
+                
+                // Випадковий символ та колір
+                el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                let color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Якщо це багаторядковий текст (наприклад 01 10)
+                if(el.innerText.includes('\n')) {
+                    el.style.textAlign = 'center';
+                    el.style.lineHeight = '1';
+                }
 
-            coords.forEach((pt, idx) => {
-                const item = document.createElement('div');
-                item.className = `bg-item d-${(idx % 4) + 1}`;
-                item.style.left = `${pt.x}%`;
-                item.style.top = `${pt.y}%`;
-                item.style.setProperty('--rot', `${pt.r}deg`);
+                el.style.color = color;
+                el.style.textShadow = `0 0 12px ${color}, 0 0 20px ${color}`;
+                
+                // Випадковий розмір
+                let size = Math.random() * (3 - 1.2) + 1.2; 
+                el.style.fontSize = `${size}rem`;
 
-                const icon = iconsList[idx % iconsList.length];
-                const color = colorClasses[idx % colorClasses.length];
+                // Випадкова позиція
+                el.style.left = `${Math.random() * 95}vw`;
+                el.style.top = `${Math.random() * 95}vh`;
 
-                item.innerHTML = `<i data-lucide="${icon}" class="neon-icon ${color}"></i>`;
-                fragment.appendChild(item);
-            });
+                // ВАЖЛИВО: Одразу задаємо кут повороту ДО додавання в DOM, щоб уникнути "смикання"
+                let rotation = Math.random() * 360;
+                el.style.transform = `rotate(${rotation}deg)`;
 
-            bgContainer.appendChild(fragment);
-            lucide.createIcons();
-        }
-
-        renderBackground(algebraIcons);
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        let currentSubject = 'algebra';
-        let totalQuestionsCount = 10;
-        let currentQuestionIndex = 0;
-        let questionsData = [];
-        let userAnswers = [];
-        let autoNextTimer = null;
-
-        function selectSubject(subject) {
-            currentSubject = subject;
-            if (subject === 'algebra') {
-                renderBackground(algebraIcons);
-            } else if (subject === 'geometry') {
-                renderBackground(geometryIcons);
-            } else if (subject === 'physics') {
-                renderBackground(physicsIcons);
+                container.appendChild(el);
             }
-
-            showScreen('screen-count');
         }
 
-        function showScreen(screenId) {
+        // Запуск генерації при завантаженні сторінки
+        window.addEventListener('DOMContentLoaded', initBackgroundStickers);
+
+        // --- ЛОГІКА ТЕСТІВ (Залишилася без змін) ---
+        const db = {
+            geometry: [
+                { q: "Сума кутів опуклого чотирикутника дорівнює:", opts: ["180°", "360°", "540°", "90°"], ans: 1, exp: "За теоремою про суму кутів опуклого чотирикутника вона завжди дорівнює 360°." },
+                { q: "Паралелограм, у якого всі сторони рівні, називається:", opts: ["Прямокутник", "Трапеція", "Ромб", "Дельтоїд"], ans: 2, exp: "За означенням, ромб — це паралелограм, у якого всі сторони рівні." },
+                { q: "Якщо катети прямокутного трикутника дорівнюють 6 см і 8 см, то гіпотенуза дорівнює:", opts: ["10 см", "14 см", "100 см", "12 см"], ans: 0, exp: "За теоремою Піфагора: c² = a² + b² = 6² + 8² = 36 + 64 = 100. Корінь зі 100 — це 10." },
+                { q: "Площа прямокутного трикутника з катетами 'a' та 'b' обчислюється за формулою:", opts: ["S = a*b", "S = (a*b)/2", "S = a+b", "S = (a+b)/2"], ans: 1, exp: "Площа прямокутного трикутника дорівнює половині добутку його катетів." }
+            ],
+            algebra: [
+                { q: "Яка з нерівностей є правильною, якщо a > b?", opts: ["a - 3 < b - 3", "a + 2 < b + 2", "-a < -b", "-2a > -2b"], ans: 2, exp: "При множенні обох частин правильної нерівності на від'ємне число знак нерівності змінюється на протилежний." },
+                { q: "Розв'яжіть нерівність: -3x > 12", opts: ["x > -4", "x < -4", "x > 4", "x < 4"], ans: 1, exp: "Ділимо обидві частини на -3. Знак нерівності змінюється на протилежний: x < -4." },
+                { q: "Знайдіть переріз проміжків [-2; 7] та (3; 10)", opts: ["[-2; 10]", "(3; 7]", "[-2; 3)", "[7; 10)"], ans: 1, exp: "Переріз — це спільна частина. Від 3 (не включаючи) до 7 (включаючи): (3; 7]." },
+                { q: "Що є об'єднанням проміжків (-∞; 2] і [2; +∞)?", opts: ["Тільки точка 2", "∅", "(-∞; +∞)", "(-∞; 2)"], ans: 2, exp: "Об'єднання покриває всю числову пряму від мінус нескінченності до плюс нескінченності." }
+            ],
+            physics: [
+                { q: "Що є носіями електричного струму в металах?", opts: ["Позитивні йони", "Негативні йони", "Вільні електрони", "Протони"], ans: 2, exp: "Вільні електрони в металах можуть легко переміщуватися, утворюючи електронний газ, який і створює струм." },
+                { q: "Як змінюється опір металевого провідника під час його нагрівання?", opts: ["Зменшується", "Збільшується", "Не змінюється", "Стає нульовим"], ans: 1, exp: "При нагріванні іони кристалічної решітки коливаються інтенсивніше, частіше стикаються з електронами, що збільшує опір." },
+                { q: "Хто відкрив явище надпровідності?", opts: ["Георг Ом", "Алессандро Вольта", "Гейке Камерлінг-Оннес", "Джеймс Максвелл"], ans: 2, exp: "Явище надпровідності (різке падіння опору до нуля) відкрив Г. Камерлінг-Оннес у 1911 році, охолоджуючи ртуть." },
+                { q: "Надпровідність — це властивість матеріалів втрачати електричний опір при...", opts: ["Дуже високих температурах", "Опроміненні світлом", "Охолодженні до температур, близьких до абсолютного нуля", "Протіканні дуже сильного струму"], ans: 2, exp: "Надпровідність виникає при охолодженні матеріалу нижче критичної температури (зазвичай дуже близької до 0 Кельвінів)." }
+            ]
+        };
+
+        let currentSubject = '';
+        let targetQuestionsCount = 5;
+        let selectedTime = 0;
+        let timerInterval;
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let results = [];
+        let answeredCurrent = false;
+
+        function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        function showConfirmModal() {
-            document.getElementById('confirm-modal').classList.add('active');
+        function selectSubject(subj) {
+            currentSubject = subj;
+            resetCountSelection();
+            switchScreen('screen-count');
         }
 
-        function closeConfirmModal() {
-            document.getElementById('confirm-modal').classList.remove('active');
+        const presetBtns = document.querySelectorAll('.count-btn');
+        const customCountInput = document.getElementById('custom-count');
+        const sliderVal = document.getElementById('slider-val');
+
+        function resetCountSelection() {
+            presetBtns.forEach(btn => btn.classList.remove('disabled'));
+            customCountInput.classList.remove('disabled');
+            customCountInput.value = 1;
+            sliderVal.innerText = 1;
+            targetQuestionsCount = 5;
         }
 
-        function confirmFinishTest() {
-            clearTimeout(autoNextTimer);
-            closeConfirmModal();
-            finishTest();
+        function setPresetCount(num) {
+            targetQuestionsCount = num;
+            customCountInput.classList.add('disabled');
         }
 
-        function drawRaySVG(val, isClosed, directionRight) {
-            const circleFill = isClosed ? "#00f3ff" : "#070414";
-            const lineStartX = directionRight ? 130 : 25;
-            const lineEndX = directionRight ? 255 : 130;
-
-            return `<svg width="290" height="90" viewBox="0 0 290 90">
-                <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
-                <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
-                <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                <line x1="${lineStartX}" y1="50" x2="${lineEndX}" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <circle cx="130" cy="50" r="7" fill="${circleFill}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="124" y="75" fill="#00f3ff" font-weight="800" font-size="15">${val}</text>
-            </svg>`;
+        function setSliderCount(val) {
+            sliderVal.innerText = val;
+            targetQuestionsCount = parseInt(val);
+            presetBtns.forEach(btn => btn.classList.add('disabled'));
         }
 
-        function drawIntervalSVG(valA, valB, isClosedA, isClosedB) {
-            const fillA = isClosedA ? "#00f3ff" : "#070414";
-            const fillB = isClosedB ? "#00f3ff" : "#070414";
-
-            return `<svg width="290" height="90" viewBox="0 0 290 90">
-                <line x1="15" y1="50" x2="265" y2="50" stroke="#bf00ff" stroke-width="3"/>
-                <polygon points="265,45 278,50 265,55" fill="#bf00ff"/>
-                <text x="270" y="70" fill="#bf00ff" font-weight="800" font-size="14">x</text>
-                <line x1="85" y1="50" x2="195" y2="50" stroke="#00f3ff" stroke-width="7" opacity="0.85"/>
-                <circle cx="85" cy="50" r="7" fill="${fillA}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="78" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valA}</text>
-                <circle cx="195" cy="50" r="7" fill="${fillB}" stroke="#00f3ff" stroke-width="3"/>
-                <text x="188" y="75" fill="#00f3ff" font-weight="800" font-size="14">${valB}</text>
-            </svg>`;
+        function goToTimeSelection() {
+            document.getElementById('custom-min').value = '';
+            document.getElementById('custom-sec').value = '';
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('disabled'));
+            switchScreen('screen-time');
         }
 
-        function drawRightTriangleSVG(a, b, c) {
-            return `<svg width="220" height="130" viewBox="0 0 220 130">
-                <polygon points="30,100 180,100 30,20" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
-                <rect x="30" y="85" width="15" height="15" fill="none" stroke="#ff007f" stroke-width="2"/>
-                <text x="100" y="118" fill="#ffffff" font-weight="800" font-size="14">${a}</text>
-                <text x="10" y="65" fill="#ffffff" font-weight="800" font-size="14">${b}</text>
-                <text x="110" y="55" fill="#00f3ff" font-weight="800" font-size="14">${c}</text>
-            </svg>`;
+        function setPresetTime(sec) {
+            selectedTime = sec;
+            document.getElementById('custom-min').value = '';
+            document.getElementById('custom-sec').value = '';
+            startQuiz(sec);
         }
 
-        function drawCircleSVG(r) {
-            return `<svg width="160" height="140" viewBox="0 0 160 140">
-                <circle cx="80" cy="70" r="55" fill="rgba(191, 0, 255, 0.1)" stroke="#bf00ff" stroke-width="3"/>
-                <circle cx="80" cy="70" r="4" fill="#00f3ff"/>
-                <line x1="80" y1="70" x2="135" y2="70" stroke="#00f3ff" stroke-width="3" stroke-dasharray="4,4"/>
-                <text x="100" y="63" fill="#00f3ff" font-weight="800" font-size="14">R = ${r}</text>
-            </svg>`;
+        function checkMinInput() {
+            let minInp = document.getElementById('custom-min');
+            disableTimePresets();
+            if(minInp.value.length >= 2) document.getElementById('custom-sec').focus();
         }
 
-        function drawParallelogramSVG(a, h) {
-            return `<svg width="220" height="120" viewBox="0 0 220 120">
-                <polygon points="40,90 170,90 200,30 70,30" fill="rgba(0, 243, 255, 0.1)" stroke="#00f3ff" stroke-width="3"/>
-                <line x1="70" y1="30" x2="70" y2="90" stroke="#ff007f" stroke-width="2" stroke-dasharray="4,4"/>
-                <text x="105" y="108" fill="#ffffff" font-weight="800" font-size="14">a = ${a}</text>
-                <text x="75" y="65" fill="#ff007f" font-weight="800" font-size="14">h = ${h}</text>
-            </svg>`;
+        function disableTimePresets() {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.add('disabled'));
         }
 
-        function drawVectorSVG(x, y) {
-            return `<svg width="180" height="120" viewBox="0 0 180 120">
-                <line x1="20" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-                <line x1="20" y1="100" x2="20" y2="20" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-                <line x1="20" y1="100" x2="130" y2="30" stroke="#00f3ff" stroke-width="4"/>
-                <polygon points="130,30 118,34 125,45" fill="#00f3ff"/>
-                <text x="70" y="50" fill="#00f3ff" font-weight="800" font-size="15">ā (${x}; ${y})</text>
-            </svg>`;
+        function startQuizWithCustomTime() {
+            let m = parseInt(document.getElementById('custom-min').value) || 0;
+            let s = parseInt(document.getElementById('custom-sec').value) || 0;
+            let totalSec = (m * 60) + s;
+            if(totalSec > 0) startQuiz(totalSec);
+            else alert("Введіть коректний час!");
         }
 
-        function getSeenQuestions(key) {
-            try {
-                return JSON.parse(localStorage.getItem(key)) || [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveSeenQuestions(key, list) {
-            try {
-                localStorage.setItem(key, JSON.stringify(list));
-            } catch (e) {}
-        }
-
-        const algebraGenerators = [
-            () => {
-                const a = 2 + Math.floor(Math.random() * 6);
-                const val = (Math.floor(Math.random() * 12) - 5) * a;
-                const res = val / a;
-                return {
-                    text: `Розв'яжіть лінійну нерівність: ${a}x > ${val}`,
-                    diagram: drawRaySVG(res, false, true),
-                    correctVal: `x > ${res}`,
-                    wrongs: [`x < ${res}`, `x > ${res * 2}`, `x < ${res - 1}`],
-                    explanation: `Поділимо обидві частини на додатне число ${a}. Знак нерівності не змінюється: x > ${val} / ${a} ⇒ x > ${res}.`
-                };
-            },
-            () => {
-                const a = -(2 + Math.floor(Math.random() * 5));
-                const res = Math.floor(Math.random() * 8) - 3;
-                const b = a * res;
-                return {
-                    text: `Розв'яжіть лінійну нерівність: ${a}x ≤ ${b}`,
-                    diagram: drawRaySVG(res, true, true),
-                    correctVal: `x ≥ ${res}`,
-                    wrongs: [`x ≤ ${res}`, `x ≥ ${-res}`, `x ≤ ${-res}`],
-                    explanation: `При діленні обох частин на від'ємне число ${a} знак нерівності змінюється на протилежний: x ≥ ${b} / (${a}) ⇒ x ≥ ${res}.`
-                };
-            },
-            () => {
-                const num = Math.floor(Math.random() * 16) - 8;
-                return {
-                    text: `Запишіть розв'язок нерівності x > ${num} у вигляді числового проміжку.`,
-                    diagram: drawRaySVG(num, false, true),
-                    correctVal: `(${num}; +∞)`,
-                    wrongs: [`[${num}; +∞)`, `(-∞; ${num})`, `(-∞; ${num}]`],
-                    explanation: `Строга нерівність (>) відповідає відкритому проміжку з круглою дужкою: (${num}; +∞).`
-                };
-            },
-            () => {
-                const num = Math.floor(Math.random() * 16) - 8;
-                return {
-                    text: `Множиною розв'язків якої нерівності є проміжок (-∞; ${num}]?`,
-                    diagram: drawRaySVG(num, true, false),
-                    correctVal: `x ≤ ${num}`,
-                    wrongs: [`x < ${num}`, `x ≥ ${num}`, `x > ${num}`],
-                    explanation: `Квадратна дужка біля числа ${num} та напрямок до -∞ відповідають нестрогій нерівності x ≤ ${num}.`
-                };
-            },
-            () => {
-                const val = Math.floor(Math.random() * 10) - 4;
-                const correctInt = val + 1;
-                return {
-                    text: `Вкажіть найменше ціле число, що є розв'язком нерівності x > ${val}.`,
-                    diagram: drawRaySVG(val, false, true),
-                    correctVal: `${correctInt}`,
-                    wrongs: [`${val}`, `${val - 1}`, `${correctInt + 1}`],
-                    explanation: `Число ${val} не входить у розв'язок (строга нерівність), тому найменшим цілим числом є ${correctInt}.`
-                };
-            },
-            () => {
-                const a = Math.floor(Math.random() * 4) - 2;
-                const b = a + Math.floor(Math.random() * 5) + 2;
-                return {
-                    text: `Знайдіть переріз проміжків (${a}; +∞) і (-∞; ${b}]`,
-                    diagram: drawIntervalSVG(a, b, false, true),
-                    correctVal: `(${a}; ${b}]`,
-                    wrongs: [`[${a}; ${b})`, `(${a}; ${b})`, `[-∞; ${b}]`],
-                    explanation: `Переріз — це спільна частина проміжків: елементи одночасно більші за ${a} та не більші за ${b}, тобто x ∈ (${a}; ${b}].`
-                };
-            },
-            () => {
-                const k = 2 + Math.floor(Math.random() * 3);
-                const bVal = (Math.floor(Math.random() * 5) + 1) * k;
-                const res = -bVal / k;
-                return {
-                    text: `Знайдіть область визначення функції y = √(${k}x + ${bVal})`,
-                    diagram: drawRaySVG(res, true, true),
-                    correctVal: `[${res}; +∞)`,
-                    wrongs: [`(${res}; +∞)`, `(-∞; ${res}]`, `[${-res}; +∞)`],
-                    explanation: `Підкореневий вираз має бути невід'ємним: ${k}x + ${bVal} ≥ 0 ⇒ x ≥ ${res}. Отже, область визначення: [${res}; +∞).`
-                };
-            },
-            () => {
-                const root = 2 + Math.floor(Math.random() * 6);
-                const sq = root * root;
-                return {
-                    text: `Розв'яжіть квадратну нерівність: x² < ${sq}`,
-                    diagram: drawIntervalSVG(-root, root, false, false),
-                    correctVal: `(-${root}; ${root})`,
-                    wrongs: [`(-∞; ${root})`, `[-${root}; ${root}]`, `(${root}; +∞)`],
-                    explanation: `Нерівність x² < ${sq} означає, що значення x лежать між -${root} та ${root}. Отримуємо відкритий інтервал (-${root}; ${root}).`
-                };
-            },
-            () => {
-                const a = Math.floor(Math.random() * 7) + 2;
-                return {
-                    text: `Знайдіть множину розв'язків нерівності з модулем: |x| ≤ ${a}`,
-                    diagram: drawIntervalSVG(-a, a, true, true),
-                    correctVal: `[-${a}; ${a}]`,
-                    wrongs: [`(-∞; ${a}]`, `[${a}; +∞)`, `(-${a}; ${a})`],
-                    explanation: `Нерівність |x| ≤ ${a} рівносильна подвійній нерівності -${a} ≤ x ≤ ${a}, що дає відрізок [-${a}; ${a}].`
-                };
-            }
-        ];
-
-        const geometryGenerators = [
-            () => {
-                const pyth = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]];
-                const triple = pyth[Math.floor(Math.random() * pyth.length)];
-                return {
-                    text: `У прямокутному трикутнику катети дорівнюють ${triple[0]} см і ${triple[1]} см. Знайдіть гіпотенузу.`,
-                    diagram: drawRightTriangleSVG(triple[0], triple[1], '?'),
-                    correctVal: `${triple[2]} см`,
-                    wrongs: [`${triple[2] + 2} см`, `${triple[2] - 1} см`, `${triple[0] + triple[1]} см`],
-                    explanation: `За теоремою Піфагора: c = √(a² + b²) = √(${triple[0]}² + ${triple[1]}²) = ${triple[2]} см.`
-                };
-            },
-            () => {
-                const pyth = [[3,4,5], [6,8,10], [5,12,13]];
-                const triple = pyth[Math.floor(Math.random() * pyth.length)];
-                return {
-                    text: `Знайдіть катет прямокутного трикутника, якщо його гіпотенуза дорівнює ${triple[2]} см, а інший катет — ${triple[1]} см.`,
-                    diagram: drawRightTriangleSVG('?', triple[1], triple[2]),
-                    correctVal: `${triple[0]} см`,
-                    wrongs: [`${triple[0] + 2} см`, `${triple[0] + 1} см`, `${triple[2] - triple[1]} см`],
-                    explanation: `За теоремою Піфагора: a = √(c² - b²) = √(${triple[2]}² - ${triple[1]}²) = ${triple[0]} см.`
-                };
-            },
-            () => {
-                const a = Math.floor(Math.random() * 6) + 4;
-                const h = Math.floor(Math.random() * 5) + 3;
-                const area = a * h;
-                return {
-                    text: `Знайдіть площу паралелограма, сторона якого дорівнює ${a} см, а проведена до неї висота — ${h} см.`,
-                    diagram: drawParallelogramSVG(a, h),
-                    correctVal: `${area} см²`,
-                    wrongs: [`${area / 2} см²`, `${area + 4} см²`, `${(a + h) * 2} см²`],
-                    explanation: `Площа паралелограма обчислюється за формулою S = a · h = ${a} · ${h} = ${area} см².`
-                };
-            },
-            () => {
-                const r = Math.floor(Math.random() * 7) + 2;
-                const c = 2 * r;
-                return {
-                    text: `Знайдіть довжину кола, радіус якого дорівнює ${r} см.`,
-                    diagram: drawCircleSVG(r),
-                    correctVal: `${c}π см`,
-                    wrongs: [`${r * r}π см`, `${r}π см`, `${c + 2}π см`],
-                    explanation: `Довжина кола обчислюється за формулою C = 2πR. Отже, C = 2 · π · ${r} = ${c}π см.`
-                };
-            },
-            () => {
-                const r = Math.floor(Math.random() * 6) + 2;
-                const s = r * r;
-                return {
-                    text: `Знайдіть площу круга, радіус якого дорівнює ${r} см.`,
-                    diagram: drawCircleSVG(r),
-                    correctVal: `${s}π см²`,
-                    wrongs: [`${2 * r}π см²`, `${s * 2}π см²`, `${s + 4}π см²`],
-                    explanation: `Площа круга обчислюється за формулою S = πR². Отже, S = π · ${r}² = ${s}π см².`
-                };
-            },
-            () => {
-                const x = Math.floor(Math.random() * 6) + 1;
-                const y = Math.floor(Math.random() * 6) + 1;
-                const lenSq = x * x + y * y;
-                const len = Math.sqrt(lenSq);
-                const isInt = Number.isInteger(len);
-                const correctAns = isInt ? `${len}` : `√${lenSq}`;
-
-                return {
-                    text: `Знайдіть модуль (довжину) вектора ā(${x}; ${y}).`,
-                    diagram: drawVectorSVG(x, y),
-                    correctVal: correctAns,
-                    wrongs: [`${x + y}`, `√${x + y}`, `${x * y}`],
-                    explanation: `Модуль вектора ā(x; y) обчислюється за формулою |ā| = √(x² + y²) = √(${x}² + ${y}²) = ${correctAns}.`
-                };
-            },
-            () => {
-                const x1 = Math.floor(Math.random() * 4) + 1;
-                const y1 = Math.floor(Math.random() * 4) + 1;
-                const x2 = Math.floor(Math.random() * 4) + 1;
-                const y2 = Math.floor(Math.random() * 4) + 1;
-                const scalar = x1 * x2 + y1 * y2;
-
-                return {
-                    text: `Знайдіть скалярний добуток векторів ā(${x1}; ${y1}) та b̄(${x2}; ${y2}).`,
-                    diagram: '',
-                    correctVal: `${scalar}`,
-                    wrongs: [`${scalar + 3}`, `${x1 * y1 + x2 * y2}`, `${(x1 + x2) * (y1 + y2)}`],
-                    explanation: `Скалярний добуток векторів дорівнює сумі добутків відповідних координат: ā · b̄ = x1·x2 + y1·y2 = ${x1}·${x2} + ${y1}·${y2} = ${scalar}.`
-                };
-            },
-            () => {
-                const angles = [
-                    { name: 'sin 30°', val: '0.5' },
-                    { name: 'cos 60°', val: '0.5' },
-                    { name: 'sin 90°', val: '1' },
-                    { name: 'cos 0°', val: '1' },
-                    { name: 'tg 45°', val: '1' }
-                ];
-                const item = angles[Math.floor(Math.random() * angles.length)];
-
-                return {
-                    text: `Чому дорівнює значення тригонометричного виразу ${item.name}?`,
-                    diagram: '',
-                    correctVal: item.val,
-                    wrongs: ['0', '0.866', '2'],
-                    explanation: `За таблицею значень тригонометричних функцій стандартних кутів ${item.name} = ${item.val}.`
-                };
-            },
-            () => {
-                const n = Math.floor(Math.random() * 5) + 5;
-                const sum = (n - 2) * 180;
-                return {
-                    text: `Знайдіть суму кутів опуклого ${n}-кутника.`,
-                    diagram: '',
-                    correctVal: `${sum}°`,
-                    wrongs: [`${sum + 180}°`, `${sum - 180}°`, `${n * 180}°`],
-                    explanation: `Сума кутів опуклого n-кутника обчислюється за формулою S = 180° · (n - 2). Для n = ${n}: S = 180° · (${n} - 2) = ${sum}°.`
-                };
-            }
-        ];
-
-        const physicsGenerators = [
-            () => {
-                return {
-                    text: "Що являє собою електричний струм у металах?",
-                    diagram: '',
-                    correctVal: "Напрямлений рух вільних електронів",
-                    wrongs: ["Рух позитивних та негативних йонів", "Упорядкований рух протонів", "Хаотичний рух нейтральних атомів"],
-                    explanation: "У металах носіями електричного заряду є вільні електрони, які рухаються впорядковано під дією електричного поля."
-                };
-            },
-            () => {
-                const R0 = (Math.floor(Math.random() * 5) + 1) * 10;
-                const alpha = 0.004;
-                const t = (Math.floor(Math.random() * 8) + 1) * 25;
-                const R = Number((R0 * (1 + alpha * t)).toFixed(2));
-                return {
-                    text: `Опір металевого провідника за 0 °C дорівнює ${R0} Ом. Яким буде його опір за температури ${t} °C? (α = 0,004 °C⁻¹)`,
-                    diagram: '',
-                    correctVal: `${R} Ом`,
-                    wrongs: [`${R0} Ом`, `${(R * 1.25).toFixed(2)} Ом`, `${(R0 + t * 0.1).toFixed(2)} Ом`],
-                    explanation: `За формулою R = R₀(1 + αt): R = ${R0} · (1 + 0,004 · ${t}) = ${R0} · ${(1 + alpha * t).toFixed(3)} = ${R} Ом.`
-                };
-            },
-            () => {
-                return {
-                    text: "Як змінюється електричний опір металів при підвищенні температури і чому?",
-                    diagram: '',
-                    correctVal: "Збільшується через посилення коливань іонів у вузлах ґратки",
-                    wrongs: ["Зменшується через збільшення кількості електронів", "Не змінюється, бо кількість іонів стала", "Зменшується до нуля за будь-якої високої температури"],
-                    explanation: "При нагріванні іони у вузлах кристалічної ґратки коливаються сильніше, тому вільні електрони частіше з ними зіштовхуються, і опір зростає."
-                };
-            },
-            () => {
-                return {
-                    text: "Що експериментально довів дослід Річарда Толмена і Томаса Стюарта?",
-                    diagram: '',
-                    correctVal: "Струм у металах зумовлений рухом вільних електронів",
-                    wrongs: ["Існування надпровідності за високих температур", "Залежність маси металу від температури", "Наявність позитивних йонів у струмі"],
-                    explanation: "Різке гальмування швидкообертальної котушки довело інерцію електронів та дозволило виміряти їхній питомий заряд e/m."
-                };
-            },
-            () => {
-                return {
-                    text: "Що таке надпровідність?",
-                    diagram: '',
-                    correctVal: "Стрибкоподібне падіння опору до нуля за критичної температури",
-                    wrongs: ["Поступове зменшення опору до нескінченності", "Збільшення провідності при нагріванні металу", "Властивість металу випромінювати світло при проходженні струму"],
-                    explanation: "Надпровідність — це стан провідника, за якого його електричний опір повністю падає до нуля при охолодженні нижче критичної температури (Tкр)."
-                };
-            },
-            () => {
-                return {
-                    text: "Скільки теплоти виділяється в провіднику, який перебуває в надпровідному стані?",
-                    diagram: '',
-                    correctVal: "0 Дж (теплота не виділяється)",
-                    wrongs: ["Максимально можлива кількість", "Залежить від сили струму за законом Джоуля-Ленца", "100 Дж за кожну секунду"],
-                    explanation: "Оскільки опір R = 0, то за законом Джоуля — Ленца (Q = I²Rt) кількість виділеної теплоти дорівнює 0."
-                };
-            },
-            () => {
-                return {
-                    text: "Хто і на прикладі якого металу вперше відкрив явище надпровідності у 1911 році?",
-                    diagram: '',
-                    correctVal: "Гейке Камерлінг-Оннес (на ртуті при 4,2 К)",
-                    wrongs: ["Томас Стюарт (на міді при 0 °C)", "Річард Толмен (на алюмінії при 100 К)", "Джеймс Джоуль (на залізі при -100 °C)"],
-                    explanation: "У 1911 році нідерландський фізик Гейке Камерлінг-Оннес виявив, що при охолодженні ртуті до 4,2 К її опір раптово падає до нуля."
-                };
-            },
-            () => {
-                return {
-                    text: "У яких одиницях вимірюється температурний коефіцієнт опору (α)?",
-                    diagram: '',
-                    correctVal: "К⁻¹ або °C⁻¹",
-                    wrongs: ["Ом · м", "Дж / °C", "В / А"],
-                    explanation: "Температурний коефіцієнт опору α вимірюється в обернених кельвінах (К⁻¹) або обернених градусах Цельсія (°C⁻¹)."
-                };
-            },
-            () => {
-                return {
-                    text: "Яка з наведених сфер є перспективним застосуванням надпровідників?",
-                    diagram: '',
-                    correctVal: "Створення надпотужних електромагнітів та потягів на магнітній подушці",
-                    wrongs: ["Виготовлення нагрівальних елементів для обігрівачів", "Створення електричних запобіжників", "Захист від ультрафіолетового випромінювання"],
-                    explanation: "Оскільки надпровідники пропускають величезні струми без нагрівання і втрат, їх використовують для створення надпотужних магнітів (МРТ, маглеви, колайдери)."
-                };
-            },
-            () => {
-                const deltaT = (Math.floor(Math.random() * 4) + 1) * 25;
-                const percentIncrease = (0.004 * deltaT * 100).toFixed(0);
-                return {
-                    text: `На скільки відсотків збільшиться опір мідного провідника при нагріванні на ${deltaT} °C? (α = 0,004 °C⁻¹)`,
-                    diagram: '',
-                    correctVal: `На ${percentIncrease}%`,
-                    wrongs: [`На ${percentIncrease * 2}%`, `На ${deltaT}%`, `На 10%`],
-                    explanation: `Відносне збільшення опору ΔR / R₀ = α · Δt = 0,004 · ${deltaT} = ${(0.004 * deltaT).toFixed(2)}, що становить ${percentIncrease}%.`
-                };
-            }
-        ];
-
-        function generateUniqueQuestions(subject, count) {
-            const currentTestTexts = new Set();
-            const resultList = [];
+        function startQuiz(timeSec) {
+            selectedTime = timeSec;
             
-            const storageKey = subject === 'algebra' ? 'algebra_seen' : (subject === 'geometry' ? 'geometry_seen' : 'physics_seen');
-            const historyList = getSeenQuestions(storageKey);
-            const historySet = new Set(historyList);
-
-            const pool = subject === 'algebra' ? algebraGenerators : (subject === 'geometry' ? geometryGenerators : physicsGenerators);
-
-            let attempts = 0;
-            const maxAttempts = 5000;
-
-            while (resultList.length < count && attempts < maxAttempts) {
-                attempts++;
-                const gen = pool[Math.floor(Math.random() * pool.length)];
-                const qRaw = gen();
-
-                if (!currentTestTexts.has(qRaw.text) && !historySet.has(qRaw.text)) {
-                    currentTestTexts.add(qRaw.text);
-
-                    let allOptions = [qRaw.correctVal, ...qRaw.wrongs.slice(0, 3)];
-                    allOptions.sort(() => Math.random() - 0.5);
-                    const correctIdx = allOptions.indexOf(qRaw.correctVal);
-
-                    resultList.push({
-                        text: qRaw.text,
-                        diagram: qRaw.diagram,
-                        options: allOptions,
-                        correct: correctIdx,
-                        explanation: qRaw.explanation
-                    });
-                }
-            }
-
-            attempts = 0;
-            while (resultList.length < count && attempts < maxAttempts) {
-                attempts++;
-                const gen = pool[Math.floor(Math.random() * pool.length)];
-                const qRaw = gen();
-
-                if (!currentTestTexts.has(qRaw.text)) {
-                    currentTestTexts.add(qRaw.text);
-
-                    let allOptions = [qRaw.correctVal, ...qRaw.wrongs.slice(0, 3)];
-                    allOptions.sort(() => Math.random() - 0.5);
-                    const correctIdx = allOptions.indexOf(qRaw.correctVal);
-
-                    resultList.push({
-                        text: qRaw.text,
-                        diagram: qRaw.diagram,
-                        options: allOptions,
-                        correct: correctIdx,
-                        explanation: qRaw.explanation
-                    });
-                }
-            }
-
-            const updatedHistory = Array.from(new Set([...historyList, ...Array.from(currentTestTexts)]));
-            saveSeenQuestions(storageKey, updatedHistory.length > 300 ? updatedHistory.slice(-150) : updatedHistory);
-
-            return resultList;
-        }
-
-        function startTest(count) {
-            totalQuestionsCount = count;
-            currentQuestionIndex = 0;
-            userAnswers = new Array(count).fill(null);
-            questionsData = generateUniqueQuestions(currentSubject, count);
-
-            showScreen('screen-quiz');
-            loadQuestion(0);
-        }
-
-        function loadQuestion(index) {
-            clearTimeout(autoNextTimer);
-
-            const q = questionsData[index];
-
-            document.getElementById('quiz-progress').innerText = `Завдання ${index + 1} з ${totalQuestionsCount}`;
+            let baseArray = [...db[currentSubject]];
+            baseArray.sort(() => Math.random() - 0.5);
             
-            const topicElem = document.getElementById('quiz-topic');
-            if (currentSubject === 'algebra') {
-                topicElem.innerText = 'Тема: Нерівності';
-                topicElem.style.color = '#bf00ff';
-            } else if (currentSubject === 'geometry') {
-                topicElem.innerText = 'Тема: Повторення';
-                topicElem.style.color = '#00f3ff';
-            } else if (currentSubject === 'physics') {
-                topicElem.innerText = 'Тема: Електричний струм у металах. Надпровідність';
-                topicElem.style.color = '#ff007f';
+            currentQuestions = [];
+            while(currentQuestions.length < targetQuestionsCount) {
+                let batch = [...db[currentSubject]].sort(() => Math.random() - 0.5);
+                currentQuestions = currentQuestions.concat(batch);
             }
+            currentQuestions = currentQuestions.slice(0, targetQuestionsCount);
 
-            document.getElementById('question-text').innerText = q.text;
+            currentIndex = 0;
+            results = [];
+            
+            switchScreen('screen-quiz');
+            setupTimer();
+            loadQuestion();
+        }
 
-            const diagContainer = document.getElementById('diagram-container');
-            if (q.diagram) {
-                diagContainer.style.display = 'flex';
-                diagContainer.innerHTML = q.diagram;
+        function setupTimer() {
+            const timeDisp = document.getElementById('timer-display');
+            clearInterval(timerInterval);
+            timeDisp.classList.remove('timer-danger');
+
+            if(selectedTime > 0) {
+                timeDisp.style.display = 'block';
+                updateTimerUI(selectedTime);
+                let timeLeft = selectedTime;
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerUI(timeLeft);
+                    if(timeLeft <= 10) timeDisp.classList.add('timer-danger');
+                    if(timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        showTimerEnd();
+                    }
+                }, 1000);
             } else {
-                diagContainer.style.display = 'none';
+                timeDisp.style.display = 'none';
             }
+        }
 
-            const optionsGrid = document.getElementById('options-grid');
-            optionsGrid.innerHTML = '';
+        function updateTimerUI(sec) {
+            let m = Math.floor(sec / 60);
+            let s = sec % 60;
+            document.getElementById('timer-display').innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
+        }
 
-            const explanationBox = document.getElementById('explanation-box');
-            explanationBox.classList.remove('active');
+        function loadQuestion() {
+            answeredCurrent = false;
+            let qData = currentQuestions[currentIndex];
+            
+            document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
+            document.getElementById('question-text').innerText = qData.q;
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('btn-skip').style.display = 'inline-block';
+            document.getElementById('btn-next').style.display = 'none';
 
-            const savedAnswer = userAnswers[index];
+            let optsGrid = document.getElementById('options-grid');
+            optsGrid.innerHTML = '';
 
-            q.options.forEach((optText, optIdx) => {
-                const btn = document.createElement('button');
-                btn.className = 'btn-option';
+            qData.opts.forEach((optText, index) => {
+                let btn = document.createElement('button');
+                btn.className = 'btn option-btn';
                 btn.innerText = optText;
-
-                if (savedAnswer !== null) {
-                    btn.disabled = true;
-                    if (optIdx === q.correct) {
-                        btn.classList.add('correct');
-                    }
-                    if (savedAnswer === optIdx && savedAnswer !== q.correct) {
-                        btn.classList.add('incorrect');
-                    }
-                } else {
-                    btn.onclick = () => handleAnswer(optIdx);
-                }
-
-                optionsGrid.appendChild(btn);
+                btn.onclick = () => checkAnswer(index, btn, qData);
+                optsGrid.appendChild(btn);
             });
-
-            if (savedAnswer !== null && savedAnswer !== q.correct) {
-                document.getElementById('explanation-text').innerText = q.explanation;
-                explanationBox.classList.add('active');
-            }
         }
 
-        function handleAnswer(selectedIndex) {
-            if (userAnswers[currentQuestionIndex] !== null) return;
+        function checkAnswer(selectedIndex, btnElement, qData) {
+            if(answeredCurrent) return;
+            answeredCurrent = true;
 
-            userAnswers[currentQuestionIndex] = selectedIndex;
-            const q = questionsData[currentQuestionIndex];
-            const optionsGrid = document.getElementById('options-grid');
-            const buttons = optionsGrid.querySelectorAll('.btn-option');
+            let allBtns = document.getElementById('options-grid').children;
+            for(let b of allBtns) b.style.pointerEvents = 'none';
 
-            buttons.forEach(b => b.disabled = true);
+            let isCorrect = (selectedIndex === qData.ans);
+            results.push({ q: qData.q, exp: qData.exp, status: isCorrect ? 'correct' : 'wrong' });
 
-            if (selectedIndex === q.correct) {
-                buttons[selectedIndex].classList.add('correct');
+            if(isCorrect) {
+                btnElement.classList.add('correct');
             } else {
-                buttons[selectedIndex].classList.add('incorrect');
-                buttons[q.correct].classList.add('correct');
-
-                document.getElementById('explanation-text').innerText = q.explanation;
-                document.getElementById('explanation-box').classList.add('active');
+                btnElement.classList.add('wrong');
+                allBtns[qData.ans].classList.add('correct');
+                
+                let expDiv = document.getElementById('explanation');
+                expDiv.innerText = "Пояснення: " + qData.exp;
+                expDiv.style.display = 'block';
             }
 
-            clearTimeout(autoNextTimer);
-            autoNextTimer = setTimeout(() => {
-                nextQuestion();
-            }, 3000);
+            document.getElementById('btn-skip').style.display = 'none';
+            document.getElementById('btn-next').style.display = 'inline-block';
         }
 
         function skipQuestion() {
-            clearTimeout(autoNextTimer);
-            nextQuestion();
+            if(answeredCurrent) return;
+            results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'skipped' });
+            goToNextOrEnd();
         }
 
-        function nextQuestion() {
-            clearTimeout(autoNextTimer);
-            if (currentQuestionIndex < totalQuestionsCount - 1) {
-                currentQuestionIndex++;
-                loadQuestion(currentQuestionIndex);
-            } else {
-                finishTest();
+        function nextQuestion() { goToNextOrEnd(); }
+
+        function goToNextOrEnd() {
+            currentIndex++;
+            if(currentIndex >= targetQuestionsCount) finishQuiz();
+            else loadQuestion();
+        }
+
+        function showEndModal() { document.getElementById('end-modal').style.display = 'flex'; }
+        function closeEndModal() { document.getElementById('end-modal').style.display = 'none'; }
+        
+        function forceEndQuiz() {
+            closeEndModal();
+            finishQuiz(true);
+        }
+
+        function showTimerEnd() {
+            document.getElementById('timer-modal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('timer-modal').style.display = 'none';
+                finishQuiz(true);
+            }, 3000);
+        }
+
+        function finishQuiz(endedEarly = false) {
+            clearInterval(timerInterval);
+            
+            if(endedEarly && currentIndex < targetQuestionsCount) {
+                for(let i = currentIndex; i < targetQuestionsCount; i++) {
+                    results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: 'unanswered' });
+                }
             }
+            buildResultsScreen();
+            switchScreen('screen-results');
         }
 
-        function finishTest() {
-            clearTimeout(autoNextTimer);
-            showScreen('screen-results');
-            const resultsList = document.getElementById('results-list');
-            resultsList.innerHTML = '';
+        function buildResultsScreen() {
+            let correctCount = results.filter(r => r.status === 'correct').length;
+            document.getElementById('score-display').innerText = `Виконано: ${correctCount} / ${targetQuestionsCount}`;
 
-            questionsData.forEach((q, idx) => {
-                const ans = userAnswers[idx];
-                const card = document.createElement('div');
+            let listDiv = document.getElementById('results-list');
+            listDiv.innerHTML = '';
+
+            results.forEach((res, i) => {
+                let div = document.createElement('div');
+                div.className = 'res-item';
                 
-                let statusClass = 'is-skipped';
-                let badgeHTML = '<span class="status-badge badge-skipped">Пропущено</span>';
-
-                if (ans !== null) {
-                    if (ans === q.correct) {
-                        statusClass = 'is-correct';
-                        badgeHTML = '<span class="status-badge badge-correct">Правильно</span>';
-                    } else {
-                        statusClass = 'is-incorrect';
-                        badgeHTML = '<span class="status-badge badge-incorrect">Неправильно</span>';
-                    }
+                let statusText = ''; let statusClass = '';
+                switch(res.status) {
+                    case 'correct': statusText = 'Правильно'; statusClass = 'res-status-correct'; break;
+                    case 'wrong': statusText = 'Неправильно'; statusClass = 'res-status-wrong'; break;
+                    case 'skipped': statusText = 'Пропущено'; statusClass = 'res-status-skipped'; break;
+                    case 'unanswered': statusText = 'Не зроблено'; statusClass = 'res-status-unanswered'; break;
                 }
 
-                card.className = `result-item-card ${statusClass}`;
-                card.innerHTML = `
-                    ${badgeHTML}
-                    <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 8px;">№${idx + 1}. ${q.text}</div>
-                    <div style="font-size: 0.95rem; margin-bottom: 6px;">
-                        Ваша відповідь: <strong style="color: ${ans === null ? '#ffd700' : (ans === q.correct ? '#00ff66' : '#ff0055')}">${ans !== null ? q.options[ans] : 'Пропущено'}</strong>
-                    </div>
-                    <div style="font-size: 0.95rem; margin-bottom: 10px;">
-                        Правильна відповідь: <strong style="color: #00ff66">${q.options[q.correct]}</strong>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4;">
-                        <strong style="color: #00f3ff;">Пояснення:</strong> ${q.explanation}
-                    </div>
+                div.innerHTML = `
+                    <div style="font-size: 1.2rem; margin-bottom: 5px;"><b>${i+1}.</b> ${res.q}</div>
+                    <div class="${statusClass}">${statusText}</div>
+                    <div style="margin-top: 5px; font-size: 1rem; color: #aaa;"><i>Пояснення: ${res.exp}</i></div>
                 `;
-                resultsList.appendChild(card);
+                listDiv.appendChild(div);
             });
-        }
-
-        function resetToHome() {
-            clearTimeout(autoNextTimer);
-            renderBackground(algebraIcons);
-            showScreen('screen-subject');
         }
     </script>
 </body>
