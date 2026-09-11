@@ -40,7 +40,6 @@
 
         .sticker {
             position: absolute;
-            /* Збільшено розмір стікерів */
             width: 70px;
             height: 70px;
             display: flex;
@@ -59,15 +58,6 @@
             width: 100%;
             height: 100%;
             filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 12px currentColor);
-        }
-
-        .sticker .text-icon {
-            font-weight: 900;
-            font-size: 2rem; /* Збільшено шрифт для текстових стікерів */
-            line-height: 0.85;
-            text-align: center;
-            text-shadow: 0 0 5px currentColor, 0 0 12px currentColor;
-            font-family: monospace;
         }
 
         @keyframes pulse-glow {
@@ -257,26 +247,33 @@
     </div>
 
     <script>
-        /* Генерація фонових стікерів (Grid system - без накладання) */
+        /* Генерація фонових стікерів (Grid system - шкільні приладдя) */
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             
             const icons = [
+                // Олівець
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+                // Зошит/Книга
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
+                // Лінійка
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 14.6L9.4 4.6c-1.2-1.2-3.1-1.2-4.2 0l-0.6 0.6c-1.2 1.2-1.2 3.1 0 4.2l10 10c1.2 1.2 3.1 1.2 4.2 0l0.6-0.6c1.2-1.2 1.2-3.1 0-4.2z"></path><line x1="12" y1="7" x2="15" y2="10"></line><line x1="9" y1="10" x2="12" y2="13"></line><line x1="6" y1="13" x2="9" y2="16"></line></svg>`,
+                // Калькулятор
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><rect x="8" y="6" width="8" height="4"></rect><circle cx="8" cy="14" r="1"></circle><circle cx="12" cy="14" r="1"></circle><circle cx="16" cy="14" r="1"></circle><circle cx="8" cy="18" r="1"></circle><circle cx="12" cy="18" r="1"></circle><circle cx="16" cy="18" r="1"></circle></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>`,
-                `<div class="text-icon">01<br>10</div>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="3" width="4" height="18" rx="1"></rect><rect x="10" y="8" width="4" height="13" rx="1"></rect><rect x="2" y="13" width="4" height="8" rx="1"></rect></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c0 5.5-4.5 10-10 10 5.5 0 10 4.5 10 10 0-5.5 4.5-10 10-10-5.5 0-10-4.5-10-10z"></path></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><line x1="4" y1="12" x2="20" y2="12"></line><circle cx="12" cy="19" r="2"></circle></svg>`
+                // Рюкзак
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10z"></path><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path><path d="M8 21v-5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"></path><path d="M8 10h8"></path><path d="M8 14h8"></path></svg>`,
+                // Окуляри
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="4"></circle><circle cx="18" cy="15" r="4"></circle><path d="M14 14.5a3.5 3.5 0 0 0-4 0"></path><path d="M2 15h2"></path><path d="M20 15h2"></path><path d="M4.5 12 2 7"></path><path d="M19.5 12 22 7"></path></svg>`,
+                // Циркуль
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 20-5.71-11.42"></path><path d="M9 13.52 5 20"></path><circle cx="12" cy="5" r="2"></circle><path d="M12 7v2"></path><path d="M14 16h-4"></path></svg>`,
+                // Яблуко
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>`,
+                // Глобус
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
             ];
             
-            // Кольори, включаючи фіолетовий, щоб відповідало фото
             const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)'];
             
-            // Налаштування сітки (Grid), щоб іконки ніколи не торкались
             const cols = 6; 
             const rows = 4;
             
@@ -293,8 +290,6 @@
                     
                     let scale = Math.random() * (1.1 - 0.7) + 0.7; 
                     
-                    // Відступи в межах комірки (щоб не прилягали до країв)
-                    // Генеруємо позицію від 20% до 80% всередині поточної комірки
                     let randomX = Math.random() * (cellWidthPct * 0.6) + (cellWidthPct * 0.2);
                     let randomY = Math.random() * (cellHeightPct * 0.6) + (cellHeightPct * 0.2);
                     
