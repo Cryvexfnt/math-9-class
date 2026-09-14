@@ -1,293 +1,1064 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Інтерактивний тренажер з фізики</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7f6;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      width: 100%;
-      max-width: 650px;
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .hidden { display: none; }
-    h2, h3 { color: #2c3e50; text-align: center; }
-    
-    /* Кнопки вибору предмета */
-    .btn-subject {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      font-size: 18px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #3498db;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-subject:hover { background-color: #2980b9; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шкільні Міні-Тести</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
 
-    /* Пошук */
-    .search-input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: 2px solid #bdc3c7;
-      border-radius: 6px;
-      box-sizing: border-box;
-      margin-bottom: 15px;
-    }
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #b500ff;
+            --neon-pink: #ff00a0;
+            --neon-red: #ff0055;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffe600;
+            --bg-color: #0d081c; 
+            --panel-bg: rgba(13, 8, 28, 0.85);
+        }
 
-    /* Таблиця з ползунком */
-    .topics-table-container {
-      max-height: 280px;
-      overflow-y: auto;
-      border: 1px solid #dcdde1;
-      border-radius: 6px;
-    }
-    .topics-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .topics-table td {
-      padding: 12px 15px;
-      border-bottom: 1px solid #f1f2f6;
-      cursor: pointer;
-    }
-    .topics-table tr:hover {
-      background-color: #e8f4f8;
-    }
-    .topic-badge {
-      font-weight: bold;
-      color: #2980b9;
-      margin-right: 8px;
-    }
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
-    /* Питання та варіанти */
-    .option-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      font-size: 16px;
-      background-color: #ecf0f1;
-      border: 1px solid #bdc3c7;
-      border-radius: 6px;
-      cursor: pointer;
-      text-align: left;
-    }
-    .option-btn:hover { background-color: #dcdde1; }
+        body {
+            margin: 0; padding: 0; 
+            background-color: var(--bg-color);
+            color: white;
+            overflow-x: hidden; 
+            height: 100vh; 
+            display: flex; flex-direction: column;
+            position: relative;
+        }
 
-    /* Фінальні кнопки */
-    .end-btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .btn-main {
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-    }
-    .btn-menu { background-color: #e74c3c; }
-    .btn-menu:hover { background-color: #c0392b; }
-    .btn-topics { background-color: #2ecc71; }
-    .btn-topics:hover { background-color: #27ae60; }
-  </style>
+        #bg-stickers {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .sticker {
+            position: absolute;
+            width: 65px; height: 65px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0.6; user-select: none;
+            transform-origin: center center;
+            margin-left: -32px; margin-top: -32px;
+            animation: pulse-glow 3s infinite alternate ease-in-out;
+        }
+
+        .sticker svg {
+            width: 100%; height: 100%;
+            filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 15px currentColor);
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; filter: brightness(0.8); transform: scale(0.95); }
+            100% { opacity: 0.8; filter: brightness(1.4); transform: scale(1.05); }
+        }
+
+        .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; z-index: 1;}
+        .screen.active { display: flex; }
+
+        h1 { 
+            font-size: 3.5rem; text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px var(--neon-purple); 
+            text-align: center; margin-bottom: 40px; 
+        }
+        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 20px; }
+        p { font-size: 1.3rem; margin: 5px 0; }
+
+        .subject-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+        .btn {
+            background: rgba(13, 8, 28, 0.7); 
+            color: #fff; border: 3px solid transparent;
+            padding: 15px 35px; margin: 10px; font-size: 1.3rem; font-weight: 800; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-algebra { border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(181, 0, 255, 0.4), inset 0 0 10px rgba(181, 0, 255, 0.2); text-shadow: 0 0 8px var(--neon-purple); }
+        .btn-algebra:hover { background: rgba(181, 0, 255, 0.2); box-shadow: 0 0 25px var(--neon-purple), inset 0 0 15px var(--neon-purple); transform: scale(1.05); }
+
+        .btn-geometry { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2); text-shadow: 0 0 8px var(--neon-cyan); }
+        .btn-geometry:hover { background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 15px var(--neon-cyan); transform: scale(1.05); }
+
+        .btn-physics { border-color: var(--neon-red); box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 10px rgba(255, 0, 85, 0.2); text-shadow: 0 0 8px var(--neon-red); }
+        .btn-physics:hover { background: rgba(255, 0, 85, 0.2); box-shadow: 0 0 25px var(--neon-red), inset 0 0 15px var(--neon-red); transform: scale(1.05); }
+
+        .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
+        .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
+        
+        .btn-yellow {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.4), inset 0 0 10px rgba(255, 230, 0, 0.2);
+            text-shadow: 0 0 8px var(--neon-yellow);
+            color: var(--neon-yellow);
+        }
+        .btn-yellow:hover {
+            background: rgba(255, 230, 0, 0.2);
+            box-shadow: 0 0 25px var(--neon-yellow), inset 0 0 15px var(--neon-yellow);
+            transform: scale(1.05);
+        }
+
+        .btn-count-active {
+            border-color: var(--neon-green) !important;
+            box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green) !important;
+            text-shadow: 0 0 10px var(--neon-green) !important;
+            color: #fff !important;
+        }
+
+        .btn.disabled { filter: grayscale(1); opacity: 0.3; pointer-events: none; border-color: #555 !important; color: #555 !important; box-shadow: none !important; text-shadow: none !important; }
+
+        /* Стилі для пошуку та тем */
+        .topics-container {
+            width: 100%;
+            max-width: 700px;
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(181, 0, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            background: rgba(13, 8, 28, 0.9);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        .search-input:focus { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+
+        .topics-list {
+            max-height: 350px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+        }
+
+        .topic-item {
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .topic-item:hover {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-cyan);
+            transform: translateX(5px);
+        }
+
+        .grid-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 10px; }
+        .custom-input-area { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px; }
+        
+        input[type="range"] { width: 400px; height: 10px; accent-color: var(--neon-cyan); cursor: pointer; }
+        input[type="range"].disabled { opacity: 0.3; pointer-events: none; }
+        
+        .time-inputs { display: flex; gap: 8px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        .time-inputs input { width: 75px; height: 55px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 1.8rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
+        .time-inputs input:disabled { opacity: 0.3; border-color: #555; box-shadow: none; }
+
+        .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; }
+        .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
+        
+        .quiz-container { background: var(--panel-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05); position: relative; backdrop-filter: blur(15px); }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 1.5rem;}
+        #quiz-progress { color: #ccc; font-weight: bold; }
+        #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
+        .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
+        .question-text { font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; text-align: center;}
+        
+        .question-image { text-align: center; margin-bottom: 30px; }
+        .question-image svg { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
+
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.3rem; padding: 15px 25px; border-color: rgba(255,255,255,0.2); }
+        .option-btn:hover { border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
+        .option-btn.correct { background: rgba(0, 255, 102, 0.2); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 102, 0.4); }
+        .option-btn.wrong { background: rgba(255, 0, 85, 0.2); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+        .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
+        .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
+        #results-list { max-height: 50vh; overflow-y: auto; text-align: left; padding-right: 15px; }
+        .res-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; }
+        .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 8px var(--neon-green); }
+        .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); }
+        .res-status-skipped { color: #f39c12; font-weight: bold; }
+        .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <!-- ЕКРАН 1: Вибір предмета -->
-  <div id="screen-subjects">
-    <h2>Оберіть предмет</h2>
-    <button class="btn-subject" onclick="openSubject('physics9')">Фізика 9 клас</button>
-  </div>
+    <div id="bg-stickers"></div>
 
-  <!-- ЕКРАН 2: Таблиця тем із пошуком -->
-  <div id="screen-topics" class="hidden">
-    <h2>Розділ 1. Електричний струм у різних середовищах</h2>
-    <input type="text" id="searchInput" class="search-input" placeholder="Пошук теми (наприклад: Еле...)" oninput="filterTopics()">
-    
-    <div class="topics-table-container">
-      <table class="topics-table" id="topicsTable">
-        <tbody id="topicsTableBody">
-          <!-- Динамічно заповнюється JS -->
-        </tbody>
-      </table>
+    <!-- 1. Екран вибору предмета -->
+    <div id="screen-menu" class="screen active">
+        <h1>Оберіть предмет</h1>
+        <div class="subject-menu">
+            <button class="btn btn-algebra" onclick="selectSubject('algebra')">√x Алгебра</button>
+            <button class="btn btn-geometry" onclick="selectSubject('geometry')">∠a Геометрія</button>
+            <button class="btn btn-physics" onclick="selectSubject('physics')">E=mc² Фізика</button>
+        </div>
     </div>
-    <br>
-    <button class="btn-main btn-menu" style="width:100%" onclick="showScreen('screen-subjects')">Вийти в меню</button>
-  </div>
 
-  <!-- ЕКРАН 3: Проходження тесту -->
-  <div id="screen-quiz" class="hidden">
-    <h3 id="quizTopicTitle"></h3>
-    <hr>
-    <p id="questionText" style="font-size: 18px; font-weight: bold;"></p>
-    <div id="optionsContainer"></div>
-  </div>
-
-  <!-- ЕКРАН 4: Закінчення гри -->
-  <div id="screen-end" class="hidden">
-    <h2>Вітаємо! Тест завершено</h2>
-    <p id="resultText" style="font-size: 18px; text-align: center;"></p>
-    
-    <div class="end-btn-group">
-      <button class="btn-main btn-menu" onclick="showScreen('screen-subjects')">Вийти в меню</button>
-      <button class="btn-main btn-topics" onclick="showScreen('screen-topics')">Перейти обратно к темам</button>
+    <!-- 2. Новий екран вибору теми з пошуком -->
+    <div id="screen-topics" class="screen">
+        <h2>Оберіть тему</h2>
+        <div class="topics-container">
+            <input type="text" id="topic-search" class="search-input" placeholder="Пошук теми (наприклад: Еле...)" oninput="filterTopics()">
+            <div id="topics-list" class="topics-list"></div>
+        </div>
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-  // Масив тем згідно з ПДФ файлом
-  const topicsData = [
-    { id: 't0', num: 'Повторення', title: 'Фізична база: що вже знаємо з теми «Електрика»' },
-    { id: 't1', num: '§ 1', title: 'Електричний струм у металах' },
-    { id: 't2', num: 'Лабораторна робота № 1', title: 'Дослідження залежності електричного опору металевого провідника від температури' },
-    { id: 't3', num: '§ 2', title: 'Електричний струм у розчинах і розплавах електролітів' },
-    { id: 't4', num: '§ 3', title: 'Застосування електролізу' },
-    { id: 't5', num: 'Лабораторна робота № 2', title: 'Визначення електрохімічного еквівалента міді' },
-    { id: 't6', num: '§ 4', title: 'Електричний струм у газах' },
-    { id: 't7', num: '§ 5', title: 'Види самостійних газових розрядів' }
-  ];
+    <!-- 3. Екран вибору кількості завдань -->
+    <div id="screen-count" class="screen">
+        <h2>Виберіть кількість завдань</h2>
+        <div class="grid-options" id="preset-counts">
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(5, this)">5</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(10, this)">10</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(15, this)">15</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(20, this)">20</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(25, this)">25</button>
+            <button class="btn btn-default count-btn" onclick="togglePresetCount(30, this)">30</button>
+        </div>
+        <div class="custom-input-area">
+            <p>Або виберіть свою кількість завдань: <span id="slider-val" style="color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 10px var(--neon-cyan);">0</span></p>
+            <input type="range" id="custom-count" min="0" max="50" value="0" oninput="handleSliderInput(this.value)">
+            <button class="btn btn-default disabled" id="btn-count-next" style="margin-top:20px;" onclick="goToTimeSelection()">Далі ➔</button>
+        </div>
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-topics')">↩ Назад</button>
+        </div>
+    </div>
 
-  // Банк завдань (строго прив'язані до тем)
-  const questionsBank = {
-    't0': [
-      { q: "Яка одиниця вимірювання електричного заряду в СІ?", opts: ["Кулон (Кл)", "Ампер (А)", "Вольт (В)", "Ом (Ом)"], correct: 0 },
-      { q: "Модуль елементарного заряду становить e = 1,6 · 10<sup>-19</sup> Кл. Який знак має заряд електрона?", opts: ["Негативний (-)", "Позитивний (+)", "Нейтральний (0)", "Змінний"], correct: 0 }
-    ],
-    't1': [
-      { q: "Що являє собою електричний струм у металах?", opts: ["Напрямлений рух вільних електронів", "Рух позитивних йонiв", "Рух нейтральних атомiв", "Хаотичний рух молекул"], correct: 0 },
-      { q: "Як змінюється опір металевого провідника під час підвищення температури?", opts: ["Збільшується", "Зменшується", "Не змінюється", "Падає до нуля"], correct: 0 }
-    ],
-    't2': [
-      { q: "Який прилад використовується для безпосереднього вимірювання електричного опору?", opts: ["Омметр (мультиметр)", "Вольтметр", "Амперметр", "Термометр"], correct: 0 }
-    ],
-    't3': [
-      { q: "Що являє собою електричний струм в електролітах?", opts: ["Напрямлений рух позитивних і негативних йонів", "Напрямлений рух вільних електронів", "Рух фотонів", "Поток електронних лавин"], correct: 0 },
-      { q: "Як називається процес розпаду електроліту на йони під дією полярних молекул розчинника?", opts: ["Електролітична дисоціація", "Рекомбінація", "Йонізація", "Рафінування"], correct: 0 }
-    ],
-    't4': [
-      { q: "Як називається спосіб покриття виробу тонким шаром металу за допомогою електролізу?", opts: ["Гальваностегія", "Гальванопластика", "Рафінування", "Дисоціація"], correct: 0 },
-      { q: "За яким законом обчислюють масу речовини, виділеної під час електролізу: m = k · I · t?", opts: ["Перший закон Фарадея", "Закон Ома", "Закон Джоуля-Ленца", "Закон Кулона"], correct: 0 }
-    ],
-    't5': [
-      { q: "Одиницею вимірювання електрохімічного еквівалента k у СІ є:", opts: ["кг/Кл", "мг/Кл", "Кл/кг", "А/с"], correct: 0 }
-    ],
-    't6': [
-      { q: "Електричний струм у йонізованих газах (плазмі) — це напрямлений рух:", opts: ["Вільних електронів, позитивних і негативних йонів", "Тільки вільних електронів", "Тільки молекул води", "Нейтральних атомів"], correct: 0 },
-      { q: "Газовий розряд, який відбувається тільки за наявності зовнішнього йонізатора, називають:", opts: ["Несамостійним", "Самостійним", "Іскровим", "Тліючим"], correct: 0 }
-    ],
-    't7': [
-      { q: "Грандіозним прикладом іскрового газового розряду в природі є:", opts: ["Блискавка", "Веселка", "Полярне сяйво", "Туман"], correct: 0 },
-      { q: "Яке явище лежить в основі розвитку електронної лавини при самостійному розряді?", opts: ["Ударна йонізація (йонізація електронним ударом)", "Електролітична дисоціація", "Рафінування", "Рекомбінація"], correct: 0 }
-    ]
-  };
+    <!-- 4. Екран вибору часу -->
+    <div id="screen-time" class="screen">
+        <h2>Виберіть час тесту</h2>
+        <div class="grid-options" id="preset-times">
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(900, this)">15:00</button>
+            <button class="btn btn-default time-btn" onclick="togglePresetTime(1200, this)">20:00</button>
+        </div>
+        
+        <div class="custom-input-area">
+            <p>Або напишіть свій час</p>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="btn" id="btn-reset-time" onclick="resetManualTime()" style="display: none; border-color: var(--neon-red); color: var(--neon-red); padding: 10px 18px; font-size: 1rem; margin: 0;">Скинути час</button>
+                <div class="time-inputs">
+                    <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="handleManualTimeInput()"> : 
+                    <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="handleManualTimeInput()">
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
+                <button class="btn btn-default disabled" id="btn-start-with-time" onclick="startQuizWithSelectedTime()">Запустити з цим часом</button>
+                <button class="btn btn-yellow" onclick="startQuiz(0)">Грати без часу</button>
+            </div>
+        </div>
+        
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-count')">⮌ Назад</button>
+        </div>
+    </div>
 
-  let currentTopicId = null;
-  let currentQuestions = [];
-  let currentQuestionIndex = 0;
-  let score = 0;
+    <!-- 5. Екран тестування -->
+    <div id="screen-quiz" class="screen">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <div id="quiz-progress">Завдання 1 / 10</div>
+                <div id="timer-display" style="display:none;">00:00</div>
+            </div>
+            <div id="question-text" class="question-text">Текст питання</div>
+            <div id="question-image" class="question-image" style="display:none;"></div>
+            
+            <div class="options-grid" id="options-grid"></div>
+            <div id="explanation" class="explanation"></div>
+            
+            <div class="quiz-controls">
+                <button class="btn" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="showEndModal()">Завершити</button>
+                <button class="btn btn-default" onclick="skipQuestion()" id="btn-skip">Пропустити ➔</button>
+                <button class="btn btn-default" style="display:none;" onclick="nextQuestion()" id="btn-next">Наступне ➔</button>
+            </div>
+        </div>
+    </div>
 
-  function showScreen(screenId) {
-    document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-  }
+    <!-- 6. Екран результатов з вимогами вчителя -->
+    <div id="screen-results" class="screen">
+        <div class="quiz-container" style="max-width: 1000px; text-align: center;">
+            <h2>Результати тесту</h2>
+            <h1 id="score-display" style="font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan);">Виконано: ? / ?</h1>
+            <div id="results-list"></div>
+            
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Вийти в меню</button>
+                <button class="btn btn-default" onclick="switchScreen('screen-topics')">⮌ Перейти обратно к темам</button>
+            </div>
+        </div>
+    </div>
 
-  function openSubject(subj) {
-    if(subj === 'physics9') {
-      renderTopicsTable(topicsData);
-      showScreen('screen-topics');
-    }
-  }
+    <div class="modal-overlay" id="end-modal">
+        <div class="modal-content">
+            <h2>Дійсно завершити тест?</h2>
+            <div style="margin-top: 30px; display: flex; gap: 20px; justify-content: center;">
+                <button class="btn btn-default" style="border-color: var(--neon-green); color: var(--neon-green);" onclick="forceEndQuiz()">Так</button>
+                <button class="btn btn-default" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="closeEndModal()">Ні</button>
+            </div>
+        </div>
+    </div>
 
-  function renderTopicsTable(data) {
-    const tbody = document.getElementById('topicsTableBody');
-    tbody.innerHTML = '';
-    data.forEach(item => {
-      const tr = document.createElement('tr');
-      tr.onclick = () => startQuiz(item.id, `[${item.num}][${item.title}]`);
-      tr.innerHTML = `<td><span class="topic-badge">[${item.num}]</span>[${item.title}]</td>`;
-      tbody.appendChild(tr);
-    });
-  }
+    <div class="modal-overlay" id="timer-modal">
+        <div class="modal-content">
+            <h1 style="color: var(--neon-cyan);">Час вичерпано!</h1>
+            <div style="font-size: 5rem; margin-top: 20px;">⏰</div>
+        </div>
+    </div>
 
-  function filterTopics() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = topicsData.filter(item => 
-      item.num.toLowerCase().includes(query) || 
-      item.title.toLowerCase().includes(query)
-    );
-    renderTopicsTable(filtered);
-  }
+    <script>
+        // Допоміжна функція для створення нормальних верхніх індексів (степенів)
+        function toSuperscript(num) {
+            const superscripts = {
+                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'
+            };
+            return String(num).split('').map(ch => superscripts[ch] || ch).join('');
+        }
 
-  function startQuiz(topicId, fullTitle) {
-    currentTopicId = topicId;
-    currentQuestions = questionsBank[topicId] || [];
-    if(currentQuestions.length === 0) {
-      alert("Для цієї теми ще не додано запитань.");
-      return;
-    }
-    currentQuestionIndex = 0;
-    score = 0;
-    document.getElementById('quizTopicTitle').innerText = fullTitle;
-    showScreen('screen-quiz');
-    displayQuestion();
-  }
+        // База тем згідно з підручниками у форматі [номер темы][тема]
+        const topicsDatabase = {
+            algebra: [
+                { id: "alg_1", title: "[1.1][Лінійні нерівності з однією змінною]" },
+                { id: "alg_2", title: "[1.2][Степені та їх властивості]" },
+                { id: "alg_3", title: "[2.1][Квадратні рівняння та теорема Вієта]" },
+                { id: "alg_4", title: "[2.2][Лінійна функція та її графік]" },
+                { id: "alg_5", title: "[3.1][Числові проміжки та їх переріз]" }
+            ],
+            geometry: [
+                { id: "geom_1", title: "[1.1][Прямокутний трикутник та теорема Піфагора]" },
+                { id: "geom_2", title: "[1.2][Сума кутів опуклого многокутника]" },
+                { id: "geom_3", title: "[2.1][Рівнобедрений трикутник та його властивості]" },
+                { id: "geom_4", title: "[2.2][Трапеція та її середня лінія]" },
+                { id: "geom_5", title: "[3.1][Площа прямокутника та квадратів]" }
+            ],
+            physics: [
+                { id: "phys_1", title: "[1.1][Рівноприскорений прямолінійний рух]" },
+                { id: "phys_2", title: "[1.2][Другий закон Ньютона та сила]" },
+                { id: "phys_3", title: "[2.1][Імпульс тіла та закон збереження]" },
+                { id: "phys_4", title: "[2.2][Кінетична та потенціальна енергія]" },
+                { id: "phys_5", title: "[3.1][Закони механіки та поняття сили]" }
+            ]
+        };
 
-  function displayQuestion() {
-    const qData = currentQuestions[currentQuestionIndex];
-    document.getElementById('questionText').innerHTML = `Запитання ${currentQuestionIndex + 1}/${currentQuestions.length}: ${qData.q}`;
-    const optsContainer = document.getElementById('optionsContainer');
-    optsContainer.innerHTML = '';
+        function initBackgroundStickers() {
+            const container = document.getElementById('bg-stickers');
+            
+            const icons = [
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">x</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 13h3l3 7 4-15h9"/><text x="13" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">a</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">α</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><rect x="4" y="12" width="8" height="8"/><text x="11" y="11" font-size="7" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">90°</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H4V4"/><path d="M4 20L18 6"/><text x="12" y="18" font-size="8" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">45°</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h18"/><path d="M18 18 A 9 9 0 0 0 3 18" stroke-dasharray="2 2"/><text x="7" y="13" font-size="7" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">180°</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5" font-family="sans-serif"><text x="0" y="14">E=mc²</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 8h12"/><path d="M6 3h4v4H6z" fill="currentColor"/><path d="M14 3h4v4h-4z" fill="currentColor"/></svg>`,
+                `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>`
+            ];
+            
+            const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)', 'var(--neon-red)'];
+            const cols = 7; const rows = 5;
+            const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
 
-    qData.opts.forEach((opt, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.innerHTML = opt;
-      btn.onclick = () => handleAnswer(idx);
-      optsContainer.appendChild(btn);
-    });
-  }
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let el = document.createElement('div');
+                    el.className = 'sticker';
+                    el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    let scale = Math.random() * (1.15 - 0.75) + 0.75; 
+                    let randomX = Math.random() * (cellWidthPct * 0.7) + (cellWidthPct * 0.15);
+                    let randomY = Math.random() * (cellHeightPct * 0.7) + (cellHeightPct * 0.15);
+                    el.style.left = `${c * cellWidthPct + randomX}vw`;
+                    el.style.top = `${r * cellHeightPct + randomY}vh`;
+                    el.style.transform = `scale(${scale}) rotate(${Math.random() * 40 - 20}deg)`;
+                    container.appendChild(el);
+                }
+            }
+        }
+        window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
-  function handleAnswer(selectedIndex) {
-    if(selectedIndex === currentQuestions[currentQuestionIndex].correct) {
-      score++;
-    }
-    currentQuestionIndex++;
-    if(currentQuestionIndex < currentQuestions.length) {
-      displayQuestion();
-    } else {
-      finishQuiz();
-    }
-  }
+        function shuffle(arr) {
+            let res = [...arr];
+            for (let i = res.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [res[i], res[j]] = [res[j], res[i]];
+            }
+            return res;
+        }
 
-  function finishQuiz() {
-    document.getElementById('resultText').innerText = `Ви відповіли правильно на ${score} з ${currentQuestions.length} запитань!`;
-    showScreen('screen-end');
-  }
-</script>
+        // Генерація питань з НОРМАЛЬНИМИ степенями замість "^"
+        function createQuestionForSubject(subject, topicId) {
+            if (subject === 'algebra') return createAlgebraQuestion(topicId);
+            if (subject === 'geometry') return createGeometryQuestion(topicId);
+            return createPhysicsQuestion(topicId);
+        }
 
+        function createAlgebraQuestion(topicId) {
+            let type = Math.floor(Math.random() * 5);
+            if (topicId === "alg_1" || type === 0) {
+                let a = Math.floor(Math.random() * 5) + 2;
+                let xVal = Math.floor(Math.random() * 8) + 1;
+                let b = Math.floor(Math.random() * 10) + 1;
+                let c = a * xVal + b;
+                let correctOpt = `x > ${xVal}`;
+                let opts = shuffle([correctOpt, `x < ${xVal}`, `x > ${xVal + b}`, `x < ${xVal + a}`]);
+                return {
+                    q: `Розв'яжіть нерівність: ${a}x + ${b} > ${c}`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `${a}x > ${c} - ${b} ➔ ${a}x > ${c - b} ➔ x > ${xVal}.`
+                };
+            } else if (topicId === "alg_2" || type === 1) {
+                let base = ['a', 'x', 'y', 'b'][Math.floor(Math.random()*4)];
+                let n = Math.floor(Math.random() * 6) + 3;
+                let m = Math.floor(Math.random() * 6) + 2;
+                let k = Math.floor(Math.random() * (n + m - 2)) + 1;
+                let res = n + m - k;
+                
+                // Використання верхніх індексів замість знака "^"
+                let correctOpt = `${base}${toSuperscript(res)}`;
+                let opts = shuffle([
+                    correctOpt, 
+                    `${base}${toSuperscript(n + m + k)}`, 
+                    `${base}${toSuperscript(n * m - k)}`, 
+                    `${base}${toSuperscript(res + 2)}`
+                ]);
+                return {
+                    q: `Спростіть вираз: (${base}${toSuperscript(n)} · ${base}${toSuperscript(m)}) / ${base}${toSuperscript(k)}`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За властивостями степеня: ${base}${toSuperscript(n + '+' + m + '-' + k)} = ${base}${toSuperscript(res)}.`
+                };
+            } else if (topicId === "alg_3" || type === 2) {
+                let x1 = Math.floor(Math.random() * 7) + 1;
+                let x2 = Math.floor(Math.random() * 7) + 1;
+                let sum = x1 + x2;
+                let prod = x1 * x2;
+                let correctOpt = `${sum}`;
+                let opts = shuffle([correctOpt, `-${sum}`, `${prod}`, `-${prod}`]);
+                return {
+                    q: `Знайдіть суму коренів рівняння: x² - ${sum}x + ${prod} = 0`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За теоремою Вієта сума коренів зведеного квадратного рівняння дорівнює другому коефіцієнту з протилежним знаком: x₁ + x₂ = ${sum}.`
+                };
+            } else if (topicId === "alg_4" || type === 3) {
+                let k = Math.floor(Math.random() * 5) + 2;
+                let b = Math.floor(Math.random() * 10) - 5;
+                let x0 = Math.floor(Math.random() * 6) + 1;
+                let val = k * x0 + b;
+                let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+                let correctOpt = `${val}`;
+                let opts = shuffle([correctOpt, `${val + k}`, `${val - 2}`, `${val * 2}`]);
+                return {
+                    q: `Обчисліть значення функції f(x) = ${k}x ${bStr} у точці x = ${x0}:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Підставляємо x = ${x0}: f(${x0}) = ${k} · ${x0} ${bStr} = ${val}.`
+                };
+            } else {
+                let a = Math.floor(Math.random() * 5) - 5;
+                let b = a + Math.floor(Math.random() * 4) + 6;
+                let c = a + Math.floor(Math.random() * 3) + 2;
+                let d = b + Math.floor(Math.random() * 4) + 2;
+                let correctOpt = `(${c}; ${b}]`;
+                let opts = shuffle([correctOpt, `[${a}; ${d})`, `[${a}; ${c})`, `[${b}; ${d})`]);
+                return {
+                    q: `Знайдіть переріз числових проміжків [${a}; ${b}] та (${c}; ${d}):`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Переріз — це спільна частина від ${c} (не включаючи) до ${b} (включаючи): (${c}; ${b}].`
+                };
+            }
+        }
+
+        function createGeometryQuestion(topicId) {
+            let type = Math.floor(Math.random() * 5);
+            if (topicId === "geom_1" || type === 0) {
+                const triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20]];
+                let t = triples[Math.floor(Math.random() * triples.length)];
+                let a = t[0], b = t[1], c = t[2];
+                let correctOpt = `${c} см`;
+                let opts = shuffle([correctOpt, `${a + b} см`, `${c + 2} см`, `${c - 1} см`]);
+                let svg = `<svg width="180" height="130" viewBox="0 0 100 100"><polygon points="20,10 20,90 80,90" fill="none" stroke="currentColor" stroke-width="3"/><rect x="20" y="80" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="5" y="55" fill="white" font-size="14">${a}</text><text x="45" y="105" fill="white" font-size="14">${b}</text></svg>`;
+                return {
+                    q: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу:`,
+                    img: svg, opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За теоремою Піфагора: c² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. c = ${c} см.`
+                };
+            } else if (topicId === "geom_2" || type === 1) {
+                let n = [4, 5, 6, 8, 10][Math.floor(Math.random() * 5)];
+                let sum = (n - 2) * 180;
+                let correctOpt = `${sum}°`;
+                let opts = shuffle([correctOpt, `${sum - 180}°`, `${sum + 180}°`, `${n * 180}°`]);
+                let names = {4: "чотирикутника", 5: "п'ятикутника", 6: "шестикутника", 8: "восьмикутника", 10: "десятикутника"};
+                return {
+                    q: `Сума внутрішніх кутів опуклого ${names[n]} дорівнює:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Формула суми кутів n-кутника: S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
+                };
+            } else if (topicId === "geom_3" || type === 2) {
+                let vertexAngle = (Math.floor(Math.random() * 12) + 2) * 10;
+                let baseAngle = (180 - vertexAngle) / 2;
+                let correctOpt = `${baseAngle}°`;
+                let opts = shuffle([correctOpt, `${vertexAngle}°`, `${baseAngle + 10}°`, `${180 - vertexAngle}°`]);
+                return {
+                    q: `Кут при вершині рівнобедреного трикутника дорівнює ${vertexAngle}°. Знайдіть кут при основі:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Сума кутів трикутника 180°. Кути при основі рівні: (180° - ${vertexAngle}°) / 2 = ${baseAngle}°.`
+                };
+            } else if (topicId === "geom_4" || type === 3) {
+                let a = (Math.floor(Math.random() * 5) + 2) * 2;
+                let b = a + (Math.floor(Math.random() * 4) + 2) * 2;
+                let m = (a + b) / 2;
+                let correctOpt = `${m} см`;
+                let opts = shuffle([correctOpt, `${a + b} см`, `${m + 2} см`, `${m - 1} см`]);
+                return {
+                    q: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть її середню лінію:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Середня лінія трапеції дорівнює півсумі її основ: (${a} + ${b}) / 2 = ${m} см.`
+                };
+            } else {
+                let w = Math.floor(Math.random() * 8) + 3;
+                let h = Math.floor(Math.random() * 8) + 3;
+                let area = w * h;
+                let correctOpt = `${area} см²`;
+                let opts = shuffle([correctOpt, `${(w + h) * 2} см²`, `${w + h} см²`, `${area + 5} см²`]);
+                return {
+                    q: `Знайдіть площу прямокутника зі сторонами ${w} см і ${h} см:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Площа прямокутника обчислюється за формулою S = a · b = ${w} · ${h} = ${area} см².`
+                };
+            }
+        }
+
+        function createPhysicsQuestion(topicId) {
+            let type = Math.floor(Math.random() * 5);
+            if (topicId === "phys_1" || type === 0) {
+                let a = Math.floor(Math.random() * 4) + 1;
+                let t = (Math.floor(Math.random() * 4) + 2) * 2;
+                let s = (a * t * t) / 2;
+                let correctOpt = `${s} м`;
+                let opts = shuffle([correctOpt, `${a * t} м`, `${s + 10} м`, `${s / 2} м`]);
+                return {
+                    q: `Тіло рухається зі стану спокою з прискоренням ${a} м/с². Який шлях воно подолає за ${t} с?`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За формулою шляху при рівноприскореному русі (без v₀): s = (a · t²) / 2 = (${a} · ${t}²) / 2 = ${s} м.`
+                };
+            } else if (topicId === "phys_2" || type === 1) {
+                let m = (Math.floor(Math.random() * 8) + 2) * 100;
+                let a = Math.floor(Math.random() * 5) + 1;
+                let F = m * a;
+                let correctOpt = `${F} Н`;
+                let opts = shuffle([correctOpt, `${m + a} Н`, `${Math.round(m / a)} Н`, `${F + 200} Н`]);
+                return {
+                    q: `Яка рівнодійна сил діє на тіло масою ${m} кг, якщо воно рухається з прискоренням ${a} м/с²?`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `За II законом Ньютона: F = m · a = ${m} кг · ${a} м/с² = ${F} Н.`
+                };
+            } else if (topicId === "phys_3" || type === 2) {
+                let m = (Math.floor(Math.random() * 5) + 1) * 2;
+                let v = (Math.floor(Math.random() * 6) + 2) * 5;
+                let p = m * v;
+                let correctOpt = `${p} кг·м/с`;
+                let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
+                return {
+                    q: `Знайдіть імпульс тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Імпульс тіла обчислюється за формулою: p = m · v = ${m} · ${v} = ${p} кг·м/с.`
+                };
+            } else if (topicId === "phys_4" || type === 3) {
+                let m = Math.floor(Math.random() * 5) + 2;
+                let v = (Math.floor(Math.random() * 4) + 1) * 2;
+                let Ek = (m * v * v) / 2;
+                let correctOpt = `${Ek} Дж`;
+                let opts = shuffle([correctOpt, `${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 12} Дж`]);
+                return {
+                    q: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Кінетична енергія Eₖ = (m · v²) / 2 = (${m} · ${v}²) / 2 = ${Ek} Дж.`
+                };
+            } else {
+                const conceptQuestions = [
+                    { q: "Як називається закон, який стверджує: існують такі системи відліку, в яких тіло зберігає стан спокою або прямолінійного рівномірного руху?", opts: ["Перший закон Ньютона", "Другий закон Ньютона", "Третій закон Ньютона", "Закон всесвітнього тяжіння"], exp: "Це формулювання першого закону Ньютона (закону інерції)." },
+                    { q: "Яка одиниця вимірювання прискорення в системі SI?", opts: ["м/с²", "м/с", "Н/кг", "кг·м/с"], exp: "Прискорення вимірюється в метрах за секунду в квадраті (м/с²)." },
+                    { q: "За якою формулою обчислюється модуль сили тяжіння біля поверхні Землі?", opts: ["F = mg", "F = kx", "F = ma", "F = G(m₁·m₂)/r²"], exp: "Сила тяжіння біля поверхні Землі обчислюється за формулою F = mg." },
+                    { q: "Як зміниться кінетична енергія тіла, якщо його швидкість збільшиться у 2 рази?", opts: ["Збільшиться в 4 рази", "Збільшиться в 2 рази", "Зменшиться в 2 рази", "Не зміниться"], exp: "Оскільки Eₖ залежить від квадрата швидкості (v²), при збільшенні v у 2 рази енергія зросте в 2² = 4 рази." }
+                ];
+                let item = conceptQuestions[Math.floor(Math.random() * conceptQuestions.length)];
+                let correctOpt = item.opts[0];
+                let opts = shuffle(item.opts);
+                return {
+                    q: item.q, opts: opts, ans: opts.indexOf(correctOpt), exp: item.exp
+                };
+            }
+        }
+
+        function generateUniqueQuizQuestions(subject, topicId, count) {
+            let list = [];
+            let seen = new Set();
+            let attempts = 0;
+            while (list.length < count && attempts < 1000) {
+                attempts++;
+                let qObj = createQuestionForSubject(subject, topicId);
+                if (!seen.has(qObj.q)) {
+                    seen.add(qObj.q);
+                    list.push(qObj);
+                }
+            }
+            return list;
+        }
+
+        let currentSubject = '';
+        let currentTopic = null;
+        let targetQuestionsCount = 0;
+        let selectedPresetCount = null;
+        let selectedPresetTimeSec = null;
+        let selectedTime = 0;
+        let timerInterval;
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let results = [];
+        let answeredCurrent = false;
+
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function selectSubject(subj) {
+            currentSubject = subj;
+            document.getElementById('topic-search').value = '';
+            renderTopics();
+            switchScreen('screen-topics');
+        }
+
+        function renderTopics() {
+            const listDiv = document.getElementById('topics-list');
+            listDiv.innerHTML = '';
+            const query = document.getElementById('topic-search').value.toLowerCase().trim();
+            
+            const topics = topicsDatabase[currentSubject] || [];
+            const filtered = topics.filter(t => t.title.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                listDiv.innerHTML = '<div style="padding:10px; color:#aaa; text-align:center;">Теми не знайдено</div>';
+                return;
+            }
+
+            filtered.forEach(topic => {
+                const item = document.createElement('div');
+                item.className = 'topic-item';
+                item.innerText = topic.title;
+                item.onclick = () => selectTopic(topic);
+                listDiv.appendChild(item);
+            });
+        }
+
+        function filterTopics() {
+            renderTopics();
+        }
+
+        function selectTopic(topic) {
+            currentTopic = topic;
+            resetCountSelection();
+            switchScreen('screen-count');
+        }
+
+        function resetCountSelection() {
+            selectedPresetCount = null;
+            targetQuestionsCount = 0;
+
+            const presetBtns = document.querySelectorAll('.count-btn');
+            presetBtns.forEach(btn => btn.classList.remove('disabled', 'btn-count-active'));
+
+            const customCountInput = document.getElementById('custom-count');
+            customCountInput.disabled = false;
+            customCountInput.classList.remove('disabled');
+            customCountInput.value = 0;
+            document.getElementById('slider-val').innerText = '0';
+
+            document.getElementById('btn-count-next').classList.add('disabled');
+        }
+
+        function togglePresetCount(num, btnElement) {
+            const btnNext = document.getElementById('btn-count-next');
+            const customCountInput = document.getElementById('custom-count');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
+            if (selectedPresetCount === num) {
+                selectedPresetCount = null;
+                targetQuestionsCount = 0;
+                btnElement.classList.remove('btn-count-active');
+
+                customCountInput.disabled = false;
+                customCountInput.classList.remove('disabled');
+                btnNext.classList.add('disabled');
+            } else {
+                selectedPresetCount = num;
+                targetQuestionsCount = num;
+
+                presetBtns.forEach(b => b.classList.remove('btn-count-active'));
+                btnElement.classList.add('btn-count-active');
+
+                customCountInput.value = 0;
+                document.getElementById('slider-val').innerText = '0';
+                customCountInput.disabled = true;
+                customCountInput.classList.add('disabled');
+
+                btnNext.classList.remove('disabled');
+            }
+        }
+
+        function handleSliderInput(val) {
+            const numVal = parseInt(val);
+            document.getElementById('slider-val').innerText = numVal;
+
+            const btnNext = document.getElementById('btn-count-next');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
+            if (numVal > 0) {
+                selectedPresetCount = null;
+                targetQuestionsCount = numVal;
+
+                presetBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+                btnNext.classList.remove('disabled');
+            } else {
+                targetQuestionsCount = 0;
+                presetBtns.forEach(b => b.classList.remove('disabled'));
+                btnNext.classList.add('disabled');
+            }
+        }
+
+        function goToTimeSelection() {
+            if (targetQuestionsCount <= 0) return;
+            resetTimeSelection();
+            switchScreen('screen-time');
+        }
+
+        function resetTimeSelection() {
+            selectedPresetTimeSec = null;
+            selectedTime = 0;
+
+            const timeBtns = document.querySelectorAll('.time-btn');
+            timeBtns.forEach(b => b.classList.remove('disabled', 'btn-count-active'));
+
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            minInp.value = '';
+            secInp.value = '';
+            minInp.disabled = false;
+            secInp.disabled = false;
+
+            document.getElementById('btn-reset-time').style.display = 'none';
+            document.getElementById('btn-start-with-time').classList.add('disabled');
+        }
+
+        function togglePresetTime(sec, btnElement) {
+            const btnStart = document.getElementById('btn-start-with-time');
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
+
+            if (selectedPresetTimeSec === sec) {
+                selectedPresetTimeSec = null;
+                selectedTime = 0;
+                btnElement.classList.remove('btn-count-active');
+
+                minInp.disabled = false;
+                secInp.disabled = false;
+                btnStart.classList.add('disabled');
+            } else {
+                selectedPresetTimeSec = sec;
+                selectedTime = sec;
+
+                minInp.value = '';
+                secInp.value = '';
+                resetBtn.style.display = 'none';
+
+                minInp.disabled = true;
+                secInp.disabled = true;
+
+                timeBtns.forEach(b => b.classList.remove('btn-count-active'));
+                btnElement.classList.add('btn-count-active');
+
+                btnStart.classList.remove('disabled');
+            }
+        }
+
+        function handleManualTimeInput() {
+            const minInp = document.getElementById('custom-min');
+            const secInp = document.getElementById('custom-sec');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const btnStart = document.getElementById('btn-start-with-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
+
+            let mVal = minInp.value.trim();
+            let sVal = secInp.value.trim();
+
+            if (mVal.length >= 2 && document.activeElement === minInp) {
+                secInp.focus();
+            }
+
+            let m = parseInt(mVal) || 0;
+            let s = parseInt(sVal) || 0;
+            let totalSec = (m * 60) + s;
+
+            if (mVal !== '' && sVal !== '' && totalSec > 0) {
+                resetBtn.style.display = 'inline-flex';
+                btnStart.classList.remove('disabled');
+                selectedTime = totalSec;
+
+                timeBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+            } else if (mVal !== '' || sVal !== '') {
+                timeBtns.forEach(b => b.classList.add('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
+            } else {
+                timeBtns.forEach(b => b.classList.remove('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
+            }
+        }
+
+        function resetManualTime() {
+            resetTimeSelection();
+        }
+
+        function startQuizWithSelectedTime() {
+            if (selectedTime > 0) {
+                startQuiz(selectedTime);
+            }
+        }
+
+        function startQuiz(timeSec) {
+            selectedTime = timeSec;
+            currentQuestions = generateUniqueQuizQuestions(currentSubject, currentTopic ? currentTopic.id : null, targetQuestionsCount);
+            currentIndex = 0;
+            results = [];
+            
+            switchScreen('screen-quiz');
+            setupTimer();
+            loadQuestion();
+        }
+
+        function setupTimer() {
+            const timeDisp = document.getElementById('timer-display');
+            clearInterval(timerInterval);
+            timeDisp.classList.remove('timer-danger');
+
+            if(selectedTime > 0) {
+                timeDisp.style.display = 'block';
+                updateTimerUI(selectedTime);
+                let timeLeft = selectedTime;
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerUI(timeLeft);
+                    if(timeLeft <= 10) timeDisp.classList.add('timer-danger');
+                    if(timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        showTimerEnd();
+                    }
+                }, 1000);
+            } else {
+                timeDisp.style.display = 'none';
+            }
+        }
+
+        function updateTimerUI(sec) {
+            let m = Math.floor(sec / 60);
+            let s = sec % 60;
+            document.getElementById('timer-display').innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
+        }
+
+        function loadQuestion() {
+            answeredCurrent = false;
+            let qData = currentQuestions[currentIndex];
+            
+            document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
+            document.getElementById('question-text').innerText = qData.q;
+            
+            let qImgContainer = document.getElementById('question-image');
+            if(qData.img) {
+                qImgContainer.innerHTML = qData.img;
+                qImgContainer.style.display = 'block';
+                qImgContainer.style.color = 'var(--neon-cyan)';
+            } else {
+                qImgContainer.innerHTML = '';
+                qImgContainer.style.display = 'none';
+            }
+
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('btn-skip').style.display = 'inline-block';
+            document.getElementById('btn-next').style.display = 'none';
+
+            let optsGrid = document.getElementById('options-grid');
+            optsGrid.innerHTML = '';
+
+            qData.opts.forEach((optText, index) => {
+                let btn = document.createElement('button');
+                btn.className = 'btn option-btn';
+                btn.innerText = optText;
+                btn.onclick = () => checkAnswer(index, btn, qData);
+                optsGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement, qData) {
+            if(answeredCurrent) return;
+            answeredCurrent = true;
+
+            let allBtns = document.getElementById('options-grid').children;
+            for(let b of allBtns) b.style.pointerEvents = 'none';
+
+            let isCorrect = (selectedIndex === qData.ans);
+            results.push({ q: qData.q, exp: qData.exp, status: isCorrect ? 'correct' : 'wrong' });
+
+            if(isCorrect) {
+                btnElement.classList.add('correct');
+            } else {
+                btnElement.classList.add('wrong');
+                allBtns[qData.ans].classList.add('correct');
+                
+                let expDiv = document.getElementById('explanation');
+                expDiv.innerText = "Пояснення: " + qData.exp;
+                expDiv.style.display = 'block';
+            }
+
+            document.getElementById('btn-skip').style.display = 'none';
+            document.getElementById('btn-next').style.display = 'inline-block';
+        }
+
+        function skipQuestion() {
+            if(answeredCurrent) return;
+            results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'skipped' });
+            goToNextOrEnd();
+        }
+
+        function nextQuestion() { goToNextOrEnd(); }
+
+        function goToNextOrEnd() {
+            currentIndex++;
+            if(currentIndex >= targetQuestionsCount) finishQuiz();
+            else loadQuestion();
+        }
+
+        function showEndModal() { document.getElementById('end-modal').style.display = 'flex'; }
+        function closeEndModal() { document.getElementById('end-modal').style.display = 'none'; }
+        
+        function forceEndQuiz() {
+            closeEndModal();
+            finishQuiz(true, 'manual');
+        }
+
+        function showTimerEnd() {
+            document.getElementById('timer-modal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('timer-modal').style.display = 'none';
+                finishQuiz(true, 'timeout');
+            }, 3000);
+        }
+
+        function finishQuiz(endedEarly = false, reason = 'manual') {
+            clearInterval(timerInterval);
+            
+            if(endedEarly && currentIndex < targetQuestionsCount) {
+                const statusType = (reason === 'timeout') ? 'timeout' : 'unanswered';
+                for(let i = currentIndex; i < targetQuestionsCount; i++) {
+                    results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: statusType });
+                }
+            }
+            buildResultsScreen();
+            switchScreen('screen-results');
+        }
+
+        function buildResultsScreen() {
+            let correctCount = results.filter(r => r.status === 'correct').length;
+            document.getElementById('score-display').innerText = `Виконано: ${correctCount} / ${targetQuestionsCount}`;
+
+            let listDiv = document.getElementById('results-list');
+            listDiv.innerHTML = '';
+
+            results.forEach((res, i) => {
+                let div = document.createElement('div');
+                div.className = 'res-item';
+                
+                let statusText = '';
+                let statusClass = '';
+                
+                if (res.status === 'correct') {
+                    statusText = '✔ Правильно';
+                    statusClass = 'res-status-correct';
+                } else if (res.status === 'wrong') {
+                    statusText = '✖ Неправильно';
+                    statusClass = 'res-status-wrong';
+                } else if (res.status === 'skipped') {
+                    statusText = '⏭ Пропущено';
+                    statusClass = 'res-status-skipped';
+                } else if (res.status === 'timeout') {
+                    statusText = '⏰ Час вичерпано';
+                    statusClass = 'res-status-unanswered';
+                } else {
+                    statusText = '⏸ Без відповіді (достроково завершено)';
+                    statusClass = 'res-status-unanswered';
+                }
+
+                let explanationHtml = '';
+                if (res.status !== 'correct') {
+                    explanationHtml = `<div style="margin-top: 10px; font-size: 1.1rem; color: #bbb;"><b>Пояснення:</b> ${res.exp}</div>`;
+                }
+
+                div.innerHTML = `
+                    <div style="font-size: 1.3rem; margin-bottom: 10px;"><b>${i + 1}.</b> ${res.q}</div>
+                    <div class="${statusClass}">${statusText}</div>
+                    ${explanationHtml}
+                `;
+                listDiv.appendChild(div);
+            });
+        }
+    </script>
 </body>
 </html>
