@@ -66,7 +66,7 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px var(--neon-purple); 
             text-align: center; margin-bottom: 40px; 
         }
-        h2 { font-size: 2.5rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 20px; }
+        h2 { font-size: 2.3rem; text-shadow: 0 0 15px var(--neon-cyan); text-align: center; margin-bottom: 20px; }
         p { font-size: 1.3rem; margin: 5px 0; }
 
         .subject-menu { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
@@ -115,7 +115,7 @@
 
         .topics-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             background: var(--panel-bg);
             border: 2px solid var(--neon-purple);
             border-radius: 15px;
@@ -140,7 +140,7 @@
         .search-input:focus { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
         .topics-list {
-            max-height: 400px;
+            max-height: 420px;
             overflow-y: auto;
             scroll-behavior: smooth;
             display: flex;
@@ -149,13 +149,22 @@
             padding-right: 8px;
         }
 
+        .topic-category-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--neon-yellow);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .topic-item {
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.4;
             transition: all 0.2s;
             text-align: left;
@@ -185,13 +194,13 @@
         #quiz-progress { color: #ccc; font-weight: bold; }
         #timer-display { font-size: 2rem; font-weight: bold; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan); transition: color 0.3s; }
         .timer-danger { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red) !important; }
-        .question-text { font-size: 1.8rem; margin-bottom: 20px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; text-align: center;}
+        .question-text { font-size: 1.7rem; margin-bottom: 20px; font-weight: 600; text-shadow: 0 0 8px rgba(255,255,255,0.2); line-height: 1.4; text-align: center;}
         
         .question-image { text-align: center; margin-bottom: 30px; }
         .question-image svg { filter: drop-shadow(0 0 10px var(--neon-cyan)); }
 
         .options-grid { display: flex; flex-direction: column; gap: 15px; }
-        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.3rem; padding: 15px 25px; border-color: rgba(255,255,255,0.2); }
+        .option-btn { width: 100%; text-align: left; justify-content: flex-start; font-size: 1.25rem; padding: 15px 25px; border-color: rgba(255,255,255,0.2); }
         .option-btn:hover { border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
         .option-btn.correct { background: rgba(0, 255, 102, 0.2); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 102, 0.4); }
         .option-btn.wrong { background: rgba(255, 0, 85, 0.2); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
@@ -229,7 +238,7 @@
 
     <!-- 2. Екран вибору теми -->
     <div id="screen-topics" class="screen">
-        <h2>Оберіть тему</h2>
+        <h2>Оберіть вузьку тему (параграф)</h2>
         <div class="topics-container">
             <input type="text" id="topic-search" class="search-input" placeholder="Пошук теми..." oninput="filterTopics()">
             <div id="topics-list" class="topics-list"></div>
@@ -354,72 +363,41 @@
             return String(num).split('').map(ch => superscripts[ch] || ch).join('');
         }
 
-        // База тем у підручниковому форматі параграфів (§)
+        // Деталізована база дрібних тем (подрібнена на конкретні підтеми)
         const topicsDatabase = {
             algebra: [
-                { id: "alg_1", title: "§ 1. Лінійні рівняння з однією змінною" },
-                { id: "alg_2", title: "§ 2. Цілі вирази та тотожні перетворення" },
-                { id: "alg_3", title: "§ 3. Степінь з натуральним показником" },
-                { id: "alg_4", title: "§ 4. Одночлени та многочлени" },
-                { id: "alg_5", title: "§ 5. Формули скороченого множення" },
-                { id: "alg_6", title: "§ 6. Розкладання многочленів на множники" },
-                { id: "alg_7", title: "§ 7. Раціональні дроби та їх властивості" },
-                { id: "alg_8", title: "§ 8. Квадратні корені та дійсні числа" },
-                { id: "alg_9", title: "§ 9. Квадратні рівняння та теорема Вієта" },
-                { id: "alg_10", title: "§ 10. Квадратична функція та її графік" },
-                { id: "alg_11", title: "§ 11. Числові нерівності та їх властивості" },
-                { id: "alg_12", title: "§ 12. Лінійні та квадратні нерівності" },
-                { id: "alg_13", title: "§ 13. Числові послідовності та прогресії" }
+                { id: "alg_ineq_1", title: "§ 11.1. Числові нерівності та їх властивості (порівняння a - b)" },
+                { id: "alg_ineq_2", title: "§ 11.2. Почленне додавання і множення нерівностей" },
+                { id: "alg_ineq_3", title: "§ 11.3. Оцінювання значення виразу" },
+                { id: "alg_ineq_4", title: "§ 12.1. Лінійні нерівності з однією змінною" },
+                { id: "alg_ineq_5", title: "§ 12.2. Системи лінійних нерівностей з однією змінною" },
+                { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
+                { id: "alg_sq_1", title: "§ 9.1. Квадратні рівняння та теорема Вієта" },
+                { id: "alg_func_1", title: "§ 10.1. Обчислення значень квадратичної функції" }
             ],
             geometry: [
-                { id: "geom_1", title: "§ 1. Найпростіші геометричні фігури та їх властивості" },
-                { id: "geom_2", title: "§ 2. Суміжні та вертикальні кути" },
-                { id: "geom_3", title: "§ 3. Координати середини відрізка. Відстань між двома точками із заданими координатами" },
-                { id: "geom_4", title: "§ 4. Паралельні прямі та ознаки паралельності" },
-                { id: "geom_5", title: "§ 5. Трикутники та ознаки рівності трикутників" },
-                { id: "geom_6", title: "§ 6. Рівнобедрений трикутник та його властивості" },
-                { id: "geom_7", title: "§ 7. Коло та круг, дотична до кола" },
-                { id: "geom_8", title: "§ 8. Чотирикутники, паралелограм та ромб" },
-                { id: "geom_9", title: "§ 9. Прямокутник, квадрат та трапеція" },
-                { id: "geom_10", title: "§ 10. Середня лінія трикутника та трапеції" },
-                { id: "geom_11", title: "§ 11. Подібність трикутників" },
-                { id: "geom_12", title: "§ 12. Прямокутний трикутник та теорема Піфагора" },
-                { id: "geom_13", title: "§ 13. Площі многокутників" },
-                { id: "geom_14", title: "§ 14. Вектори на площині та координати" }
+                { id: "geom_3_1", title: "§ 3.1. Координати середини відрізка" },
+                { id: "geom_3_2", title: "§ 3.2. Відстань між двома точками із заданими координатами" },
+                { id: "geom_12_1", title: "§ 12.1. Прямокутний трикутник та теорема Піфагора" },
+                { id: "geom_10_1", title: "§ 10.1. Середня лінія трапеції та трикутника" },
+                { id: "geom_ang_1", title: "§ 2.1. Сума кутів многокутника та трикутників" }
             ],
             physics: [
-                { id: "phys_1", title: "§ 1. Фізичні величини та вимірювання" },
-                { id: "phys_2", title: "§ 2. Механічний рух, траєкторія та шлях" },
-                { id: "phys_3", title: "§ 3. Рівномірний та нерівномірний прямолінійний рух" },
-                { id: "phys_4", title: "§ 4. Рівноприскорений рух та прискорення" },
-                { id: "phys_5", title: "§ 5. Інерція, маса та густина речовини" },
-                { id: "phys_6", title: "§ 6. Сила, взаємодія тіл та закони Ньютона" },
-                { id: "phys_7", title: "§ 7. Сила пружності, закон Гука" },
-                { id: "phys_8", title: "§ 8. Сила тертя та сила тяжіння" },
-                { id: "phys_9", title: "§ 9. Тиск твердих тіл, рідин та газів" },
-                { id: "phys_10", title: "§ 10. Закон Архімеда та плавання тіл" },
-                { id: "phys_11", title: "§ 11. Механічна робота, потужність та ККД" },
-                { id: "phys_12", title: "§ 12. Кінетична та потенціальна енергія" },
-                { id: "phys_13", title: "§ 13. Закон збереження та перетворення енергії" }
+                { id: "phys_4_1", title: "§ 4.1. Рівноприскорений рух, прискорення та шлях" },
+                { id: "phys_6_1", title: "§ 6.1. Другий закон Ньютона та рівнодійна сил" },
+                { id: "phys_12_1", title: "§ 12.1. Кінетична енергія тіла" },
+                { id: "phys_imp_1", title: "§ 12.2. Імпульс тіла" }
             ]
         };
 
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
-            
             const icons = [
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">x</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 13h3l3 7 4-15h9"/><text x="13" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">a</text></svg>`,
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">α</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><rect x="4" y="12" width="8" height="8"/><text x="11" y="11" font-size="7" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">90°</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 20H4V4"/><path d="M4 20L18 6"/><text x="12" y="18" font-size="8" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">45°</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18h18"/><path d="M18 18 A 9 9 0 0 0 3 18" stroke-dasharray="2 2"/><text x="7" y="13" font-size="7" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">180°</text></svg>`,
                 `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5" font-family="sans-serif"><text x="0" y="14">E=mc²</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v8a6 6 0 0 0 12 0V3"/><path d="M6 8h12"/><path d="M6 3h4v4H6z" fill="currentColor"/><path d="M14 3h4v4h-4z" fill="currentColor"/></svg>`,
-                `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>`
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`
             ];
-            
             const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)', 'var(--neon-red)'];
             const cols = 7; const rows = 5;
             const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
@@ -451,6 +429,7 @@
             return res;
         }
 
+        // Генератори точних питань під кожну підтему
         function createQuestionForSubject(subject, topicId) {
             if (subject === 'algebra') return createAlgebraQuestion(topicId);
             if (subject === 'geometry') return createGeometryQuestion(topicId);
@@ -458,11 +437,82 @@
         }
 
         function createAlgebraQuestion(topicId) {
-            let type = Math.floor(Math.random() * 5);
-            if (type === 0) {
-                let a = Math.floor(Math.random() * 5) + 2;
-                let xVal = Math.floor(Math.random() * 8) + 1;
-                let b = Math.floor(Math.random() * 10) + 1;
+            if (topicId === "alg_ineq_1") {
+                // Числові нерівності та їх властивості
+                let diff = Math.floor(Math.random() * 10) - 5;
+                if (diff === 0) diff = -2;
+                let isLess = diff < 0;
+                let signText = isLess ? "від'ємне" : "додатне";
+                let correctOpt = isLess ? "a < b" : "a > b";
+                let opts = shuffle([correctOpt, isLess ? "a > b" : "a < b", "a = b", "a ≥ b"]);
+                return {
+                    q: `Відомо, що різниця a - b дорівнює ${diff} (${signText} число). Порівняйте числа a і b:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Якщо різниця a - b ${signText}, то ${correctOpt}.`
+                };
+            }
+
+            if (topicId === "alg_ineq_2") {
+                // Почленне додавання і множення нерівностей
+                let type = Math.random() > 0.5 ? 'add' : 'mul';
+                if (type === 'add') {
+                    let a = Math.floor(Math.random() * 5) + 1;
+                    let b = a + Math.floor(Math.random() * 4) + 2;
+                    let c = Math.floor(Math.random() * 5) + 1;
+                    let d = c + Math.floor(Math.random() * 4) + 2;
+                    let left = a + c;
+                    let right = b + d;
+                    let correctOpt = `${left} < x + y < ${right}`;
+                    let opts = shuffle([correctOpt, `${left} < x + y < ${right + 2}`, `${a + d} < x + y < ${b + c}`, `${left - 1} < x + y < ${right}`]);
+                    return {
+                        q: `Додайте почленно нерівності ${a} < x < ${b} та ${c} < y < ${d}:`,
+                        opts: opts, ans: opts.indexOf(correctOpt),
+                        exp: `Додаємо ліві та праві частини: ${a}+${c} < x+y < ${b}+${d} ➔ ${left} < x+y < ${right}.`
+                    };
+                } else {
+                    let a = Math.floor(Math.random() * 4) + 1;
+                    let b = a + Math.floor(Math.random() * 3) + 1;
+                    let c = Math.floor(Math.random() * 4) + 1;
+                    let d = c + Math.floor(Math.random() * 3) + 1;
+                    let left = a * c;
+                    let right = b * d;
+                    let correctOpt = `${left} < xy < ${right}`;
+                    let opts = shuffle([correctOpt, `${left} < xy < ${right + 4}`, `${a * d} < xy < ${b * c}`, `${left + 1} < xy < ${right}`]);
+                    return {
+                        q: `Перемножте почленно нерівності додатних чисел: ${a} < x < ${b} та ${c} < y < ${d}:`,
+                        opts: opts, ans: opts.indexOf(correctOpt),
+                        exp: `Множимо відповідні частини: ${a}·${c} < x·y < ${b}·${d} ➔ ${left} < xy < ${right}.`
+                    };
+                }
+            }
+
+            if (topicId === "alg_ineq_3") {
+                // Оцінювання значення виразу
+                let a = Math.floor(Math.random() * 4) + 1;
+                let b = a + Math.floor(Math.random() * 4) + 2;
+                let k = Math.floor(Math.random() * 3) + 2; // множник 2, 3, 4
+                let c = Math.floor(Math.random() * 5) + 1; // доданок
+                let minVal = k * a + c;
+                let maxVal = k * b + c;
+                let correctOpt = `${minVal} < ${k}x + ${c} < ${maxVal}`;
+                let opts = shuffle([
+                    correctOpt,
+                    `${minVal - c} < ${k}x + ${c} < ${maxVal}`,
+                    `${k * a} < ${k}x + ${c} < ${k * b}`,
+                    `${minVal} < ${k}x + ${c} < ${maxVal + 2}`
+                ]);
+                return {
+                    q: `Відомо, що ${a} < x < ${b}. Оцініть значення виразу ${k}x + ${c}:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `1) Помножимо на ${k}: ${k*a} < ${k}x < ${k*b}. 2) Додамо ${c}: ${minVal} < ${k}x + ${c} < ${maxVal}.`
+                };
+            }
+
+            if (topicId === "alg_ineq_4") {
+                // Лінійні нерівності з однією змінною
+                let a = Math.floor(Math.random() * 4) + 2;
+                let xVal = Math.floor(Math.random() * 6) + 1;
+                let b = Math.floor(Math.random() * 8) + 1;
                 let c = a * xVal + b;
                 let correctOpt = `x > ${xVal}`;
                 let opts = shuffle([correctOpt, `x < ${xVal}`, `x > ${xVal + b}`, `x < ${xVal + a}`]);
@@ -471,28 +521,39 @@
                     opts: opts, ans: opts.indexOf(correctOpt),
                     exp: `${a}x > ${c} - ${b} ➔ ${a}x > ${c - b} ➔ x > ${xVal}.`
                 };
-            } else if (type === 1) {
-                let base = ['a', 'x', 'y', 'b'][Math.floor(Math.random()*4)];
-                let n = Math.floor(Math.random() * 6) + 3;
-                let m = Math.floor(Math.random() * 6) + 2;
+            }
+
+            if (topicId === "alg_ineq_5") {
+                // Системи лінійних нерівностей
+                let min = Math.floor(Math.random() * 4) + 1;
+                let max = min + Math.floor(Math.random() * 4) + 2;
+                let correctOpt = `(${min}; ${max})`;
+                let opts = shuffle([correctOpt, `[${min}; ${max}]`, `(-∞; ${max})`, `(${min}; +∞)`]);
+                return {
+                    q: `Знайдіть розв'язок системи нерівностей: { x > ${min}, x < ${max} }`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Спільний інтервал двох нерівностей: (${min}; ${max}).`
+                };
+            }
+
+            if (topicId === "alg_pow_1") {
+                let base = ['a', 'x', 'y'][Math.floor(Math.random()*3)];
+                let n = Math.floor(Math.random() * 5) + 3;
+                let m = Math.floor(Math.random() * 5) + 2;
                 let k = Math.floor(Math.random() * (n + m - 2)) + 1;
                 let res = n + m - k;
-                
                 let correctOpt = `${base}${toSuperscript(res)}`;
-                let opts = shuffle([
-                    correctOpt, 
-                    `${base}${toSuperscript(n + m + k)}`, 
-                    `${base}${toSuperscript(n * m - k)}`, 
-                    `${base}${toSuperscript(res + 2)}`
-                ]);
+                let opts = shuffle([correctOpt, `${base}${toSuperscript(n + m + k)}`, `${base}${toSuperscript(res + 2)}`, `${base}${toSuperscript(n * m)}`]);
                 return {
                     q: `Спростіть вираз: (${base}${toSuperscript(n)} · ${base}${toSuperscript(m)}) / ${base}${toSuperscript(k)}`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За властивостями степеня: ${base}${toSuperscript(n + '+' + m + '-' + k)} = ${base}${toSuperscript(res)}.`
+                    exp: `За властивостями степенів: ${base}${toSuperscript(n + '+' + m + '-' + k)} = ${base}${toSuperscript(res)}.`
                 };
-            } else if (type === 2) {
-                let x1 = Math.floor(Math.random() * 7) + 1;
-                let x2 = Math.floor(Math.random() * 7) + 1;
+            }
+
+            if (topicId === "alg_sq_1") {
+                let x1 = Math.floor(Math.random() * 6) + 1;
+                let x2 = Math.floor(Math.random() * 6) + 1;
                 let sum = x1 + x2;
                 let prod = x1 * x2;
                 let correctOpt = `${sum}`;
@@ -500,45 +561,29 @@
                 return {
                     q: `Знайдіть суму коренів рівняння: x² - ${sum}x + ${prod} = 0`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За теоремою Вієта сума коренів зведеного квадратного рівняння дорівнює другому коефіцієнту з протилежним знаком: x₁ + x₂ = ${sum}.`
-                };
-            } else if (type === 3) {
-                let k = Math.floor(Math.random() * 5) + 2;
-                let b = Math.floor(Math.random() * 10) - 5;
-                let x0 = Math.floor(Math.random() * 6) + 1;
-                let val = k * x0 + b;
-                let bStr = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
-                let correctOpt = `${val}`;
-                let opts = shuffle([correctOpt, `${val + k}`, `${val - 2}`, `${val * 2}`]);
-                return {
-                    q: `Обчисліть значення функції f(x) = ${k}x ${bStr} у точці x = ${x0}:`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Підставляємо x = ${x0}: f(${x0}) = ${k} · ${x0} ${bStr} = ${val}.`
-                };
-            } else {
-                let a = Math.floor(Math.random() * 5) - 5;
-                let b = a + Math.floor(Math.random() * 4) + 6;
-                let c = a + Math.floor(Math.random() * 3) + 2;
-                let d = b + Math.floor(Math.random() * 4) + 2;
-                let correctOpt = `(${c}; ${b}]`;
-                let opts = shuffle([correctOpt, `[${a}; ${d})`, `[${a}; ${c})`, `[${b}; ${d})`]);
-                return {
-                    q: `Знайдіть переріз числових проміжків [${a}; ${b}] та (${c}; ${d}):`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Переріз — це спільна частина від ${c} (не включаючи) до ${b} (включаючи): (${c}; ${b}].`
+                    exp: `За теоремою Вієта сума коренів дорівнює другому коефіцієнту з протилежним знаком: x₁ + x₂ = ${sum}.`
                 };
             }
+
+            // За замовчуванням
+            let k = Math.floor(Math.random() * 5) + 2;
+            let x0 = Math.floor(Math.random() * 5) + 1;
+            let val = k * x0;
+            let correctOpt = `${val}`;
+            let opts = shuffle([correctOpt, `${val + 2}`, `${val - 1}`, `${val * 2}`]);
+            return {
+                q: `Обчисліть значення функції f(x) = ${k}x у точці x = ${x0}:`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `f(${x0}) = ${k} · ${x0} = ${val}.`
+            };
         }
 
         function createGeometryQuestion(topicId) {
-            let type = Math.floor(Math.random() * 5);
-
-            // Якщо обрано тему "Координати середини відрізка..."
-            if (topicId === "geom_3") {
-                let x1 = Math.floor(Math.random() * 8) * 2;
-                let y1 = Math.floor(Math.random() * 8) * 2;
-                let x2 = Math.floor(Math.random() * 8) * 2;
-                let y2 = Math.floor(Math.random() * 8) * 2;
+            if (topicId === "geom_3_1") {
+                let x1 = Math.floor(Math.random() * 6) * 2;
+                let y1 = Math.floor(Math.random() * 6) * 2;
+                let x2 = Math.floor(Math.random() * 6) * 2;
+                let y2 = Math.floor(Math.random() * 6) * 2;
                 let mx = (x1 + x2) / 2;
                 let my = (y1 + y2) / 2;
                 let correctOpt = `(${mx}; ${my})`;
@@ -546,12 +591,28 @@
                 return {
                     q: `Знайдіть координати середини відрізка AB, якщо A(${x1}; ${y1}), B(${x2}; ${y2}):`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Координати середини відрізка: x = (${x1} + ${x2})/2 = ${mx}, y = (${y1} + ${y2})/2 = ${my}.`
+                    exp: `x = (${x1} + ${x2})/2 = ${mx}, y = (${y1} + ${y2})/2 = ${my}.`
                 };
             }
 
-            if (type === 0) {
-                const triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15], [12, 16, 20]];
+            if (topicId === "geom_3_2") {
+                const pyth = [[3, 4, 5], [6, 8, 10], [5, 12, 13]];
+                let p = pyth[Math.floor(Math.random() * pyth.length)];
+                let x1 = 1, y1 = 1;
+                let x2 = x1 + p[0];
+                let y2 = y1 + p[1];
+                let dist = p[2];
+                let correctOpt = `${dist}`;
+                let opts = shuffle([correctOpt, `${dist + 2}`, `${dist - 1}`, `${p[0] + p[1]}`]);
+                return {
+                    q: `Обчисліть відстань між точками A(${x1}; ${y1}) та B(${x2}; ${y2}):`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `d = √[(${x2}-${x1})² + (${y2}-${y1})²] = √[${p[0]}² + ${p[1]}²] = √${dist*dist} = ${dist}.`
+                };
+            }
+
+            if (topicId === "geom_12_1") {
+                const triples = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17]];
                 let t = triples[Math.floor(Math.random() * triples.length)];
                 let a = t[0], b = t[1], c = t[2];
                 let correctOpt = `${c} см`;
@@ -560,30 +621,11 @@
                 return {
                     q: `Катети прямокутного трикутника дорівнюють ${a} см і ${b} см. Знайдіть гіпотенузу:`,
                     img: svg, opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За теоремою Піфагора: c² = ${a}² + ${b}² = ${a*a} + ${b*b} = ${c*c}. c = ${c} см.`
+                    exp: `c² = a² + b² = ${a*a} + ${b*b} = ${c*c} ➔ c = ${c} см.`
                 };
-            } else if (type === 1) {
-                let n = [4, 5, 6, 8, 10][Math.floor(Math.random() * 5)];
-                let sum = (n - 2) * 180;
-                let correctOpt = `${sum}°`;
-                let opts = shuffle([correctOpt, `${sum - 180}°`, `${sum + 180}°`, `${n * 180}°`]);
-                let names = {4: "чотирикутника", 5: "п'ятикутника", 6: "шестикутника", 8: "восьмикутника", 10: "десятикутника"};
-                return {
-                    q: `Сума внутрішніх кутів опуклого ${names[n]} дорівнює:`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Формула суми кутів n-кутника: S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
-                };
-            } else if (type === 2) {
-                let vertexAngle = (Math.floor(Math.random() * 12) + 2) * 10;
-                let baseAngle = (180 - vertexAngle) / 2;
-                let correctOpt = `${baseAngle}°`;
-                let opts = shuffle([correctOpt, `${vertexAngle}°`, `${baseAngle + 10}°`, `${180 - vertexAngle}°`]);
-                return {
-                    q: `Кут при вершині рівнобедреного трикутника дорівнює ${vertexAngle}°. Знайдіть кут при основі:`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Сума кутів трикутника 180°. Кути при основі рівні: (180° - ${vertexAngle}°) / 2 = ${baseAngle}°.`
-                };
-            } else if (type === 3) {
+            }
+
+            if (topicId === "geom_10_1") {
                 let a = (Math.floor(Math.random() * 5) + 2) * 2;
                 let b = a + (Math.floor(Math.random() * 4) + 2) * 2;
                 let m = (a + b) / 2;
@@ -592,82 +634,72 @@
                 return {
                     q: `Основи трапеції дорівнюють ${a} см і ${b} см. Знайдіть її середню лінію:`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Середня лінія трапеції дорівнює півсумі її основ: (${a} + ${b}) / 2 = ${m} см.`
-                };
-            } else {
-                let w = Math.floor(Math.random() * 8) + 3;
-                let h = Math.floor(Math.random() * 8) + 3;
-                let area = w * h;
-                let correctOpt = `${area} см²`;
-                let opts = shuffle([correctOpt, `${(w + h) * 2} см²`, `${w + h} см²`, `${area + 5} см²`]);
-                return {
-                    q: `Знайдіть площу прямокутника зі сторонами ${w} см і ${h} см:`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Площа прямокутника обчислюється за формулою S = a · b = ${w} · ${h} = ${area} см².`
+                    exp: `m = (a + b) / 2 = (${a} + ${b}) / 2 = ${m} см.`
                 };
             }
+
+            // Сума кутів багатокутника
+            let n = [4, 5, 6, 8][Math.floor(Math.random() * 4)];
+            let sum = (n - 2) * 180;
+            let correctOpt = `${sum}°`;
+            let opts = shuffle([correctOpt, `${sum - 180}°`, `${sum + 180}°`, `${n * 180}°`]);
+            return {
+                q: `Сума кутів опуклого ${n}-кутника дорівнює:`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
+            };
         }
 
         function createPhysicsQuestion(topicId) {
-            let type = Math.floor(Math.random() * 5);
-            if (type === 0) {
+            if (topicId === "phys_4_1") {
                 let a = Math.floor(Math.random() * 4) + 1;
-                let t = (Math.floor(Math.random() * 4) + 2) * 2;
+                let t = (Math.floor(Math.random() * 3) + 1) * 2;
                 let s = (a * t * t) / 2;
                 let correctOpt = `${s} м`;
                 let opts = shuffle([correctOpt, `${a * t} м`, `${s + 10} м`, `${s / 2} м`]);
                 return {
-                    q: `Тіло рухається зі стану спокою з прискоренням ${a} м/с². Який шлях воно подолає за ${t} с?`,
+                    q: `Тіло починає рух зі стану спокою з прискоренням ${a} м/с². Який шлях воно подолає за ${t} с?`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За формулою шляху при рівноприскореному русі (без v₀): s = (a · t²) / 2 = (${a} · ${t}²) / 2 = ${s} м.`
+                    exp: `s = (a · t²) / 2 = (${a} · ${t}²) / 2 = ${s} м.`
                 };
-            } else if (type === 1) {
-                let m = (Math.floor(Math.random() * 8) + 2) * 100;
-                let a = Math.floor(Math.random() * 5) + 1;
+            }
+
+            if (topicId === "phys_6_1") {
+                let m = (Math.floor(Math.random() * 5) + 1) * 100;
+                let a = Math.floor(Math.random() * 4) + 1;
                 let F = m * a;
                 let correctOpt = `${F} Н`;
                 let opts = shuffle([correctOpt, `${m + a} Н`, `${Math.round(m / a)} Н`, `${F + 200} Н`]);
                 return {
-                    q: `Яка рівнодійна сил діє на тіло масою ${m} кг, якщо воно рухається з прискоренням ${a} м/с²?`,
+                    q: `Яка рівнодійна сил діє на тіло масою ${m} кг при прискоренні ${a} м/с²?`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `За II законом Ньютона: F = m · a = ${m} кг · ${a} м/с² = ${F} Н.`
+                    exp: `За II законом Ньютона: F = m · a = ${m} · ${a} = ${F} Н.`
                 };
-            } else if (type === 2) {
-                let m = (Math.floor(Math.random() * 5) + 1) * 2;
-                let v = (Math.floor(Math.random() * 6) + 2) * 5;
-                let p = m * v;
-                let correctOpt = `${p} кг·м/с`;
-                let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
-                return {
-                    q: `Знайдіть імпульс тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
-                    opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Імпульс тіла обчислюється за формулою: p = m · v = ${m} · ${v} = ${p} кг·м/с.`
-                };
-            } else if (type === 3) {
-                let m = Math.floor(Math.random() * 5) + 2;
+            }
+
+            if (topicId === "phys_12_1") {
+                let m = Math.floor(Math.random() * 4) + 2;
                 let v = (Math.floor(Math.random() * 4) + 1) * 2;
                 let Ek = (m * v * v) / 2;
                 let correctOpt = `${Ek} Дж`;
-                let opts = shuffle([correctOpt, `${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 12} Дж`]);
+                let opts = shuffle([correctOpt, `${m * v} Дж`, `${Ek * 2} Дж`, `${Ek + 10} Дж`]);
                 return {
                     q: `Обчисліть кінетичну енергію тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
                     opts: opts, ans: opts.indexOf(correctOpt),
-                    exp: `Кінетична енергія Eₖ = (m · v²) / 2 = (${m} · ${v}²) / 2 = ${Ek} Дж.`
-                };
-            } else {
-                const conceptQuestions = [
-                    { q: "Як називається закон, який стверджує: існують такі системи відліку, в яких тіло зберігає стан спокою або прямолінійного рівномірного руху?", opts: ["Перший закон Ньютона", "Другий закон Ньютона", "Третій закон Ньютона", "Закон всесвітнього тяжіння"], exp: "Це формулювання першого закону Ньютона (закону інерції)." },
-                    { q: "Яка одиниця вимірювання прискорення в системі SI?", opts: ["м/с²", "м/с", "Н/кг", "кг·м/с"], exp: "Прискорення вимірюється в метрах за секунду в квадраті (м/с²)." },
-                    { q: "За якою формулою обчислюється модуль сили тяжіння біля поверхні Землі?", opts: ["F = mg", "F = kx", "F = ma", "F = G(m₁·m₂)/r²"], exp: "Сила тяжіння біля поверхні Землі обчислюється за формулою F = mg." },
-                    { q: "Як зміниться кінетична енергія тіла, якщо його швидкість збільшиться у 2 рази?", opts: ["Збільшиться в 4 рази", "Збільшиться в 2 рази", "Зменшиться в 2 рази", "Не зміниться"], exp: "Оскільки Eₖ залежить від квадрата швидкості (v²), при збільшенні v у 2 рази енергія зросте в 2² = 4 рази." }
-                ];
-                let item = conceptQuestions[Math.floor(Math.random() * conceptQuestions.length)];
-                let correctOpt = item.opts[0];
-                let opts = shuffle(item.opts);
-                return {
-                    q: item.q, opts: opts, ans: opts.indexOf(correctOpt), exp: item.exp
+                    exp: `Eₖ = (m · v²) / 2 = (${m} · ${v}²) / 2 = ${Ek} Дж.`
                 };
             }
+
+            let m = (Math.floor(Math.random() * 5) + 1) * 2;
+            let v = (Math.floor(Math.random() * 5) + 1) * 5;
+            let p = m * v;
+            let correctOpt = `${p} кг·м/с`;
+            let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
+            return {
+                q: `Знайдіть імпульс тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `p = m · v = ${m} · ${v} = ${p} кг·м/с.`
+            };
         }
 
         function generateUniqueQuizQuestions(subject, topicId, count) {
