@@ -182,7 +182,7 @@
         input[type="range"].disabled { opacity: 0.3; pointer-events: none; }
         
         .time-inputs { display: flex; gap: 8px; align-items: center; font-size: 2rem; text-shadow: 0 0 10px var(--neon-cyan); }
-        .time-inputs input { width: 75px; height: 55px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 1.8rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        .time-inputs input { width: 110px; height: 55px; background: rgba(11, 7, 26, 0.6); border: 3px solid var(--neon-cyan); color: var(--neon-cyan); font-size: 1.8rem; text-align: center; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
         .time-inputs input:focus { outline: none; border-color: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); }
         .time-inputs input:disabled { opacity: 0.3; border-color: #555; box-shadow: none; }
 
@@ -218,7 +218,7 @@
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
-        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.5); border-radius: 10px; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
     </style>
 </head>
@@ -236,6 +236,18 @@
         </div>
     </div>
 
+    <!-- 1.5. Екран вибору режима -->
+    <div id="screen-mode" class="screen">
+        <h2>Оберіть режими завдань</h2>
+        <div class="subject-menu">
+            <button class="btn btn-default" onclick="selectMode('tests')">Тести</button>
+            <button class="btn btn-default" onclick="selectMode('independent')">Самостійна</button>
+        </div>
+        <div class="bottom-nav">
+            <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
+        </div>
+    </div>
+
     <!-- 2. Екран вибору теми -->
     <div id="screen-topics" class="screen">
         <h2>Оберіть вузьку тему (параграф)</h2>
@@ -244,7 +256,7 @@
             <div id="topics-list" class="topics-list"></div>
         </div>
         <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
+            <button class="btn btn-default" onclick="switchScreen('screen-mode')">↩ Назад</button>
         </div>
     </div>
 
@@ -271,29 +283,22 @@
 
     <!-- 4. Екран вибору часу -->
     <div id="screen-time" class="screen">
-        <h2>Виберіть час тесту</h2>
-        <div class="grid-options" id="preset-times">
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(900, this)">15:00</button>
-            <button class="btn btn-default time-btn" onclick="togglePresetTime(1200, this)">20:00</button>
-        </div>
+        <h2 id="time-screen-title">Виберіть час тесту</h2>
+        <div class="grid-options" id="preset-times"></div>
         
         <div class="custom-input-area">
-            <p>Або напишіть свій час</p>
+            <p>Або напишіть свою кількість хвилин</p>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <button class="btn" id="btn-reset-time" onclick="resetManualTime()" style="display: none; border-color: var(--neon-red); color: var(--neon-red); padding: 10px 18px; font-size: 1rem; margin: 0;">Скинути час</button>
-                <div class="time-inputs">
-                    <input type="number" id="custom-min" min="0" max="99" placeholder="00" oninput="handleManualTimeInput()"> : 
-                    <input type="number" id="custom-sec" min="0" max="59" placeholder="00" oninput="handleManualTimeInput()">
+                <div class="time-inputs" style="justify-content: center;">
+                    <input type="number" id="custom-min" min="1" max="180" placeholder="0" oninput="handleManualTimeInput()">
+                    <span style="font-size: 1.2rem; color: var(--neon-cyan);">хв</span>
                 </div>
             </div>
             
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
                 <button class="btn btn-default disabled" id="btn-start-with-time" onclick="startQuizWithSelectedTime()">Запустити з цим часом</button>
-                <button class="btn btn-yellow" onclick="startQuiz(0)">Грати без часу</button>
+                <button class="btn btn-yellow" id="btn-no-time" onclick="startQuiz(0)">Грати без часу</button>
             </div>
         </div>
         
@@ -363,7 +368,6 @@
             return String(num).split('').map(ch => superscripts[ch] || ch).join('');
         }
 
-        // Деталізована база дрібних тем (подрібнена на конкретні підтеми)
         const topicsDatabase = {
             algebra: [
                 { id: "alg_ineq_1", title: "§ 11.1. Числові нерівності та їх властивості (порівняння a - b)" },
@@ -429,7 +433,6 @@
             return res;
         }
 
-        // Генератори точних питань під кожну підтему
         function createQuestionForSubject(subject, topicId) {
             if (subject === 'algebra') return createAlgebraQuestion(topicId);
             if (subject === 'geometry') return createGeometryQuestion(topicId);
@@ -438,7 +441,6 @@
 
         function createAlgebraQuestion(topicId) {
             if (topicId === "alg_ineq_1") {
-                // Числові нерівності та їх властивості
                 let diff = Math.floor(Math.random() * 10) - 5;
                 if (diff === 0) diff = -2;
                 let isLess = diff < 0;
@@ -453,7 +455,6 @@
             }
 
             if (topicId === "alg_ineq_2") {
-                // Почленне додавання і множення нерівностей
                 let type = Math.random() > 0.5 ? 'add' : 'mul';
                 if (type === 'add') {
                     let a = Math.floor(Math.random() * 5) + 1;
@@ -487,11 +488,10 @@
             }
 
             if (topicId === "alg_ineq_3") {
-                // Оцінювання значення виразу
                 let a = Math.floor(Math.random() * 4) + 1;
                 let b = a + Math.floor(Math.random() * 4) + 2;
-                let k = Math.floor(Math.random() * 3) + 2; // множник 2, 3, 4
-                let c = Math.floor(Math.random() * 5) + 1; // доданок
+                let k = Math.floor(Math.random() * 3) + 2;
+                let c = Math.floor(Math.random() * 5) + 1;
                 let minVal = k * a + c;
                 let maxVal = k * b + c;
                 let correctOpt = `${minVal} < ${k}x + ${c} < ${maxVal}`;
@@ -509,7 +509,6 @@
             }
 
             if (topicId === "alg_ineq_4") {
-                // Лінійні нерівності з однією змінною
                 let a = Math.floor(Math.random() * 4) + 2;
                 let xVal = Math.floor(Math.random() * 6) + 1;
                 let b = Math.floor(Math.random() * 8) + 1;
@@ -524,7 +523,6 @@
             }
 
             if (topicId === "alg_ineq_5") {
-                // Системи лінійних нерівностей
                 let min = Math.floor(Math.random() * 4) + 1;
                 let max = min + Math.floor(Math.random() * 4) + 2;
                 let correctOpt = `(${min}; ${max})`;
@@ -565,7 +563,6 @@
                 };
             }
 
-            // За замовчуванням
             let k = Math.floor(Math.random() * 5) + 2;
             let x0 = Math.floor(Math.random() * 5) + 1;
             let val = k * x0;
@@ -638,7 +635,6 @@
                 };
             }
 
-            // Сума кутів багатокутника
             let n = [4, 5, 6, 8][Math.floor(Math.random() * 4)];
             let sum = (n - 2) * 180;
             let correctOpt = `${sum}°`;
@@ -718,6 +714,7 @@
         }
 
         let currentSubject = '';
+        let currentMode = 'tests';
         let currentTopic = null;
         let targetQuestionsCount = 0;
         let selectedPresetCount = null;
@@ -736,6 +733,11 @@
 
         function selectSubject(subj) {
             currentSubject = subj;
+            switchScreen('screen-mode');
+        }
+
+        function selectMode(mode) {
+            currentMode = mode;
             document.getElementById('topic-search').value = '';
             renderTopics();
             switchScreen('screen-topics');
@@ -843,8 +845,36 @@
 
         function goToTimeSelection() {
             if (targetQuestionsCount <= 0) return;
-            resetTimeSelection();
+            renderTimeScreen();
             switchScreen('screen-time');
+        }
+
+        function renderTimeScreen() {
+            resetTimeSelection();
+            const title = document.getElementById('time-screen-title');
+            const presetsContainer = document.getElementById('preset-times');
+            const noTimeBtn = document.getElementById('btn-no-time');
+
+            if (currentMode === 'tests') {
+                title.innerText = "Виберіть час тесту";
+                noTimeBtn.style.display = "inline-block";
+                presetsContainer.innerHTML = `
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(900, this)">15:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(1200, this)">20:00</button>
+                `;
+            } else {
+                title.innerText = "Виберіть час на кожне завдання";
+                noTimeBtn.style.display = "none";
+                presetsContainer.innerHTML = `
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(10, this)">10 сек</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">30 сек</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">1 хв</button>
+                `;
+            }
         }
 
         function resetTimeSelection() {
@@ -855,11 +885,8 @@
             timeBtns.forEach(b => b.classList.remove('disabled', 'btn-count-active'));
 
             const minInp = document.getElementById('custom-min');
-            const secInp = document.getElementById('custom-sec');
             minInp.value = '';
-            secInp.value = '';
             minInp.disabled = false;
-            secInp.disabled = false;
 
             document.getElementById('btn-reset-time').style.display = 'none';
             document.getElementById('btn-start-with-time').classList.add('disabled');
@@ -868,7 +895,6 @@
         function togglePresetTime(sec, btnElement) {
             const btnStart = document.getElementById('btn-start-with-time');
             const minInp = document.getElementById('custom-min');
-            const secInp = document.getElementById('custom-sec');
             const resetBtn = document.getElementById('btn-reset-time');
             const timeBtns = document.querySelectorAll('.time-btn');
 
@@ -878,18 +904,15 @@
                 btnElement.classList.remove('btn-count-active');
 
                 minInp.disabled = false;
-                secInp.disabled = false;
                 btnStart.classList.add('disabled');
             } else {
                 selectedPresetTimeSec = sec;
                 selectedTime = sec;
 
                 minInp.value = '';
-                secInp.value = '';
                 resetBtn.style.display = 'none';
 
                 minInp.disabled = true;
-                secInp.disabled = true;
 
                 timeBtns.forEach(b => b.classList.remove('btn-count-active'));
                 btnElement.classList.add('btn-count-active');
@@ -900,23 +923,15 @@
 
         function handleManualTimeInput() {
             const minInp = document.getElementById('custom-min');
-            const secInp = document.getElementById('custom-sec');
             const resetBtn = document.getElementById('btn-reset-time');
             const btnStart = document.getElementById('btn-start-with-time');
             const timeBtns = document.querySelectorAll('.time-btn');
 
             let mVal = minInp.value.trim();
-            let sVal = secInp.value.trim();
+            let m = parseFloat(mVal) || 0;
+            let totalSec = Math.round(m * 60);
 
-            if (mVal.length >= 2 && document.activeElement === minInp) {
-                secInp.focus();
-            }
-
-            let m = parseInt(mVal) || 0;
-            let s = parseInt(sVal) || 0;
-            let totalSec = (m * 60) + s;
-
-            if (mVal !== '' && sVal !== '' && totalSec > 0) {
+            if (mVal !== '' && totalSec > 0) {
                 resetBtn.style.display = 'inline-flex';
                 btnStart.classList.remove('disabled');
                 selectedTime = totalSec;
@@ -925,7 +940,7 @@
                     b.classList.remove('btn-count-active');
                     b.classList.add('disabled');
                 });
-            } else if (mVal !== '' || sVal !== '') {
+            } else if (mVal !== '') {
                 timeBtns.forEach(b => b.classList.add('disabled'));
                 btnStart.classList.add('disabled');
                 resetBtn.style.display = 'none';
@@ -953,7 +968,9 @@
             results = [];
             
             switchScreen('screen-quiz');
-            setupTimer();
+            if (currentMode === 'tests') {
+                setupTimer();
+            }
             loadQuestion();
         }
 
@@ -970,10 +987,17 @@
                 timerInterval = setInterval(() => {
                     timeLeft--;
                     updateTimerUI(timeLeft);
-                    if(timeLeft <= 10) timeDisp.classList.add('timer-danger');
+                    if(timeLeft <= 5) timeDisp.classList.add('timer-danger');
                     if(timeLeft <= 0) {
                         clearInterval(timerInterval);
-                        showTimerEnd();
+                        if (currentMode === 'tests') {
+                            showTimerEnd();
+                        } else {
+                            if (!answeredCurrent) {
+                                results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'timeout' });
+                                goToNextOrEnd();
+                            }
+                        }
                     }
                 }, 1000);
             } else {
@@ -991,6 +1015,10 @@
             answeredCurrent = false;
             let qData = currentQuestions[currentIndex];
             
+            if (currentMode === 'independent') {
+                setupTimer();
+            }
+
             document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
             document.getElementById('question-text').innerText = qData.q;
             
@@ -1024,6 +1052,10 @@
             if(answeredCurrent) return;
             answeredCurrent = true;
 
+            if (currentMode === 'independent') {
+                clearInterval(timerInterval);
+            }
+
             let allBtns = document.getElementById('options-grid').children;
             for(let b of allBtns) b.style.pointerEvents = 'none';
 
@@ -1047,6 +1079,9 @@
 
         function skipQuestion() {
             if(answeredCurrent) return;
+            if (currentMode === 'independent') {
+                clearInterval(timerInterval);
+            }
             results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'skipped' });
             goToNextOrEnd();
         }
