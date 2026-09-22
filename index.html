@@ -123,6 +123,29 @@
             transform: scale(1.05);
         }
 
+        .btn-dev {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #aaa;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .btn-dev:hover {
+            border-color: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 20px var(--neon-pink);
+            transform: scale(1.05);
+        }
+
+        .badge-dev {
+            font-size: 0.75rem;
+            background: var(--neon-pink);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 8px;
+            text-shadow: none;
+            box-shadow: 0 0 10px var(--neon-pink);
+            letter-spacing: 0.5px;
+        }
+
         .btn-count-active {
             border-color: var(--neon-green) !important;
             box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green) !important;
@@ -199,7 +222,6 @@
         .bottom-nav { position: absolute; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 10; }
         .bottom-nav .btn { font-size: 1.1rem; padding: 12px 25px; }
 
-        /* --- Контрольна робота стилі --- */
         .manual-container {
             width: 100%;
             max-width: 900px;
@@ -310,7 +332,6 @@
             padding: 15px 30px;
         }
 
-        /* Прогрес бар ШІ */
         .ai-loading-box {
             background: var(--panel-bg);
             border: 2px solid var(--neon-cyan);
@@ -344,7 +365,6 @@
             transition: width 0.1s linear, background-color 0.5s ease;
         }
 
-        /* Список створеної контрольної */
         .control-view-container {
             width: 100%;
             max-width: 900px;
@@ -392,7 +412,6 @@
             align-self: flex-start;
         }
 
-        /* Тоасти / Сповіщення */
         .toast-notification {
             position: fixed;
             bottom: 40px;
@@ -446,7 +465,7 @@
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
-        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.5); border-radius: 10px; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
     </style>
 </head>
@@ -473,6 +492,9 @@
             <button class="btn btn-default" onclick="selectMode('tests')">Тести</button>
             <button class="btn btn-default" onclick="selectMode('independent')">Самостійна</button>
             <button class="btn btn-yellow" onclick="selectMode('control')">Контрольна</button>
+            <button class="btn btn-dev" onclick="showToast('Цей режим знаходиться у розробці!')">
+                Онлайн <span class="badge-dev">У розробці</span>
+            </button>
         </div>
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
@@ -637,31 +659,24 @@
     </div>
 
     <script>
-        function toSuperscript(num) {
-            const superscripts = {
-                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
-                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'
-            };
-            return String(num).split('').map(ch => superscripts[ch] || ch).join('');
-        }
-
+        // Теми впорядковані суворо за нумерацією параграфів
         const topicsDatabase = {
             algebra: [
+                { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
+                { id: "alg_sq_1", title: "§ 9.1. Квадратні рівняння та теорема Вієта" },
+                { id: "alg_func_1", title: "§ 10.1. Обчислення значень квадратичної функції" },
                 { id: "alg_ineq_1", title: "§ 11.1. Числові нерівності та їх властивості (порівняння a - b)" },
                 { id: "alg_ineq_2", title: "§ 11.2. Почленне додавання і множення нерівностей" },
                 { id: "alg_ineq_3", title: "§ 11.3. Оцінювання значення виразу" },
                 { id: "alg_ineq_4", title: "§ 12.1. Лінійні нерівності з однією змінною" },
-                { id: "alg_ineq_5", title: "§ 12.2. Системи лінійних нерівностей з однією змінною" },
-                { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
-                { id: "alg_sq_1", title: "§ 9.1. Квадратні рівняння та теорема Вієта" },
-                { id: "alg_func_1", title: "§ 10.1. Обчислення значень квадратичної функції" }
+                { id: "alg_ineq_5", title: "§ 12.2. Системи лінійних нерівностей з однією змінною" }
             ],
             geometry: [
+                { id: "geom_ang_1", title: "§ 2.1. Сума кутів многокутника та трикутників" },
                 { id: "geom_3_1", title: "§ 3.1. Координати середини відрізка" },
                 { id: "geom_3_2", title: "§ 3.2. Відстань між двома точками із заданими координатами" },
-                { id: "geom_12_1", title: "§ 12.1. Прямокутний трикутник та теорема Піфагора" },
                 { id: "geom_10_1", title: "§ 10.1. Середня лінія трапеції та трикутника" },
-                { id: "geom_ang_1", title: "§ 2.1. Сума кутів многокутника та трикутників" }
+                { id: "geom_12_1", title: "§ 12.1. Прямокутний трикутник та теорема Піфагора" }
             ],
             physics: [
                 { id: "phys_4_1", title: "§ 4.1. Рівноприскорений рух, прискорення та шлях" },
@@ -724,7 +739,6 @@
         let results = [];
         let answeredCurrent = false;
 
-        // Ручні завдання контрольної
         let manualTasks = [];
 
         function switchScreen(screenId) {
@@ -748,10 +762,9 @@
             }
         }
 
-        /* --- Логіка Контрольної Роботи --- */
         function startControlManual() {
             manualTasks = [];
-            addManualTask(); // створюємо перше завдання за замовчуванням
+            addManualTask();
             switchScreen('screen-control-manual');
         }
 
@@ -934,14 +947,19 @@
             switchScreen('screen-menu');
         }
 
-        /* --- Базовий функціонал тестів --- */
         function renderTopics() {
             const listDiv = document.getElementById('topics-list');
             listDiv.innerHTML = '';
             const query = document.getElementById('topic-search').value.toLowerCase().trim();
             
-            const topics = topicsDatabase[currentSubject] || [];
-            const filtered = topics.filter(t => t.title.toLowerCase().includes(query));
+            let rawTopics = topicsDatabase[currentSubject] || [];
+            
+            // Автоматична природна числова сортування за номером параграфа
+            const sortedTopics = [...rawTopics].sort((a, b) => 
+                a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' })
+            );
+
+            const filtered = sortedTopics.filter(t => t.title.toLowerCase().includes(query));
 
             if (filtered.length === 0) {
                 listDiv.innerHTML = '<div style="padding:10px; color:#aaa; text-align:center;">Теми не знайдено</div>';
