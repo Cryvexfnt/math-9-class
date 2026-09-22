@@ -108,6 +108,30 @@
         .btn-physics { border-color: var(--neon-red); box-shadow: 0 0 15px rgba(255, 0, 85, 0.4), inset 0 0 10px rgba(255, 0, 85, 0.2); text-shadow: 0 0 8px var(--neon-red); }
         .btn-physics:hover { background: rgba(255, 0, 85, 0.2); box-shadow: 0 0 25px var(--neon-red), inset 0 0 15px var(--neon-red); transform: scale(1.05); }
 
+        .btn-cyan {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
+            text-shadow: 0 0 8px var(--neon-cyan);
+            color: #fff;
+        }
+        .btn-cyan:hover {
+            background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 15px var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        .btn-green {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4), inset 0 0 10px rgba(0, 255, 102, 0.2);
+            text-shadow: 0 0 8px var(--neon-green);
+            color: var(--neon-green);
+        }
+        .btn-green:hover {
+            background: rgba(0, 255, 102, 0.2);
+            box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green);
+            transform: scale(1.05);
+        }
+
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
         
@@ -124,25 +148,26 @@
         }
 
         .btn-dev {
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #aaa;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ddd;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
         .btn-dev:hover {
-            border-color: var(--neon-pink);
+            border-color: var(--neon-red);
             color: #fff;
-            box-shadow: 0 0 20px var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
             transform: scale(1.05);
         }
 
         .badge-dev {
             font-size: 0.75rem;
-            background: var(--neon-pink);
-            color: #fff;
+            background: rgba(30, 30, 45, 0.75);
+            color: var(--neon-red);
+            border: 1px solid rgba(255, 0, 85, 0.6);
             padding: 3px 8px;
             border-radius: 8px;
-            text-shadow: none;
-            box-shadow: 0 0 10px var(--neon-pink);
+            text-shadow: 0 0 6px var(--neon-red);
+            box-shadow: 0 0 8px rgba(255, 0, 85, 0.25);
             letter-spacing: 0.5px;
         }
 
@@ -489,8 +514,8 @@
     <div id="screen-mode" class="screen">
         <h2>Оберіть режими завдань</h2>
         <div class="subject-menu">
-            <button class="btn btn-default" onclick="selectMode('tests')">Тести</button>
-            <button class="btn btn-default" onclick="selectMode('independent')">Самостійна</button>
+            <button class="btn btn-cyan" onclick="selectMode('tests')">Тести</button>
+            <button class="btn btn-green" onclick="selectMode('independent')">Самостійна</button>
             <button class="btn btn-yellow" onclick="selectMode('control')">Контрольна</button>
             <button class="btn btn-dev" onclick="showToast('Цей режим знаходиться у розробці!')">
                 Онлайн <span class="badge-dev">У розробці</span>
@@ -659,7 +684,6 @@
     </div>
 
     <script>
-        // Теми впорядковані суворо за нумерацією параграфів
         const topicsDatabase = {
             algebra: [
                 { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
@@ -954,7 +978,6 @@
             
             let rawTopics = topicsDatabase[currentSubject] || [];
             
-            // Автоматична природна числова сортування за номером параграфа
             const sortedTopics = [...rawTopics].sort((a, b) => 
                 a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' })
             );
