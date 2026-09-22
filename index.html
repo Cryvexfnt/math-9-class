@@ -287,12 +287,12 @@
         <div class="grid-options" id="preset-times"></div>
         
         <div class="custom-input-area">
-            <p>Або напишіть свою кількість хвилин</p>
+            <p id="time-input-label">Або напишіть свою кількість хвилин</p>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <button class="btn" id="btn-reset-time" onclick="resetManualTime()" style="display: none; border-color: var(--neon-red); color: var(--neon-red); padding: 10px 18px; font-size: 1rem; margin: 0;">Скинути час</button>
                 <div class="time-inputs" style="justify-content: center;">
                     <input type="number" id="custom-min" min="1" max="180" placeholder="0" oninput="handleManualTimeInput()">
-                    <span style="font-size: 1.2rem; color: var(--neon-cyan);">хв</span>
+                    <span id="time-unit-label" style="font-size: 1.2rem; color: var(--neon-cyan);">хв</span>
                 </div>
             </div>
             
@@ -710,6 +710,10 @@
                     list.push(qObj);
                 }
             }
+            while (list.length < count) {
+                let qObj = createQuestionForSubject(subject, topicId);
+                list.push(qObj);
+            }
             return list;
         }
 
@@ -721,6 +725,7 @@
         let selectedPresetTimeSec = null;
         let selectedTime = 0;
         let timerInterval;
+        let elapsedTime = 0;
         let currentQuestions = [];
         let currentIndex = 0;
         let results = [];
@@ -854,9 +859,15 @@
             const title = document.getElementById('time-screen-title');
             const presetsContainer = document.getElementById('preset-times');
             const noTimeBtn = document.getElementById('btn-no-time');
+            const inputLabel = document.getElementById('time-input-label');
+            const unitLabel = document.getElementById('time-unit-label');
+            const minInp = document.getElementById('custom-min');
 
             if (currentMode === 'tests') {
                 title.innerText = "Виберіть час тесту";
+                inputLabel.innerText = "Або напишіть свою кількість хвилин";
+                unitLabel.innerText = "хв";
+                minInp.max = "180";
                 noTimeBtn.style.display = "inline-block";
                 presetsContainer.innerHTML = `
                     <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
@@ -868,6 +879,9 @@
                 `;
             } else {
                 title.innerText = "Виберіть час на кожне завдання";
+                inputLabel.innerText = "Або напишіть свою кількість секунд";
+                unitLabel.innerText = "сек";
+                minInp.max = "300";
                 noTimeBtn.style.display = "none";
                 presetsContainer.innerHTML = `
                     <button class="btn btn-default time-btn" onclick="togglePresetTime(10, this)">10 сек</button>
@@ -927,11 +941,11 @@
             const btnStart = document.getElementById('btn-start-with-time');
             const timeBtns = document.querySelectorAll('.time-btn');
 
-            let mVal = minInp.value.trim();
-            let m = parseFloat(mVal) || 0;
-            let totalSec = Math.round(m * 60);
+            let valStr = minInp.value.trim();
+            let val = parseFloat(valStr) || 0;
+            let totalSec = (currentMode === 'tests') ? Math.round(val * 60) : Math.round(val);
 
-            if (mVal !== '' && totalSec > 0) {
+            if (valStr !== '' && totalSec > 0) {
                 resetBtn.style.display = 'inline-flex';
                 btnStart.classList.remove('disabled');
                 selectedTime = totalSec;
@@ -940,7 +954,7 @@
                     b.classList.remove('btn-count-active');
                     b.classList.add('disabled');
                 });
-            } else if (mVal !== '') {
+            } else if (valStr !== '') {
                 timeBtns.forEach(b => b.classList.add('disabled'));
                 btnStart.classList.add('disabled');
                 resetBtn.style.display = 'none';
@@ -979,7 +993,15 @@
             clearInterval(timerInterval);
             timeDisp.classList.remove('timer-danger');
 
-            if(selectedTime > 0) {
+            if (currentMode === 'tests' && selectedTime === 0) {
+                timeDisp.style.display = 'block';
+                elapsedTime = 0;
+                updateTimerUI(elapsedTime);
+                timerInterval = setInterval(() => {
+                    elapsedTime++;
+                    updateTimerUI(elapsedTime);
+                }, 1000);
+            } else if (selectedTime > 0) {
                 timeDisp.style.display = 'block';
                 updateTimerUI(selectedTime);
                 let timeLeft = selectedTime;
@@ -1113,9 +1135,10 @@
         function finishQuiz(endedEarly = false, reason = 'manual') {
             clearInterval(timerInterval);
             
-            if(endedEarly && currentIndex < targetQuestionsCount) {
+            if(endedEarly) {
+                let startIndex = answeredCurrent ? currentIndex + 1 : currentIndex;
                 const statusType = (reason === 'timeout') ? 'timeout' : 'unanswered';
-                for(let i = currentIndex; i < targetQuestionsCount; i++) {
+                for(let i = startIndex; i < currentQuestions.length; i++) {
                     results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: statusType });
                 }
             }
