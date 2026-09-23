@@ -62,6 +62,7 @@
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; z-index: 1;}
         .screen.active { display: flex; }
 
+        /* Плашка ВБТ */
         .vbt-badge {
             position: absolute;
             top: 25px;
@@ -133,18 +134,6 @@
             transform: scale(1.05);
         }
 
-        .btn-online {
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 15px rgba(255, 0, 160, 0.4), inset 0 0 10px rgba(255, 0, 160, 0.2);
-            text-shadow: 0 0 8px var(--neon-pink);
-            color: #fff;
-        }
-        .btn-online:hover {
-            background: rgba(255, 0, 160, 0.25);
-            box-shadow: 0 0 25px var(--neon-pink), inset 0 0 15px var(--neon-pink);
-            transform: scale(1.05);
-        }
-
         .btn-default { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); text-shadow: 0 0 8px var(--neon-cyan); }
         .btn-default:hover { transform: scale(1.05); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 25px var(--neon-cyan); }
         
@@ -158,6 +147,32 @@
             background: rgba(255, 230, 0, 0.2);
             box-shadow: 0 0 25px var(--neon-yellow), inset 0 0 15px var(--neon-yellow);
             transform: scale(1.05);
+        }
+
+        .btn-dev {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ddd;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        .btn-dev:hover {
+            border-color: var(--neon-red);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            transform: scale(1.05);
+        }
+
+        .badge-dev {
+            font-size: 0.7rem;
+            background: rgba(30, 30, 45, 0.85);
+            color: var(--neon-red);
+            border: 1px solid rgba(255, 0, 85, 0.6);
+            padding: 2px 6px;
+            border-radius: 6px;
+            text-shadow: 0 0 6px var(--neon-red);
+            box-shadow: 0 0 8px rgba(255, 0, 85, 0.25);
+            letter-spacing: 0.5px;
+            margin-left: 8px;
         }
 
         .btn-count-active {
@@ -182,7 +197,7 @@
             gap: 15px;
         }
 
-        .search-input, .text-input {
+        .search-input {
             width: 100%;
             padding: 12px 20px;
             font-size: 1.2rem;
@@ -192,9 +207,8 @@
             color: white;
             outline: none;
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-            transition: all 0.3s;
         }
-        .search-input:focus, .text-input:focus { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .search-input:focus { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
         .topics-list {
             max-height: 420px;
@@ -240,13 +254,13 @@
         .manual-container {
             width: 100%;
             max-width: 900px;
-            max-height: 65vh;
+            max-height: 70vh;
             overflow-y: auto;
             padding-right: 15px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 80px;
         }
 
         .task-card {
@@ -410,6 +424,24 @@
             text-shadow: 0 0 8px var(--neon-yellow);
         }
 
+        .control-view-item p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .control-view-item img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        /* Уведомление-Тоаст */
         .toast-notification {
             position: fixed;
             bottom: 40px;
@@ -454,105 +486,18 @@
         .option-btn:hover { border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
         .option-btn.correct { background: rgba(0, 255, 102, 0.2); color: #fff; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 102, 0.4); }
         .option-btn.wrong { background: rgba(255, 0, 85, 0.2); color: #fff; border-color: var(--neon-red); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
-        
-        .option-btn.selected-yellow {
-            background: rgba(255, 230, 0, 0.25) !important;
-            border-color: var(--neon-yellow) !important;
-            box-shadow: 0 0 20px var(--neon-yellow) !important;
-            color: #fff !important;
-        }
-
         .explanation { display: none; margin-top: 25px; padding: 20px; font-size: 1.2rem; border-left: 4px solid var(--neon-cyan); background: rgba(0,243,255,0.1); line-height: 1.5; }
         .quiz-controls { display: flex; justify-content: space-between; margin-top: 40px; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); max-width: 650px; width: 90%; }
+        .modal-content { background: var(--bg-color); border: 2px solid var(--neon-purple); padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 0 50px rgba(181, 0, 255, 0.4); }
         #results-list { max-height: 50vh; overflow-y: auto; text-align: left; padding-right: 15px; }
         .res-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; }
         .res-status-correct { color: var(--neon-green); font-weight: bold; text-shadow: 0 0 8px var(--neon-green); }
         .res-status-wrong { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 8px var(--neon-red); }
         .res-status-skipped { color: #f39c12; font-weight: bold; }
         .res-status-unanswered { color: #7f8c8d; font-weight: bold; }
-
-        .online-box {
-            background: var(--panel-bg);
-            border: 2px solid var(--neon-pink);
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 0 30px rgba(255, 0, 160, 0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .code-display {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--neon-yellow);
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px var(--neon-yellow);
-            background: rgba(0,0,0,0.5);
-            padding: 15px 25px;
-            border-radius: 12px;
-            border: 2px dashed var(--neon-yellow);
-            display: inline-block;
-        }
-
-        .students-list-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 15px;
-            max-height: 250px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .student-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.2s;
-        }
-        .student-row:hover { background: rgba(0, 243, 255, 0.1); border-color: var(--neon-cyan); }
-
-        .hourglass-wrapper {
-            width: 100px;
-            height: 100px;
-            margin: 20px auto;
-            position: relative;
-        }
-
-        .hourglass-svg {
-            width: 100%;
-            height: 100%;
-            animation: flip-hourglass 4s infinite cubic-bezier(0.65, 0, 0.35, 1);
-            filter: drop-shadow(0 0 12px var(--neon-yellow));
-        }
-
-        @keyframes flip-hourglass {
-            0%, 40% { transform: rotate(0deg); }
-            50%, 90% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .sand-stream {
-            animation: trickle 1s infinite linear;
-        }
-
-        @keyframes trickle {
-            0% { stroke-dashoffset: 0; }
-            100% { stroke-dashoffset: -10; }
-        }
-
+        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px;}
         ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.5); border-radius: 10px; }
@@ -564,7 +509,7 @@
     <div id="bg-stickers"></div>
     <div id="toast" class="toast-notification"></div>
 
-    <!-- 1. Екран вибору предмета -->
+    <!-- 1. Экран выбора предмета -->
     <div id="screen-menu" class="screen active">
         <div class="vbt-badge">ВБТ 🛠️</div>
         <h1>Оберіть предмет</h1>
@@ -575,242 +520,23 @@
         </div>
     </div>
 
-    <!-- 1.5. Екран вибору режиму -->
+    <!-- 1.5. Экран выбора режима -->
     <div id="screen-mode" class="screen">
         <h2>Оберіть режими завдань</h2>
         <div class="subject-menu">
             <button class="btn btn-cyan" onclick="selectMode('tests')">Тести</button>
             <button class="btn btn-green" onclick="selectMode('independent')">Самостійна</button>
             <button class="btn btn-yellow" onclick="selectMode('control')">Контрольна</button>
-            <button class="btn btn-online" onclick="selectMode('online')">Онлайн 🌐</button>
+            <button class="btn btn-dev" onclick="showToast('❌ Цей режим знаходиться у розробці!')">
+                Онлайн <span class="badge-dev">У розробці</span>
+            </button>
         </div>
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Назад</button>
         </div>
     </div>
 
-    <!-- 1.5.1 Онлайн підменю -->
-    <div id="screen-online-select" class="screen">
-        <h2>Онлайн Режим</h2>
-        <div class="subject-menu">
-            <button class="btn btn-online" onclick="startTeacherFlow()">Створити лоббі 👑</button>
-            <button class="btn btn-cyan" onclick="startStudentFlow()">Приєднатися до лоббі 🚪</button>
-        </div>
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-mode')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учитель 1: Введення ПІ -->
-    <div id="screen-teacher-name" class="screen">
-        <h2>Напишіть своє ім'я та прізвище</h2>
-        <div class="online-box" style="max-width: 500px;">
-            <input type="text" id="teacher-firstname" class="text-input" placeholder="Ім'я" oninput="validateTeacherName()">
-            <input type="text" id="teacher-lastname" class="text-input" placeholder="Прізвище" oninput="validateTeacherName()">
-            <button class="btn btn-green disabled" id="btn-teacher-name-next" onclick="submitTeacherName()">Далі ➔</button>
-        </div>
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-online-select')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учитель 2: Вибір варіанту створення тесту -->
-    <div id="screen-teacher-test-mode" class="screen">
-        <h2>Створення онлайн тесту</h2>
-        <div class="subject-menu" style="flex-direction: column; align-items: center;">
-            <button class="btn btn-default" style="width: 380px;" onclick="teacherSelectTestMode('manual')">Створити тест самому</button>
-            <button class="btn btn-default" style="width: 380px; border-color: var(--neon-purple);" onclick="teacherSelectTestMode('ai')">Сгенерувати тест з допомогою ШІ</button>
-        </div>
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-teacher-name')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учитель 2.5: Вибір кількості завдань для ШІ -->
-    <div id="screen-teacher-ai-count" class="screen">
-        <h2>Кількість завдань від ШІ</h2>
-        <div class="online-box" style="max-width: 550px; align-items: center; text-align: center;">
-            <p style="margin-bottom: 15px;">Оберіть рекомендовану кількість або введіть свою:</p>
-            <div class="grid-options" style="grid-template-columns: repeat(4, 1fr); width: 100%; gap: 10px;">
-                <button class="btn btn-default teacher-ai-btn" onclick="selectTeacherAiCount(6, this)">6</button>
-                <button class="btn btn-default teacher-ai-btn" onclick="selectTeacherAiCount(12, this)">12</button>
-                <button class="btn btn-default teacher-ai-btn" onclick="selectTeacherAiCount(24, this)">24</button>
-                <button class="btn btn-default teacher-ai-btn" onclick="selectTeacherAiCount(36, this)">36</button>
-            </div>
-            <div class="custom-input-area" style="width: 100%; margin-top: 15px;">
-                <input type="number" id="teacher-ai-custom-count" class="text-input" placeholder="Або введіть своє число (1-50)" min="1" max="50" oninput="handleTeacherAiCustomCount(this.value)">
-            </div>
-            <button class="btn btn-green disabled" id="btn-start-ai-gen" style="margin-top: 20px; width: 100%;" onclick="startTeacherAiGeneration()">Сгенерувати завдання ➔</button>
-        </div>
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-teacher-test-mode')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учитель 2.6: Екран завантаження ШІ -->
-    <div id="screen-teacher-ai-loading" class="screen">
-        <div class="ai-loading-box">
-            <h2 id="teacher-ai-status-text" style="margin: 0; color: var(--neon-cyan);">Зачекайте, ШІ генерує завдання...</h2>
-            <div class="hourglass-wrapper" style="margin: 10px auto;">
-                <svg class="hourglass-svg" viewBox="0 0 100 100">
-                    <path d="M 20 10 L 80 10 L 80 20 L 55 50 L 80 80 L 80 90 L 20 90 L 20 80 L 45 50 L 20 20 Z" fill="none" stroke="var(--neon-cyan)" stroke-width="4"/>
-                    <path d="M 25 20 L 75 20 L 50 50 Z" fill="rgba(0, 243, 255, 0.4)"/>
-                    <line x1="50" y1="50" x2="50" y2="80" stroke="var(--neon-cyan)" stroke-width="3" stroke-dasharray="4 4" class="sand-stream"/>
-                    <path d="M 30 85 L 70 85 L 50 70 Z" fill="rgba(0, 243, 255, 0.7)"/>
-                </svg>
-            </div>
-            <div class="progress-bar-container">
-                <div id="teacher-ai-progress-fill" class="progress-bar-fill"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Учитель 3: Налаштування завдань і часу -->
-    <div id="screen-teacher-settings" class="screen" style="justify-content: flex-start; padding-top: 30px;">
-        <h2>Перегляд та редагування завдань</h2>
-        
-        <div id="teacher-tasks-list" class="manual-container"></div>
-        
-        <button class="btn btn-default" id="btn-add-teacher-task" style="margin-bottom: 20px;" onclick="addTeacherTask()">+ Додати завдання</button>
-        
-        <div class="online-box" style="margin-bottom: 80px; align-items: center; text-align: center;">
-            <h3 style="margin: 0; color: var(--neon-cyan);">Вибір часу на тест:</h3>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(60, this)">1 хв</button>
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(300, this)">5 хв</button>
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(600, this)">10 хв</button>
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(900, this)">15 хв</button>
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(1200, this)">20 хв</button>
-                <button class="btn btn-default t-preset" onclick="setTeacherPresetTime(1800, this)">30 хв</button>
-            </div>
-
-            <p style="margin-top: 15px;">Точне налаштування: <span id="teacher-time-val" style="color: var(--neon-yellow); font-weight: bold;">05:00</span></p>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <button class="btn btn-default" style="padding: 5px 15px;" onclick="adjustTeacherTime(-10)">-10 сек</button>
-                <input type="range" id="teacher-time-slider" min="0" max="3600" step="10" value="300" oninput="handleTeacherTimeSlider(this.value)">
-                <button class="btn btn-default" style="padding: 5px 15px;" onclick="adjustTeacherTime(10)">+10 сек</button>
-            </div>
-
-            <button class="btn btn-yellow" id="btn-teacher-no-time" onclick="setTeacherNoTime()" style="margin-top: 10px;">Пройти тест без часу</button>
-        </div>
-
-        <button class="btn btn-green btn-fixed-action" onclick="finishTeacherSettings()">Далі ➔</button>
-
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-teacher-test-mode')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учитель 4: Лобі до початку тесту -->
-    <div id="screen-teacher-lobby" class="screen">
-        <h2>Лоббі Учителя</h2>
-        <div class="online-box" style="text-align: center; align-items: center;">
-            <div id="code-generation-box" style="font-size: 1.5rem; color: var(--neon-cyan);">
-                Зачекайте, код генерується... <span id="code-timer-num">3</span>
-            </div>
-            
-            <div id="code-ready-box" style="display: none; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
-                <div>Код для учнів:</div>
-                <div class="code-display" id="lobby-code-display">---- ---- ---- ----</div>
-                
-                <div style="width: 100%; text-align: left; margin-top: 10px;">
-                    <h3>Учасники (<span id="teacher-student-count">0</span>):</h3>
-                    <div class="students-list-box" id="teacher-students-waiting-list"></div>
-                </div>
-
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-default" style="font-size: 0.9rem;" onclick="addDemoStudent()">+ Додати демо-учня</button>
-                    <button class="btn btn-green disabled" id="btn-start-online-test" onclick="startOnlineTestByTeacher()">Почати тест 🚀</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Учитель 5: Панель моніторингу тесту під час проходження -->
-    <div id="screen-teacher-dashboard" class="screen" style="justify-content: flex-start; padding-top: 30px;">
-        <h2>Панель Учителя (Усі Учні)</h2>
-        <div class="online-box" style="max-width: 950px;">
-            <div id="teacher-live-students-container" style="display: flex; flex-direction: column; gap: 15px;"></div>
-        </div>
-    </div>
-
-    <!-- Учень 1: Введення коду та ПІ -->
-    <div id="screen-student-join" class="screen">
-        <h2>Приєднатися до лоббі</h2>
-        <div class="online-box" style="max-width: 500px;">
-            <input type="text" id="student-code-input" class="text-input" placeholder="Код лоббі (ББББ-ЦЦЦЦ...)" oninput="validateStudentJoin()">
-            <input type="text" id="student-firstname" class="text-input" placeholder="Ім'я" oninput="validateStudentJoin()">
-            <input type="text" id="student-lastname" class="text-input" placeholder="Прізвище" oninput="validateStudentJoin()">
-            <button class="btn btn-green disabled" id="btn-student-join-next" onclick="submitStudentJoin()">Далі ➔</button>
-        </div>
-        <div class="bottom-nav">
-            <button class="btn btn-default" onclick="switchScreen('screen-online-select')">↩ Назад</button>
-        </div>
-    </div>
-
-    <!-- Учень 2: Очікування у лобі -->
-    <div id="screen-student-waiting" class="screen">
-        <h2>Очікування початку тесту</h2>
-        <div class="online-box" style="text-align: center; align-items: center;">
-            <p>Учитель: <b id="waiting-teacher-name" style="color: var(--neon-cyan);">Очікування...</b></p>
-            <p>Учасників у лобі: <b id="waiting-students-count" style="color: var(--neon-green);">0</b></p>
-            
-            <h3 style="color: var(--neon-yellow); margin-top: 15px;">Зачекайте поки вчитель почне тест</h3>
-
-            <div class="hourglass-wrapper">
-                <svg class="hourglass-svg" viewBox="0 0 100 100">
-                    <path d="M 20 10 L 80 10 L 80 20 L 55 50 L 80 80 L 80 90 L 20 90 L 20 80 L 45 50 L 20 20 Z" fill="none" stroke="var(--neon-yellow)" stroke-width="4"/>
-                    <path d="M 25 20 L 75 20 L 50 50 Z" fill="rgba(255, 230, 0, 0.4)"/>
-                    <line x1="50" y1="50" x2="50" y2="80" stroke="var(--neon-yellow)" stroke-width="3" stroke-dasharray="4 4" class="sand-stream"/>
-                    <path d="M 30 85 L 70 85 L 50 70 Z" fill="rgba(255, 230, 0, 0.7)"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-
-    <!-- Учень 3: Проходження тесту -->
-    <div id="screen-student-quiz" class="screen">
-        <div class="quiz-container">
-            <div class="quiz-header">
-                <div id="student-quiz-progress">Завдання 1 / 10</div>
-                <div id="student-timer-display" style="display:none;">00:00</div>
-            </div>
-            <div id="student-question-text" class="question-text">Текст питання</div>
-            
-            <div class="options-grid" id="student-options-grid"></div>
-            
-            <div class="quiz-controls" style="justify-content: flex-end;">
-                <button class="btn btn-default disabled" id="btn-student-next" onclick="studentSubmitAnswer()">Далі ➔</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Учень 4: Результати -->
-    <div id="screen-student-results" class="screen">
-        <div class="quiz-container" style="max-width: 800px; text-align: center;">
-            <h2>Тест завершено!</h2>
-            <h1 id="student-final-grade" style="font-size: 3.5rem; margin: 15px 0; text-shadow: 0 0 20px var(--neon-green); color: var(--neon-green);">Оцінка: -</h1>
-            <p id="student-final-time" style="font-size: 1.3rem;">Час проходження: -</p>
-            <p id="student-final-stats" style="font-size: 1.3rem; margin-top: 10px; color: var(--neon-cyan);">-</p>
-            
-            <div style="margin-top: 40px;">
-                <button class="btn btn-default" onclick="switchScreen('screen-menu')">Вийти у меню ↩</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальне вікно редагування відповіді Учителем -->
-    <div class="modal-overlay" id="teacher-edit-modal">
-        <div class="modal-content">
-            <h2 id="edit-modal-student-name">Редагування відповідей</h2>
-            <div id="edit-modal-answers-list" style="max-height: 50vh; overflow-y: auto; text-align: left; margin: 20px 0;"></div>
-            <div style="display: flex; justify-content: center; gap: 15px;">
-                <button class="btn btn-green" onclick="closeTeacherEditModal()">Зберегти та закрити</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 1.6-6 Екрани тестування базові -->
+    <!-- 1.6. Экран выбора типа контрольной -->
     <div id="screen-control-type" class="screen">
         <h2>Оберіть які завдання будуть у контрольній</h2>
         <div class="subject-menu" style="flex-direction: column; align-items: center;">
@@ -822,16 +548,22 @@
         </div>
     </div>
 
+    <!-- 1.7. Экран ручного создания контрольной -->
     <div id="screen-control-manual" class="screen" style="justify-content: flex-start; padding-top: 40px;">
         <h2>Створення контрольної роботи</h2>
+        
         <div id="manual-tasks-list" class="manual-container"></div>
+        
         <button class="btn btn-default" id="btn-add-task" style="margin-bottom: 20px;" onclick="addManualTask()">+ Додати завдання</button>
+        
         <button class="btn btn-yellow btn-fixed-action disabled" id="btn-submit-control" onclick="submitControlWork()">Зробити контрольну ➔</button>
+
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-control-type')">↩ Назад</button>
         </div>
     </div>
 
+    <!-- 1.8. Экран генерации ШИ -->
     <div id="screen-control-ai-loading" class="screen">
         <div class="ai-loading-box">
             <h2 id="ai-status-text" style="margin: 0;">Зачекайте, завдання генеруються... (6)</h2>
@@ -841,6 +573,7 @@
         </div>
     </div>
 
+    <!-- 1.9. Экран просмотра контрольной -->
     <div id="screen-control-view" class="screen">
         <h2>Контрольна робота</h2>
         <div id="control-view-list" class="control-view-container"></div>
@@ -849,6 +582,7 @@
         </div>
     </div>
 
+    <!-- 2. Экран выбора темы -->
     <div id="screen-topics" class="screen">
         <h2>Оберіть вузьку тему (параграф)</h2>
         <div class="topics-container">
@@ -860,6 +594,7 @@
         </div>
     </div>
 
+    <!-- 3. Экран выбора количества заданий -->
     <div id="screen-count" class="screen">
         <h2>Виберіть кількість завдань</h2>
         <div class="grid-options" id="preset-counts">
@@ -880,9 +615,11 @@
         </div>
     </div>
 
+    <!-- 4. Экран выбора времени -->
     <div id="screen-time" class="screen">
         <h2 id="time-screen-title">Виберіть час тесту</h2>
         <div class="grid-options" id="preset-times"></div>
+        
         <div class="custom-input-area">
             <p id="time-input-label">Або напишіть свою кількість хвилин</p>
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -892,16 +629,19 @@
                     <span id="time-unit-label" style="font-size: 1.2rem; color: var(--neon-cyan);">хв</span>
                 </div>
             </div>
+            
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
                 <button class="btn btn-default disabled" id="btn-start-with-time" onclick="startQuizWithSelectedTime()">Запустити з цим часом</button>
                 <button class="btn btn-yellow" id="btn-no-time" onclick="startQuiz(0)">Грати без часу</button>
             </div>
         </div>
+        
         <div class="bottom-nav">
             <button class="btn btn-default" onclick="switchScreen('screen-count')">⮌ Назад</button>
         </div>
     </div>
 
+    <!-- 5. Экран тестирования -->
     <div id="screen-quiz" class="screen">
         <div class="quiz-container">
             <div class="quiz-header">
@@ -910,8 +650,10 @@
             </div>
             <div id="question-text" class="question-text">Текст питання</div>
             <div id="question-image" class="question-image" style="display:none;"></div>
+            
             <div class="options-grid" id="options-grid"></div>
             <div id="explanation" class="explanation"></div>
+            
             <div class="quiz-controls">
                 <button class="btn" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="showEndModal()">Завершити</button>
                 <button class="btn btn-default" onclick="skipQuestion()" id="btn-skip">Пропустити ➔</button>
@@ -920,11 +662,13 @@
         </div>
     </div>
 
+    <!-- 6. Экран результатов -->
     <div id="screen-results" class="screen">
         <div class="quiz-container" style="max-width: 1000px; text-align: center;">
             <h2>Результати тесту</h2>
             <h1 id="score-display" style="font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--neon-cyan); color: var(--neon-cyan);">Виконано: ? / ?</h1>
             <div id="results-list"></div>
+            
             <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
                 <button class="btn btn-default" onclick="switchScreen('screen-menu')">↩ Вийти в меню</button>
                 <button class="btn btn-default" onclick="switchScreen('screen-topics')">⮌ повернутися до тем</button>
@@ -950,6 +694,7 @@
     </div>
 
     <script>
+        // Общие базы тем
         const topicsDatabase = {
             algebra: [
                 { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
@@ -979,38 +724,51 @@
         function initBackgroundStickers() {
             const container = document.getElementById('bg-stickers');
             const icons = [
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none">x</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none">α</text></svg>`,
-                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5"><text x="0" y="14">E=mc²</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 13h3l3 7 4-15h8"/><text x="14" y="15" font-size="9" font-weight="800" fill="currentColor" stroke="none" font-family="sans-serif">x</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 20H4V4"/><path d="M12 20 A 8 8 0 0 0 4 12" stroke-dasharray="2 2"/><text x="10" y="14" font-size="9" font-weight="bold" fill="currentColor" stroke="none" font-family="sans-serif">α</text></svg>`,
+                `<svg viewBox="0 0 24 24" fill="currentColor" font-weight="900" font-size="6.5" font-family="sans-serif"><text x="0" y="14">E=mc²</text></svg>`,
                 `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>`
             ];
             const colors = ['var(--neon-cyan)', 'var(--neon-pink)', 'var(--neon-purple)', 'var(--neon-red)'];
-            for (let r = 0; r < 5; r++) {
-                for (let c = 0; c < 7; c++) {
+            const cols = 7; const rows = 5;
+            const cellWidthPct = 100 / cols; const cellHeightPct = 100 / rows;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
                     let el = document.createElement('div');
                     el.className = 'sticker';
                     el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
                     el.style.color = colors[Math.floor(Math.random() * colors.length)];
                     let scale = Math.random() * (1.15 - 0.75) + 0.75; 
-                    el.style.left = `${c * 14.2 + Math.random() * 10}vw`;
-                    el.style.top = `${r * 20 + Math.random() * 14}vh`;
+                    let randomX = Math.random() * (cellWidthPct * 0.7) + (cellWidthPct * 0.15);
+                    let randomY = Math.random() * (cellHeightPct * 0.7) + (cellHeightPct * 0.15);
+                    el.style.left = `${c * cellWidthPct + randomX}vw`;
+                    el.style.top = `${r * cellHeightPct + randomY}vh`;
                     el.style.transform = `scale(${scale}) rotate(${Math.random() * 40 - 20}deg)`;
                     container.appendChild(el);
                 }
             }
         }
 
-        window.addEventListener('DOMContentLoaded', initBackgroundStickers);
+        window.addEventListener('DOMContentLoaded', () => {
+            initBackgroundStickers();
+        });
 
         function showToast(msg, isSuccess = false) {
             const toast = document.getElementById('toast');
             toast.innerText = msg;
-            toast.className = 'toast-notification' + (isSuccess ? ' success show' : ' show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            if (isSuccess) {
+                toast.classList.add('success');
+            } else {
+                toast.classList.remove('success');
+            }
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        // Загальний стан
-        let currentSubject = 'algebra';
+        let currentSubject = '';
         let currentMode = 'tests';
         let currentTopic = null;
         let targetQuestionsCount = 0;
@@ -1024,20 +782,6 @@
         let results = [];
         let answeredCurrent = false;
         let manualTasks = [];
-        let teacherSelectedAiCountNum = 0;
-
-        // Стан Онлайн Режиму
-        let onlineLobby = {
-            code: '',
-            teacherName: '',
-            tasks: [],
-            timeLimitSec: 300, 
-            isStarted: false,
-            students: []
-        };
-        let currentStudentIndex = -1;
-        let selectedOptionIndex = null;
-        let studentTimerInterval;
 
         function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1053,590 +797,12 @@
             currentMode = mode;
             if (mode === 'control') {
                 switchScreen('screen-control-type');
-            } else if (mode === 'online') {
-                switchScreen('screen-online-select');
             } else {
                 document.getElementById('topic-search').value = '';
                 renderTopics();
                 switchScreen('screen-topics');
             }
         }
-
-        /* ------------------ ОНЛАЙН РЕЖИМ ------------------ */
-
-        function startTeacherFlow() {
-            document.getElementById('teacher-firstname').value = '';
-            document.getElementById('teacher-lastname').value = '';
-            validateTeacherName();
-            switchScreen('screen-teacher-name');
-        }
-
-        function validateTeacherName() {
-            const fn = document.getElementById('teacher-firstname').value.trim();
-            const ln = document.getElementById('teacher-lastname').value.trim();
-            const btn = document.getElementById('btn-teacher-name-next');
-            if (fn && ln) btn.classList.remove('disabled');
-            else btn.classList.add('disabled');
-        }
-
-        function submitTeacherName() {
-            const fn = document.getElementById('teacher-firstname').value.trim();
-            const ln = document.getElementById('teacher-lastname').value.trim();
-            onlineLobby.teacherName = `${fn} ${ln}`;
-            switchScreen('screen-teacher-test-mode');
-        }
-
-        function teacherSelectTestMode(type) {
-            onlineLobby.tasks = [];
-            if (type === 'manual') {
-                addTeacherTask();
-                renderTeacherTasksList();
-                switchScreen('screen-teacher-settings');
-            } else {
-                resetTeacherAiCountSelection();
-                switchScreen('screen-teacher-ai-count');
-            }
-        }
-
-        function resetTeacherAiCountSelection() {
-            teacherSelectedAiCountNum = 0;
-            document.querySelectorAll('.teacher-ai-btn').forEach(b => b.classList.remove('btn-count-active'));
-            document.getElementById('teacher-ai-custom-count').value = '';
-            document.getElementById('btn-start-ai-gen').classList.add('disabled');
-        }
-
-        function selectTeacherAiCount(num, btnElement) {
-            teacherSelectedAiCountNum = num;
-            document.getElementById('teacher-ai-custom-count').value = '';
-            document.querySelectorAll('.teacher-ai-btn').forEach(b => b.classList.remove('btn-count-active'));
-            btnElement.classList.add('btn-count-active');
-            document.getElementById('btn-start-ai-gen').classList.remove('disabled');
-        }
-
-        function handleTeacherAiCustomCount(val) {
-            document.querySelectorAll('.teacher-ai-btn').forEach(b => b.classList.remove('btn-count-active'));
-            let n = parseInt(val) || 0;
-            if (n > 0 && n <= 50) {
-                teacherSelectedAiCountNum = n;
-                document.getElementById('btn-start-ai-gen').classList.remove('disabled');
-            } else {
-                teacherSelectedAiCountNum = 0;
-                document.getElementById('btn-start-ai-gen').classList.add('disabled');
-            }
-        }
-
-        function startTeacherAiGeneration() {
-            if (teacherSelectedAiCountNum <= 0) return;
-            switchScreen('screen-teacher-ai-loading');
-            
-            const progressFill = document.getElementById('teacher-ai-progress-fill');
-            progressFill.style.width = '0%';
-            let progress = 0;
-
-            const interval = setInterval(() => {
-                progress += 20;
-                progressFill.style.width = `${progress}%`;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        onlineLobby.tasks = generateAiTasks(teacherSelectedAiCountNum);
-                        renderTeacherTasksList();
-                        switchScreen('screen-teacher-settings');
-                    }, 400);
-                }
-            }, 300);
-        }
-
-        function generateAiTasks(count) {
-            const templates = {
-                algebra: [
-                    { q: "Обчисліть значення виразу: 2⁴ + 5²", opts: ["41", "31", "21", "51"], ans: 0, p: 2 },
-                    { q: "Розв'яжіть рівняння: 3x - 9 = 0", opts: ["x = 3", "x = -3", "x = 9", "x = 0"], ans: 0, p: 1 },
-                    { q: "Знайдіть корені рівняння: x² - 5x + 6 = 0", opts: ["x = 2; 3", "x = -2; -3", "x = 1; 6", "x = 0"], ans: 0, p: 2 },
-                    { q: "Спростіть вираз: (a³ · a⁴) / a²", opts: ["a⁵", "a⁶", "a⁴", "a⁹"], ans: 0, p: 1 },
-                    { q: "Обчисліть: √144 + √25", opts: ["17", "13", "19", "15"], ans: 0, p: 1 },
-                    { q: "Знайдіть дискримінант рівняння: x² - 4x + 3 = 0", opts: ["D = 4", "D = 16", "D = 2", "D = 8"], ans: 0, p: 2 }
-                ],
-                geometry: [
-                    { q: "Обчисліть гіпотенузу трикутника з катетами 3 см і 4 см.", opts: ["5 см", "7 см", "6 см", "10 см"], ans: 0, p: 2 },
-                    { q: "Сума кутів трикутника дорівнює:", opts: ["180°", "360°", "90°", "270°"], ans: 0, p: 1 },
-                    { q: "Площа квадрата зі стороною 6 см дорівнює:", opts: ["36 см²", "24 см²", "12 см²", "18 см²"], ans: 0, p: 1 },
-                    { q: "Відрізок, що сполучає вершину трикутника з серединою протилежної сторони:", opts: ["Медіана", "Бісектриса", "Висота", "Середня лінія"], ans: 0, p: 2 }
-                ],
-                physics: [
-                    { q: "Вкажіть формулу сили тяжіння:", opts: ["F = mg", "F = ma", "P = UI", "E = mc²"], ans: 0, p: 1 },
-                    { q: "За скільки секунд світло доходить від Сонця до Землі?", opts: ["~500 сек", "~100 сек", "~60 сек", "~1000 сек"], ans: 0, p: 2 },
-                    { q: "Формула другого закону Ньютона:", opts: ["F = ma", "F = mg", "v = s / t", "E = mgh"], ans: 0, p: 1 },
-                    { q: "Одиниця вимірювання енергії та роботи в СІ:", opts: ["Джоуль (Дж)", "Ньютон (Н)", "Ват (Вт)", "Паскаль (Па)"], ans: 0, p: 1 }
-                ]
-            };
-
-            let pool = templates[currentSubject] || templates.algebra;
-            let result = [];
-            for (let i = 0; i < count; i++) {
-                let base = pool[i % pool.length];
-                result.push({
-                    text: `${i + 1}. ${base.q}`,
-                    points: base.p || 1,
-                    opts: [...base.opts],
-                    ans: base.ans
-                });
-            }
-            return result;
-        }
-
-        function addTeacherTask() {
-            onlineLobby.tasks.push({
-                text: '',
-                points: 1,
-                opts: ['Варіант A', 'Варіант B', 'Варіант C', 'Варіант D'],
-                ans: 0
-            });
-            renderTeacherTasksList();
-        }
-
-        function removeTeacherTask(idx) {
-            if (onlineLobby.tasks.length <= 1) return;
-            onlineLobby.tasks.splice(idx, 1);
-            renderTeacherTasksList();
-        }
-
-        function renderTeacherTasksList() {
-            const container = document.getElementById('teacher-tasks-list');
-            container.innerHTML = '';
-
-            onlineLobby.tasks.forEach((t, idx) => {
-                const card = document.createElement('div');
-                card.className = 'task-card';
-                card.innerHTML = `
-                    <div class="task-card-header">
-                        <span>Завдання ${idx + 1}</span>
-                        ${onlineLobby.tasks.length > 1 ? `<button style="background:none; border:none; color:var(--neon-red); cursor:pointer;" onclick="removeTeacherTask(${idx})">✖ Видалити</button>` : ''}
-                    </div>
-                    
-                    <label style="color:var(--neon-cyan); font-weight:bold; font-size:0.9rem;">Умова завдання:</label>
-                    <textarea class="task-textarea" placeholder="Умова завдання..." oninput="onlineLobby.tasks[${idx}].text = this.value">${t.text}</textarea>
-                    
-                    <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; margin-top:5px; margin-bottom:5px;">
-                        <label style="color:var(--neon-yellow); font-weight:bold;">Бал за правильну відповідь:</label>
-                        <input type="number" min="1" max="100" value="${t.points || 1}" style="width:80px; padding:6px 10px; background:rgba(0,0,0,0.5); border:1px solid var(--neon-yellow); color:#fff; border-radius:8px; font-weight:bold; text-align:center;" oninput="onlineLobby.tasks[${idx}].points = parseInt(this.value)||1">
-                    </div>
-
-                    <label style="color:var(--neon-pink); font-weight:bold; font-size:0.9rem; margin-top:5px;">Варіанти відповідей (позначте правильну):</label>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        ${t.opts.map((optText, optIdx) => `
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <input type="radio" name="correct-ans-${idx}" ${t.ans === optIdx ? 'checked' : ''} onchange="onlineLobby.tasks[${idx}].ans = ${optIdx}" style="accent-color:var(--neon-green); transform:scale(1.3); cursor:pointer;">
-                                <input type="text" class="text-input" style="padding:6px 12px; font-size:0.95rem;" value="${optText}" oninput="onlineLobby.tasks[${idx}].opts[${optIdx}] = this.value">
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function setTeacherPresetTime(sec, btn) {
-            document.querySelectorAll('.t-preset').forEach(b => b.classList.remove('btn-count-active'));
-            btn.classList.add('btn-count-active');
-            onlineLobby.timeLimitSec = sec;
-            document.getElementById('teacher-time-slider').value = sec;
-            updateTeacherTimeValUI(sec);
-        }
-
-        function handleTeacherTimeSlider(val) {
-            document.querySelectorAll('.t-preset').forEach(b => b.classList.remove('btn-count-active'));
-            let sec = parseInt(val);
-            onlineLobby.timeLimitSec = sec;
-            updateTeacherTimeValUI(sec);
-        }
-
-        function adjustTeacherTime(delta) {
-            let slider = document.getElementById('teacher-time-slider');
-            let newVal = Math.max(0, Math.min(3600, parseInt(slider.value) + delta));
-            slider.value = newVal;
-            handleTeacherTimeSlider(newVal);
-        }
-
-        function setTeacherNoTime() {
-            document.querySelectorAll('.t-preset').forEach(b => b.classList.remove('btn-count-active'));
-            onlineLobby.timeLimitSec = 0;
-            document.getElementById('teacher-time-val').innerText = "Без часу";
-        }
-
-        function updateTeacherTimeValUI(sec) {
-            if (sec === 0) {
-                document.getElementById('teacher-time-val').innerText = "Без часу";
-                return;
-            }
-            let m = Math.floor(sec / 60);
-            let s = sec % 60;
-            document.getElementById('teacher-time-val').innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
-        }
-
-        function finishTeacherSettings() {
-            for (let t of onlineLobby.tasks) {
-                if (!t.text.trim()) {
-                    showToast("❌ Заповніть усі умови завдань!");
-                    return;
-                }
-            }
-            startTeacherLobby();
-        }
-
-        function generateCode() {
-            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const digits = "0123456789";
-            const rL = () => letters[Math.floor(Math.random() * letters.length)];
-            const rD = () => digits[Math.floor(Math.random() * digits.length)];
-            return `${rL()}${rL()}${rL()}${rL()}-${rD()}${rD()}${rD()}${rD()}-${rL()}${rL()}${rD()}${rD()}-${rD()}${rD()}${rL()}${rL()}`;
-        }
-
-        function startTeacherLobby() {
-            switchScreen('screen-teacher-lobby');
-            document.getElementById('code-generation-box').style.display = 'block';
-            document.getElementById('code-ready-box').style.display = 'none';
-
-            let count = 3;
-            document.getElementById('code-timer-num').innerText = count;
-
-            let interval = setInterval(() => {
-                count--;
-                document.getElementById('code-timer-num').innerText = count;
-                if (count <= 0) {
-                    clearInterval(interval);
-                    onlineLobby.code = generateCode();
-                    document.getElementById('code-generation-box').style.display = 'none';
-                    document.getElementById('code-ready-box').style.display = 'flex';
-                    document.getElementById('lobby-code-display').innerText = onlineLobby.code;
-                    renderTeacherLobbyStudents();
-                }
-            }, 1000);
-        }
-
-        function addDemoStudent() {
-            const names = ["Іван Петренко", "Марія Коваленко", "Олексій Сидоренко", "Анна Мельник"];
-            const rName = names[Math.floor(Math.random() * names.length)] + " (" + Math.floor(Math.random()*100) + ")";
-            
-            let shuffledTasks = shuffle([...onlineLobby.tasks]);
-
-            onlineLobby.students.push({
-                id: Date.now() + Math.random(),
-                name: rName,
-                status: 'Проходить тест',
-                currentQ: 0,
-                tasks: shuffledTasks,
-                answers: new Array(shuffledTasks.length).fill(null),
-                timeTakenSec: 0,
-                timeRemainingSec: onlineLobby.timeLimitSec,
-                score: 0,
-                maxScore: onlineLobby.tasks.reduce((sum, t) => sum + (t.points || 1), 0)
-            });
-
-            renderTeacherLobbyStudents();
-            showToast("➕ Демо-учня додано!", true);
-        }
-
-        function renderTeacherLobbyStudents() {
-            const list = document.getElementById('teacher-students-waiting-list');
-            document.getElementById('teacher-student-count').innerText = onlineLobby.students.length;
-            list.innerHTML = '';
-
-            onlineLobby.students.forEach(st => {
-                let div = document.createElement('div');
-                div.className = 'student-row';
-                div.innerHTML = `<span>👤 ${st.name}</span> <span style="color:var(--neon-green)">Готовий</span>`;
-                list.appendChild(div);
-            });
-
-            const startBtn = document.getElementById('btn-start-online-test');
-            if (onlineLobby.students.length >= 1) startBtn.classList.remove('disabled');
-            else startBtn.classList.add('disabled');
-        }
-
-        function startOnlineTestByTeacher() {
-            onlineLobby.isStarted = true;
-            switchScreen('screen-teacher-dashboard');
-            startTeacherDashboardLoop();
-        }
-
-        function startTeacherDashboardLoop() {
-            setInterval(() => {
-                onlineLobby.students.forEach(st => {
-                    if (st.status === 'Проходить тест') {
-                        st.timeTakenSec++;
-                        if (onlineLobby.timeLimitSec > 0) {
-                            st.timeRemainingSec--;
-                            if (st.timeRemainingSec <= 0) {
-                                st.status = 'Закінчив тест';
-                                calculateStudentScore(st);
-                            }
-                        }
-                    }
-                });
-                renderTeacherDashboard();
-                updateStudentWaitingOrQuizState();
-            }, 1000);
-        }
-
-        function renderTeacherDashboard() {
-            if (!document.getElementById('screen-teacher-dashboard').classList.contains('active')) return;
-            const container = document.getElementById('teacher-live-students-container');
-            container.innerHTML = '';
-
-            onlineLobby.students.forEach((st, idx) => {
-                let div = document.createElement('div');
-                div.className = 'student-row';
-                div.style.flexDirection = 'column';
-                div.style.alignItems = 'stretch';
-                div.style.gap = '10px';
-
-                let timeStr = onlineLobby.timeLimitSec > 0 
-                    ? `Залишилось: ${Math.max(0, Math.floor(st.timeRemainingSec / 60))}:${('0'+(Math.max(0, st.timeRemainingSec % 60))).slice(-2)}`
-                    : `Пройшло: ${Math.floor(st.timeTakenSec / 60)}:${('0'+(st.timeTakenSec % 60)).slice(-2)}`;
-
-                let rightCount = 0;
-                let wrongCount = 0;
-                st.answers.forEach((ans, i) => {
-                    if (ans !== null) {
-                        if (ans === st.tasks[i].ans) rightCount++;
-                        else wrongCount++;
-                    }
-                });
-
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:1.2rem; font-weight:bold; cursor:pointer; color:var(--neon-cyan);" onclick="openTeacherEditModal(${idx})">👤 ${st.name} ✏️</span>
-                        <span style="color:${st.status === 'Закінчив тест' ? 'var(--neon-green)' : 'var(--neon-yellow)'}; font-weight:bold;">${st.status}</span>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:1rem; color:#ccc;">
-                        <span>Завдання: ${st.currentQ + 1} / ${st.tasks.length}</span>
-                        <span>Правильно: <b style="color:var(--neon-green)">${rightCount}</b> | Неправильно: <b style="color:var(--neon-red)">${wrongCount}</b></span>
-                        <span>⏱ ${timeStr}</span>
-                        <span>Оцінка/Бали: <b style="color:var(--neon-yellow)">${st.score} / ${st.maxScore}</b></span>
-                    </div>
-                    <div style="display:flex; justify-content:flex-end;">
-                        <button class="btn btn-default" style="padding:5px 12px; font-size:0.9rem; border-color:var(--neon-red); color:var(--neon-red);" onclick="kickStudent(${idx})">Кикнути ❌</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function kickStudent(idx) {
-            const kicked = onlineLobby.students.splice(idx, 1)[0];
-            if (kicked && currentStudentIndex === idx) {
-                switchScreen('screen-student-join');
-                showToast("❌ Вчитель виключив вас з лоббі");
-            } else {
-                showToast("Викинуто учня з тесту");
-            }
-        }
-
-        function calculateStudentScore(st) {
-            let total = 0;
-            st.answers.forEach((ans, i) => {
-                if (ans === st.tasks[i].ans) {
-                    total += (st.tasks[i].points || 1);
-                }
-            });
-            st.score = total;
-        }
-
-        function openTeacherEditModal(stIdx) {
-            const st = onlineLobby.students[stIdx];
-            document.getElementById('edit-modal-student-name').innerText = `Редагування: ${st.name}`;
-            const list = document.getElementById('edit-modal-answers-list');
-            list.innerHTML = '';
-
-            st.tasks.forEach((t, qIdx) => {
-                let userAns = st.answers[qIdx];
-                let isRight = userAns === t.ans;
-                let d = document.createElement('div');
-                d.style.cssText = "padding:10px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;";
-                d.innerHTML = `
-                    <div>
-                        <div><b>Завдання ${qIdx + 1}:</b> ${t.text}</div>
-                        <div style="font-size:0.9rem; color:#aaa;">Балів: ${t.points||1}</div>
-                    </div>
-                    <button class="btn" style="padding:6px 12px; font-size:0.9rem; border-color:${isRight ? 'var(--neon-green)':'var(--neon-red)'}; color:${isRight ? 'var(--neon-green)':'var(--neon-red)'}" onclick="toggleStudentAnswerRight(${stIdx}, ${qIdx})">
-                        ${isRight ? '✔ Правильно' : '✖ Неправильно'}
-                    </button>
-                `;
-                list.appendChild(d);
-            });
-
-            document.getElementById('teacher-edit-modal').style.display = 'flex';
-        }
-
-        function toggleStudentAnswerRight(stIdx, qIdx) {
-            const st = onlineLobby.students[stIdx];
-            if (st.answers[qIdx] === st.tasks[qIdx].ans) {
-                st.answers[qIdx] = -1;
-            } else {
-                st.answers[qIdx] = st.tasks[qIdx].ans;
-            }
-            calculateStudentScore(st);
-            openTeacherEditModal(stIdx);
-        }
-
-        function closeTeacherEditModal() {
-            document.getElementById('teacher-edit-modal').style.display = 'none';
-        }
-
-        /* ------------------ УЧЕНЬ ------------------ */
-
-        function startStudentFlow() {
-            document.getElementById('student-code-input').value = '';
-            document.getElementById('student-firstname').value = '';
-            document.getElementById('student-lastname').value = '';
-            validateStudentJoin();
-            switchScreen('screen-student-join');
-        }
-
-        function validateStudentJoin() {
-            const c = document.getElementById('student-code-input').value.trim();
-            const fn = document.getElementById('student-firstname').value.trim();
-            const ln = document.getElementById('student-lastname').value.trim();
-            const btn = document.getElementById('btn-student-join-next');
-            if (c && fn && ln) btn.classList.remove('disabled');
-            else btn.classList.add('disabled');
-        }
-
-        function submitStudentJoin() {
-            const code = document.getElementById('student-code-input').value.trim();
-            const fn = document.getElementById('student-firstname').value.trim();
-            const ln = document.getElementById('student-lastname').value.trim();
-
-            if (code !== onlineLobby.code && onlineLobby.code !== '') {
-                showToast("❌ Невірний код лоббі!");
-                return;
-            }
-
-            let shuffledTasks = shuffle([...onlineLobby.tasks]);
-
-            let newStudent = {
-                id: Date.now(),
-                name: `${fn} ${ln}`,
-                status: 'Проходить тест',
-                currentQ: 0,
-                tasks: shuffledTasks,
-                answers: new Array(shuffledTasks.length).fill(null),
-                timeTakenSec: 0,
-                timeRemainingSec: onlineLobby.timeLimitSec,
-                score: 0,
-                maxScore: onlineLobby.tasks.reduce((sum, t) => sum + (t.points || 1), 0)
-            };
-
-            onlineLobby.students.push(newStudent);
-            currentStudentIndex = onlineLobby.students.length - 1;
-
-            document.getElementById('waiting-teacher-name').innerText = onlineLobby.teacherName || "Вчитель";
-            document.getElementById('waiting-students-count').innerText = onlineLobby.students.length;
-
-            switchScreen('screen-student-waiting');
-        }
-
-        function updateStudentWaitingOrQuizState() {
-            if (currentStudentIndex < 0 || !onlineLobby.students[currentStudentIndex]) return;
-            const me = onlineLobby.students[currentStudentIndex];
-
-            if (document.getElementById('screen-student-waiting').classList.contains('active')) {
-                document.getElementById('waiting-students-count').innerText = onlineLobby.students.length;
-                if (onlineLobby.isStarted) {
-                    switchScreen('screen-student-quiz');
-                    loadStudentQuestion();
-                }
-            }
-
-            if (document.getElementById('screen-student-quiz').classList.contains('active')) {
-                const timerDisp = document.getElementById('student-timer-display');
-                if (onlineLobby.timeLimitSec > 0) {
-                    timerDisp.style.display = 'block';
-                    let rem = me.timeRemainingSec;
-                    let m = Math.max(0, Math.floor(rem / 60));
-                    let s = Math.max(0, rem % 60);
-                    timerDisp.innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
-                    if (rem <= 0) finishStudentQuiz();
-                } else {
-                    timerDisp.style.display = 'block';
-                    let el = me.timeTakenSec;
-                    let m = Math.floor(el / 60);
-                    let s = el % 60;
-                    timerDisp.innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
-                }
-            }
-        }
-
-        function loadStudentQuestion() {
-            const me = onlineLobby.students[currentStudentIndex];
-            if (!me) return;
-
-            let qData = me.tasks[me.currentQ];
-            selectedOptionIndex = null;
-
-            document.getElementById('student-quiz-progress').innerText = `Завдання ${me.currentQ + 1} / ${me.tasks.length}`;
-            document.getElementById('student-question-text').innerText = qData.text;
-
-            const grid = document.getElementById('student-options-grid');
-            grid.innerHTML = '';
-            document.getElementById('btn-student-next').classList.add('disabled');
-
-            qData.opts.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'btn option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => {
-                    selectedOptionIndex = idx;
-                    Array.from(grid.children).forEach(c => c.classList.remove('selected-yellow'));
-                    btn.classList.add('selected-yellow');
-                    document.getElementById('btn-student-next').classList.remove('disabled');
-                };
-                grid.appendChild(btn);
-            });
-        }
-
-        function studentSubmitAnswer() {
-            const me = onlineLobby.students[currentStudentIndex];
-            if (!me || selectedOptionIndex === null) return;
-
-            me.answers[me.currentQ] = selectedOptionIndex;
-            me.currentQ++;
-
-            if (me.currentQ >= me.tasks.length) {
-                finishStudentQuiz();
-            } else {
-                loadStudentQuestion();
-            }
-        }
-
-        function finishStudentQuiz() {
-            const me = onlineLobby.students[currentStudentIndex];
-            if (!me) return;
-
-            me.status = 'Закінчив тест';
-            calculateStudentScore(me);
-
-            let rightCount = 0;
-            let wrongCount = 0;
-            me.answers.forEach((ans, i) => {
-                if (ans === me.tasks[i].ans) rightCount++;
-                else wrongCount++;
-            });
-
-            document.getElementById('student-final-grade').innerText = `Бали: ${me.score} / ${me.maxScore}`;
-            
-            let timeText = onlineLobby.timeLimitSec > 0 
-                ? `Залишилось часу: ${Math.floor(me.timeRemainingSec / 60)} хв ${me.timeRemainingSec % 60} сек`
-                : `Час проходження: ${Math.floor(me.timeTakenSec / 60)} хв ${me.timeTakenSec % 60} сек`;
-
-            document.getElementById('student-final-time').innerText = timeText;
-            document.getElementById('student-final-stats').innerText = `Правильних: ${rightCount} | Неправильних: ${wrongCount}`;
-
-            switchScreen('screen-student-results');
-        }
-
-        /* ------------------ БАЗОВИЙ ФУНКЦІОНАЛ ------------------ */
 
         function startControlManual() {
             manualTasks = [];
@@ -1646,7 +812,7 @@
 
         function addManualTask() {
             if (manualTasks.length >= 100) {
-                showToast("❌ Перевищено ліміт завдань!");
+                showToast("❌ Більше завдань зробити не можна, перевищено ліміт!");
                 return;
             }
             manualTasks.push({ text: '', image: null });
@@ -1661,32 +827,101 @@
             validateControlForm();
         }
 
+        function handleTaskTextInput(index, val) {
+            manualTasks[index].text = val;
+            validateControlForm();
+        }
+
+        function handleTaskImageUpload(index, event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                manualTasks[index].image = e.target.result;
+                renderManualTasksList();
+                validateControlForm();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeTaskImage(index) {
+            manualTasks[index].image = null;
+            renderManualTasksList();
+            validateControlForm();
+        }
+
         function renderManualTasksList() {
             const container = document.getElementById('manual-tasks-list');
             container.innerHTML = '';
+
             manualTasks.forEach((task, idx) => {
                 const card = document.createElement('div');
                 card.className = 'task-card';
-                card.innerHTML = `
-                    <div class="task-card-header">
-                        <span>Завдання ${idx + 1}</span>
-                        ${manualTasks.length > 1 ? `<button style="background:none; border:none; color:var(--neon-red); cursor:pointer;" onclick="removeManualTask(${idx})">✖ Видалити</button>` : ''}
-                    </div>
-                    <textarea class="task-textarea" placeholder="Введіть умову завдання..." oninput="manualTasks[${idx}].text = this.value; validateControlForm();">${task.text}</textarea>
-                `;
+
+                const header = document.createElement('div');
+                header.className = 'task-card-header';
+                header.innerHTML = `<span>Завдання ${idx + 1}</span>`;
+                
+                if (manualTasks.length > 1) {
+                    const delBtn = document.createElement('button');
+                    delBtn.style.cssText = "background:none; border:none; color:var(--neon-red); cursor:pointer; font-size:1.1rem;";
+                    delBtn.innerText = "✖ Видалити";
+                    delBtn.onclick = () => removeManualTask(idx);
+                    header.appendChild(delBtn);
+                }
+                card.appendChild(header);
+
+                const textarea = document.createElement('textarea');
+                textarea.className = 'task-textarea';
+                textarea.placeholder = 'Введіть умову завдання...';
+                textarea.value = task.text;
+                textarea.oninput = (e) => handleTaskTextInput(idx, e.target.value);
+                card.appendChild(textarea);
+
+                const fileArea = document.createElement('div');
+                if (task.image) {
+                    fileArea.className = 'image-preview-wrapper';
+                    fileArea.innerHTML = `
+                        <img src="${task.image}" alt="Task Image">
+                        <button class="remove-img-btn" onclick="removeTaskImage(${idx})">×</button>
+                    `;
+                } else {
+                    const fileId = `file-input-${idx}`;
+                    fileArea.innerHTML = `
+                        <label for="${fileId}" class="file-upload-btn">📷 Додати фото</label>
+                        <input type="file" id="${fileId}" accept="image/*" style="display:none;" onchange="handleTaskImageUpload(${idx}, event)">
+                    `;
+                }
+                card.appendChild(fileArea);
+
                 container.appendChild(card);
             });
         }
 
         function validateControlForm() {
             const btn = document.getElementById('btn-submit-control');
-            let isValid = manualTasks.length > 0 && manualTasks.every(t => t.text.trim());
-            if (isValid) btn.classList.remove('disabled');
-            else btn.classList.add('disabled');
+            let isValid = manualTasks.length > 0;
+
+            for (let t of manualTasks) {
+                if (!t.text.trim() && !t.image) {
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if (isValid) {
+                btn.classList.remove('disabled');
+            } else {
+                btn.classList.add('disabled');
+            }
             return isValid;
         }
 
         function submitControlWork() {
+            if (!validateControlForm()) {
+                showToast("❌ Одне завдання написано без умови");
+                return;
+            }
             renderControlView(manualTasks);
             switchScreen('screen-control-view');
         }
@@ -1695,25 +930,36 @@
             switchScreen('screen-control-ai-loading');
             const statusText = document.getElementById('ai-status-text');
             const progressFill = document.getElementById('ai-progress-fill');
+            
+            progressFill.style.backgroundColor = 'var(--neon-cyan)';
             progressFill.style.width = '0%';
+            
             let timeLeft = 6;
+            statusText.innerText = `Зачекайте, завдання генеруються... (${timeLeft})`;
 
             const interval = setInterval(() => {
                 timeLeft--;
-                progressFill.style.width = `${((6 - timeLeft) / 6) * 100}%`;
+                let pct = ((6 - timeLeft) / 6) * 100;
+                progressFill.style.width = `${pct}%`;
+
                 if (timeLeft > 0) {
                     statusText.innerText = `Зачекайте, завдання генеруються... (${timeLeft})`;
                 } else {
                     clearInterval(interval);
                     statusText.innerText = "Завдання згенеровані!";
+                    progressFill.style.backgroundColor = 'var(--neon-green)';
+                    
                     setTimeout(() => {
-                        renderControlView([
-                            { text: "1. Знайдіть корені рівняння: x² - 5x + 6 = 0" },
-                            { text: "2. Обчисліть площу прямокутного трикутника з катетами 6 см і 8 см." },
-                            { text: "3. Спростіть вираз: (a³ · a⁴) / a²" }
-                        ]);
+                        let generatedTasks = [
+                            { text: "1. Знайдіть корені квадратного рівняння: x² - 5x + 6 = 0", image: null },
+                            { text: "2. Обчисліть площу прямокутного трикутника з катетами 6 см і 8 см.", image: null },
+                            { text: "3. Спростіть вираз: (a³ · a⁴) / a²", image: null },
+                            { text: "4. Автомобіль подолав 120 км за 2 години. Знайдіть його середню швидкість.", image: null },
+                            { text: "5. Запишіть формулу для обчислення кінетичної енергії тіла.", image: null }
+                        ];
+                        renderControlView(generatedTasks);
                         switchScreen('screen-control-view');
-                    }, 1000);
+                    }, 3000);
                 }
             }, 1000);
         }
@@ -1721,22 +967,45 @@
         function renderControlView(tasks) {
             const container = document.getElementById('control-view-list');
             container.innerHTML = '';
+
             tasks.forEach((t, i) => {
                 const item = document.createElement('div');
                 item.className = 'control-view-item';
-                item.innerHTML = `<h3>Завдання ${i + 1}</h3><p>${t.text}</p>`;
+
+                let imgHtml = t.image ? `<img src="${t.image}" alt="Завдання ${i+1}">` : '';
+                let textHtml = t.text ? `<p>${t.text}</p>` : '';
+
+                item.innerHTML = `
+                    <h3>Завдання ${i + 1}</h3>
+                    ${textHtml}
+                    ${imgHtml}
+                `;
                 container.appendChild(item);
             });
         }
 
-        function exitControlToMenu() { switchScreen('screen-menu'); }
+        function exitControlToMenu() {
+            manualTasks = [];
+            switchScreen('screen-menu');
+        }
 
         function renderTopics() {
             const listDiv = document.getElementById('topics-list');
             listDiv.innerHTML = '';
             const query = document.getElementById('topic-search').value.toLowerCase().trim();
+            
             let rawTopics = topicsDatabase[currentSubject] || [];
-            const filtered = rawTopics.filter(t => t.title.toLowerCase().includes(query));
+            
+            const sortedTopics = [...rawTopics].sort((a, b) => 
+                a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' })
+            );
+
+            const filtered = sortedTopics.filter(t => t.title.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                listDiv.innerHTML = '<div style="padding:10px; color:#aaa; text-align:center;">Теми не знайдено</div>';
+                return;
+            }
 
             filtered.forEach(topic => {
                 const item = document.createElement('div');
@@ -1748,85 +1017,203 @@
         }
 
         function filterTopics() { renderTopics(); }
-        function selectTopic(topic) { currentTopic = topic; resetCountSelection(); switchScreen('screen-count'); }
+
+        function selectTopic(topic) {
+            currentTopic = topic;
+            resetCountSelection();
+            switchScreen('screen-count');
+        }
 
         function resetCountSelection() {
             selectedPresetCount = null;
             targetQuestionsCount = 0;
-            document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('disabled', 'btn-count-active'));
-            document.getElementById('custom-count').value = 0;
+
+            const presetBtns = document.querySelectorAll('.count-btn');
+            presetBtns.forEach(btn => btn.classList.remove('disabled', 'btn-count-active'));
+
+            const customCountInput = document.getElementById('custom-count');
+            customCountInput.disabled = false;
+            customCountInput.classList.remove('disabled');
+            customCountInput.value = 0;
             document.getElementById('slider-val').innerText = '0';
+
             document.getElementById('btn-count-next').classList.add('disabled');
         }
 
         function togglePresetCount(num, btnElement) {
+            const btnNext = document.getElementById('btn-count-next');
+            const customCountInput = document.getElementById('custom-count');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
             if (selectedPresetCount === num) {
                 selectedPresetCount = null;
                 targetQuestionsCount = 0;
                 btnElement.classList.remove('btn-count-active');
-                document.getElementById('btn-count-next').classList.add('disabled');
+
+                customCountInput.disabled = false;
+                customCountInput.classList.remove('disabled');
+                btnNext.classList.add('disabled');
             } else {
                 selectedPresetCount = num;
                 targetQuestionsCount = num;
-                document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('btn-count-active'));
+
+                presetBtns.forEach(b => b.classList.remove('btn-count-active'));
                 btnElement.classList.add('btn-count-active');
-                document.getElementById('btn-count-next').classList.remove('disabled');
+
+                customCountInput.value = 0;
+                document.getElementById('slider-val').innerText = '0';
+                customCountInput.disabled = true;
+                customCountInput.classList.add('disabled');
+
+                btnNext.classList.remove('disabled');
             }
         }
 
         function handleSliderInput(val) {
-            let numVal = parseInt(val);
+            const numVal = parseInt(val);
             document.getElementById('slider-val').innerText = numVal;
+
+            const btnNext = document.getElementById('btn-count-next');
+            const presetBtns = document.querySelectorAll('.count-btn');
+
             if (numVal > 0) {
+                selectedPresetCount = null;
                 targetQuestionsCount = numVal;
-                document.getElementById('btn-count-next').classList.remove('disabled');
+
+                presetBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+                btnNext.classList.remove('disabled');
             } else {
-                document.getElementById('btn-count-next').classList.add('disabled');
+                targetQuestionsCount = 0;
+                presetBtns.forEach(b => b.classList.remove('disabled'));
+                btnNext.classList.add('disabled');
             }
         }
 
         function goToTimeSelection() {
+            if (targetQuestionsCount <= 0) return;
             renderTimeScreen();
             switchScreen('screen-time');
         }
 
         function renderTimeScreen() {
             resetTimeSelection();
+            const title = document.getElementById('time-screen-title');
             const presetsContainer = document.getElementById('preset-times');
-            presetsContainer.innerHTML = `
-                <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
-                <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
-                <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
-                <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
-            `;
+            const noTimeBtn = document.getElementById('btn-no-time');
+            const inputLabel = document.getElementById('time-input-label');
+            const unitLabel = document.getElementById('time-unit-label');
+            const minInp = document.getElementById('custom-min');
+
+            if (currentMode === 'tests') {
+                title.innerText = "Виберіть час тесту";
+                inputLabel.innerText = "Або напишіть свою кількість хвилин";
+                unitLabel.innerText = "хв";
+                minInp.max = "180";
+                noTimeBtn.style.display = "inline-block";
+                presetsContainer.innerHTML = `
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">00:30</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">01:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(300, this)">05:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(600, this)">10:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(900, this)">15:00</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(1200, this)">20:00</button>
+                `;
+            } else {
+                title.innerText = "Виберіть час на кожне завдання";
+                inputLabel.innerText = "Або напишіть свою кількість секунд";
+                unitLabel.innerText = "сек";
+                minInp.max = "300";
+                noTimeBtn.style.display = "none";
+                presetsContainer.innerHTML = `
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(10, this)">10 сек</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(30, this)">30 сек</button>
+                    <button class="btn btn-default time-btn" onclick="togglePresetTime(60, this)">1 хв</button>
+                `;
+            }
         }
 
         function resetTimeSelection() {
             selectedPresetTimeSec = null;
             selectedTime = 0;
-            document.getElementById('custom-min').value = '';
+
+            const timeBtns = document.querySelectorAll('.time-btn');
+            timeBtns.forEach(b => b.classList.remove('disabled', 'btn-count-active'));
+
+            const minInp = document.getElementById('custom-min');
+            minInp.value = '';
+            minInp.disabled = false;
+
+            document.getElementById('btn-reset-time').style.display = 'none';
             document.getElementById('btn-start-with-time').classList.add('disabled');
         }
 
         function togglePresetTime(sec, btnElement) {
-            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('btn-count-active'));
-            btnElement.classList.add('btn-count-active');
-            selectedTime = sec;
-            document.getElementById('btn-start-with-time').classList.remove('disabled');
+            const btnStart = document.getElementById('btn-start-with-time');
+            const minInp = document.getElementById('custom-min');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
+
+            if (selectedPresetTimeSec === sec) {
+                selectedPresetTimeSec = null;
+                selectedTime = 0;
+                btnElement.classList.remove('btn-count-active');
+
+                minInp.disabled = false;
+                btnStart.classList.add('disabled');
+            } else {
+                selectedPresetTimeSec = sec;
+                selectedTime = sec;
+
+                minInp.value = '';
+                resetBtn.style.display = 'none';
+
+                minInp.disabled = true;
+
+                timeBtns.forEach(b => b.classList.remove('btn-count-active'));
+                btnElement.classList.add('btn-count-active');
+
+                btnStart.classList.remove('disabled');
+            }
         }
 
         function handleManualTimeInput() {
-            let val = parseFloat(document.getElementById('custom-min').value) || 0;
-            if (val > 0) {
-                selectedTime = Math.round(val * 60);
-                document.getElementById('btn-start-with-time').classList.remove('disabled');
+            const minInp = document.getElementById('custom-min');
+            const resetBtn = document.getElementById('btn-reset-time');
+            const btnStart = document.getElementById('btn-start-with-time');
+            const timeBtns = document.querySelectorAll('.time-btn');
+
+            let valStr = minInp.value.trim();
+            let val = parseFloat(valStr) || 0;
+            let totalSec = (currentMode === 'tests') ? Math.round(val * 60) : Math.round(val);
+
+            if (valStr !== '' && totalSec > 0) {
+                resetBtn.style.display = 'inline-flex';
+                btnStart.classList.remove('disabled');
+                selectedTime = totalSec;
+
+                timeBtns.forEach(b => {
+                    b.classList.remove('btn-count-active');
+                    b.classList.add('disabled');
+                });
+            } else if (valStr !== '') {
+                timeBtns.forEach(b => b.classList.add('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
             } else {
-                document.getElementById('btn-start-with-time').classList.add('disabled');
+                timeBtns.forEach(b => b.classList.remove('disabled'));
+                btnStart.classList.add('disabled');
+                resetBtn.style.display = 'none';
             }
         }
 
         function resetManualTime() { resetTimeSelection(); }
-        function startQuizWithSelectedTime() { if (selectedTime > 0) startQuiz(selectedTime); }
+
+        function startQuizWithSelectedTime() {
+            if (selectedTime > 0) startQuiz(selectedTime);
+        }
 
         function shuffle(arr) {
             let res = [...arr];
@@ -1837,34 +1224,114 @@
             return res;
         }
 
+        function createQuestionForSubject(subject, topicId) {
+            if (subject === 'algebra') return createAlgebraQuestion(topicId);
+            if (subject === 'geometry') return createGeometryQuestion(topicId);
+            return createPhysicsQuestion(topicId);
+        }
+
+        function createAlgebraQuestion(topicId) {
+            if (topicId === "alg_ineq_1") {
+                let diff = Math.floor(Math.random() * 10) - 5;
+                if (diff === 0) diff = -2;
+                let isLess = diff < 0;
+                let signText = isLess ? "від'ємне" : "додатне";
+                let correctOpt = isLess ? "a < b" : "a > b";
+                let opts = shuffle([correctOpt, isLess ? "a > b" : "a < b", "a = b", "a ≥ b"]);
+                return {
+                    q: `Відомо, що різниця a - b дорівнює ${diff} (${signText} число). Порівняйте числа a і b:`,
+                    opts: opts, ans: opts.indexOf(correctOpt),
+                    exp: `Якщо різниця a - b ${signText}, то ${correctOpt}.`
+                };
+            }
+            let a = Math.floor(Math.random() * 4) + 2;
+            let xVal = Math.floor(Math.random() * 6) + 1;
+            let b = Math.floor(Math.random() * 8) + 1;
+            let c = a * xVal + b;
+            let correctOpt = `x > ${xVal}`;
+            let opts = shuffle([correctOpt, `x < ${xVal}`, `x > ${xVal + b}`, `x < ${xVal + a}`]);
+            return {
+                q: `Розв'яжіть нерівність: ${a}x + ${b} > ${c}`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `${a}x > ${c} - ${b} ➔ ${a}x > ${c - b} ➔ x > ${xVal}.`
+            };
+        }
+
+        function createGeometryQuestion(topicId) {
+            let n = [4, 5, 6, 8][Math.floor(Math.random() * 4)];
+            let sum = (n - 2) * 180;
+            let correctOpt = `${sum}°`;
+            let opts = shuffle([correctOpt, `${sum - 180}°`, `${sum + 180}°`, `${n * 180}°`]);
+            return {
+                q: `Сума кутів опуклого ${n}-кутника дорівнює:`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `S = (n - 2) · 180° = (${n} - 2) · 180° = ${sum}°.`
+            };
+        }
+
+        function createPhysicsQuestion(topicId) {
+            let m = (Math.floor(Math.random() * 5) + 1) * 2;
+            let v = (Math.floor(Math.random() * 5) + 1) * 5;
+            let p = m * v;
+            let correctOpt = `${p} кг·м/с`;
+            let opts = shuffle([correctOpt, `${m + v} кг·м/с`, `${p * 2} кг·м/с`, `${Math.round(p / 2)} кг·м/с`]);
+            return {
+                q: `Знайдіть імпульс тіла масою ${m} кг, яке рухається зі швидкістю ${v} м/с:`,
+                opts: opts, ans: opts.indexOf(correctOpt),
+                exp: `p = m · v = ${m} · ${v} = ${p} кг·м/с.`
+            };
+        }
+
+        function generateUniqueQuizQuestions(subject, topicId, count) {
+            let list = [];
+            for(let i=0; i<count; i++) {
+                list.push(createQuestionForSubject(subject, topicId));
+            }
+            return list;
+        }
+
         function startQuiz(timeSec) {
             selectedTime = timeSec;
-            currentQuestions = [
-                { q: "Обчисліть: 2³ + 3²", opts: ["17", "12", "15", "20"], ans: 0, exp: "8 + 9 = 17" },
-                { q: "Знайдіть x: 2x = 10", opts: ["5", "2", "10", "4"], ans: 0, exp: "10 / 2 = 5" },
-                { q: "Площа квадрата зі стороною 4 см:", opts: ["16 см²", "8 см²", "12 см²", "20 см²"], ans: 0, exp: "4 * 4 = 16" }
-            ];
+            currentQuestions = generateUniqueQuizQuestions(currentSubject, currentTopic ? currentTopic.id : null, targetQuestionsCount);
             currentIndex = 0;
             results = [];
+            
             switchScreen('screen-quiz');
-            setupTimer();
+            if (currentMode === 'tests') setupTimer();
             loadQuestion();
         }
 
         function setupTimer() {
             const timeDisp = document.getElementById('timer-display');
             clearInterval(timerInterval);
-            if (selectedTime > 0) {
+            timeDisp.classList.remove('timer-danger');
+
+            if (currentMode === 'tests' && selectedTime === 0) {
                 timeDisp.style.display = 'block';
+                elapsedTime = 0;
+                updateTimerUI(elapsedTime);
+                timerInterval = setInterval(() => {
+                    elapsedTime++;
+                    updateTimerUI(elapsedTime);
+                }, 1000);
+            } else if (selectedTime > 0) {
+                timeDisp.style.display = 'block';
+                updateTimerUI(selectedTime);
                 let timeLeft = selectedTime;
+                
                 timerInterval = setInterval(() => {
                     timeLeft--;
-                    let m = Math.floor(timeLeft / 60);
-                    let s = timeLeft % 60;
-                    timeDisp.innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
-                    if (timeLeft <= 0) {
+                    updateTimerUI(timeLeft);
+                    if(timeLeft <= 5) timeDisp.classList.add('timer-danger');
+                    if(timeLeft <= 0) {
                         clearInterval(timerInterval);
-                        finishQuiz(true, 'timeout');
+                        if (currentMode === 'tests') showTimerEnd();
+                        else {
+                            if (!answeredCurrent) {
+                                results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'timeout' });
+                                goToNextOrEnd();
+                            }
+                        }
                     }
                 }, 1000);
             } else {
@@ -1872,17 +1339,37 @@
             }
         }
 
+        function updateTimerUI(sec) {
+            let m = Math.floor(sec / 60);
+            let s = sec % 60;
+            document.getElementById('timer-display').innerText = (m < 10 ? '0'+m : m) + ':' + (s < 10 ? '0'+s : s);
+        }
+
         function loadQuestion() {
             answeredCurrent = false;
             let qData = currentQuestions[currentIndex];
-            document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${currentQuestions.length}`;
+            if (currentMode === 'independent') setupTimer();
+
+            document.getElementById('quiz-progress').innerText = `Завдання ${currentIndex + 1} / ${targetQuestionsCount}`;
             document.getElementById('question-text').innerText = qData.q;
+            
+            let qImgContainer = document.getElementById('question-image');
+            if(qData.img) {
+                qImgContainer.innerHTML = qData.img;
+                qImgContainer.style.display = 'block';
+                qImgContainer.style.color = 'var(--neon-cyan)';
+            } else {
+                qImgContainer.innerHTML = '';
+                qImgContainer.style.display = 'none';
+            }
+
             document.getElementById('explanation').style.display = 'none';
             document.getElementById('btn-skip').style.display = 'inline-block';
             document.getElementById('btn-next').style.display = 'none';
 
             let optsGrid = document.getElementById('options-grid');
             optsGrid.innerHTML = '';
+
             qData.opts.forEach((optText, index) => {
                 let btn = document.createElement('button');
                 btn.className = 'btn option-btn';
@@ -1895,7 +1382,12 @@
         function checkAnswer(selectedIndex, btnElement, qData) {
             if(answeredCurrent) return;
             answeredCurrent = true;
+
+            if (currentMode === 'independent') clearInterval(timerInterval);
+
             let allBtns = document.getElementById('options-grid').children;
+            for(let b of allBtns) b.style.pointerEvents = 'none';
+
             let isCorrect = (selectedIndex === qData.ans);
             results.push({ q: qData.q, exp: qData.exp, status: isCorrect ? 'correct' : 'wrong' });
 
@@ -1904,14 +1396,19 @@
             } else {
                 btnElement.classList.add('wrong');
                 allBtns[qData.ans].classList.add('correct');
-                document.getElementById('explanation').innerText = "Пояснення: " + qData.exp;
-                document.getElementById('explanation').style.display = 'block';
+                
+                let expDiv = document.getElementById('explanation');
+                expDiv.innerText = "Пояснення: " + qData.exp;
+                expDiv.style.display = 'block';
             }
+
             document.getElementById('btn-skip').style.display = 'none';
             document.getElementById('btn-next').style.display = 'inline-block';
         }
 
         function skipQuestion() {
+            if(answeredCurrent) return;
+            if (currentMode === 'independent') clearInterval(timerInterval);
             results.push({ q: currentQuestions[currentIndex].q, exp: currentQuestions[currentIndex].exp, status: 'skipped' });
             goToNextOrEnd();
         }
@@ -1920,19 +1417,78 @@
 
         function goToNextOrEnd() {
             currentIndex++;
-            if(currentIndex >= currentQuestions.length) finishQuiz();
+            if(currentIndex >= targetQuestionsCount) finishQuiz();
             else loadQuestion();
         }
 
         function showEndModal() { document.getElementById('end-modal').style.display = 'flex'; }
         function closeEndModal() { document.getElementById('end-modal').style.display = 'none'; }
-        function forceEndQuiz() { closeEndModal(); finishQuiz(true); }
+        function forceEndQuiz() { closeEndModal(); finishQuiz(true, 'manual'); }
 
-        function finishQuiz(endedEarly = false) {
+        function showTimerEnd() {
+            document.getElementById('timer-modal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('timer-modal').style.display = 'none';
+                finishQuiz(true, 'timeout');
+            }, 3000);
+        }
+
+        function finishQuiz(endedEarly = false, reason = 'manual') {
             clearInterval(timerInterval);
-            let correctCount = results.filter(r => r.status === 'correct').length;
-            document.getElementById('score-display').innerText = `Виконано: ${correctCount} / ${currentQuestions.length}`;
+            if(endedEarly) {
+                let startIndex = answeredCurrent ? currentIndex + 1 : currentIndex;
+                const statusType = (reason === 'timeout') ? 'timeout' : 'unanswered';
+                for(let i = startIndex; i < currentQuestions.length; i++) {
+                    results.push({ q: currentQuestions[i].q, exp: currentQuestions[i].exp, status: statusType });
+                }
+            }
+            buildResultsScreen();
             switchScreen('screen-results');
+        }
+
+        function buildResultsScreen() {
+            let correctCount = results.filter(r => r.status === 'correct').length;
+            document.getElementById('score-display').innerText = `Виконано: ${correctCount} / ${targetQuestionsCount}`;
+
+            let listDiv = document.getElementById('results-list');
+            listDiv.innerHTML = '';
+
+            results.forEach((res, i) => {
+                let div = document.createElement('div');
+                div.className = 'res-item';
+                
+                let statusText = '';
+                let statusClass = '';
+                
+                if (res.status === 'correct') {
+                    statusText = '✔ Правильно';
+                    statusClass = 'res-status-correct';
+                } else if (res.status === 'wrong') {
+                    statusText = '✖ Неправильно';
+                    statusClass = 'res-status-wrong';
+                } else if (res.status === 'skipped') {
+                    statusText = '⏭ Пропущено';
+                    statusClass = 'res-status-skipped';
+                } else if (res.status === 'timeout') {
+                    statusText = '⏰ Час вичерпано';
+                    statusClass = 'res-status-unanswered';
+                } else {
+                    statusText = '⏸ Без відповіді (достроково завершено)';
+                    statusClass = 'res-status-unanswered';
+                }
+
+                let explanationHtml = '';
+                if (res.status !== 'correct') {
+                    explanationHtml = `<div style="margin-top: 10px; font-size: 1.1rem; color: #bbb;"><b>Пояснення:</b> ${res.exp}</div>`;
+                }
+
+                div.innerHTML = `
+                    <div style="font-size: 1.3rem; margin-bottom: 10px;"><b>${i + 1}.</b> ${res.q}</div>
+                    <div class="${statusClass}">${statusText}</div>
+                    ${explanationHtml}
+                `;
+                listDiv.appendChild(div);
+            });
         }
     </script>
 </body>
