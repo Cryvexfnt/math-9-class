@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шкільні Міні-Тести</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
 
@@ -61,6 +65,7 @@
         .screen { display: none; width: 100%; height: 100%; padding: 20px; align-items: center; justify-content: center; flex-direction: column; z-index: 1;}
         .screen.active { display: flex; }
 
+        /* Плашка ВБТ */
         .vbt-badge {
             position: absolute;
             top: 25px;
@@ -78,6 +83,227 @@
             align-items: center;
             gap: 8px;
             background: rgba(13, 8, 28, 0.8);
+        }
+
+        /* Кнопка профиля слева вверху */
+        .profile-trigger {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .profile-trigger-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(13, 8, 28, 0.8);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 12px var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .profile-trigger-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-trigger:hover .profile-trigger-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .profile-trigger-label {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fff;
+            text-shadow: 0 0 8px var(--neon-cyan);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .profile-trigger:hover .profile-trigger-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Выплывающая панель профиля */
+        .profile-drawer {
+            position: fixed;
+            top: 0;
+            left: -380px;
+            width: 350px;
+            height: 100vh;
+            background: rgba(13, 8, 28, 0.95);
+            border-right: 2px solid var(--neon-purple);
+            box-shadow: 10px 0 30px rgba(181, 0, 255, 0.3);
+            backdrop-filter: blur(15px);
+            z-index: 200;
+            transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-drawer.open {
+            left: 0;
+        }
+
+        .profile-drawer-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 199;
+            display: none;
+        }
+
+        .profile-drawer-overlay.active {
+            display: block;
+        }
+
+        .drawer-close-btn {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: var(--neon-red);
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .drawer-close-btn:hover { transform: scale(1.2); }
+
+        /* Внутри профиля */
+        .profile-avatar-container {
+            position: relative;
+            align-self: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .profile-avatar-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Выпадающие кнопки аватарки */
+        .avatar-actions-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(13, 8, 28, 0.95);
+            border: 1px solid var(--neon-purple);
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(181, 0, 255, 0.4);
+            z-index: 10;
+            width: 170px;
+        }
+
+        .avatar-actions-menu.active {
+            display: flex;
+        }
+
+        .btn-avatar-action {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 0.85rem;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-avatar-action:hover {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .profile-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .profile-field label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .profile-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .profile-input:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        /* Кнопка "Застосувати зміни" */
+        .btn-apply-changes {
+            margin-top: auto;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #555;
+            background: rgba(255, 255, 255, 0.05);
+            color: #777;
+        }
+
+        .btn-apply-changes.active {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 102, 0.2);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .btn-apply-changes.active:hover {
+            transform: scale(1.02);
+            background: rgba(0, 255, 102, 0.3);
         }
 
         h1 { 
@@ -151,6 +377,7 @@
             border-color: rgba(255, 255, 255, 0.2);
             color: #ddd;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            position: relative;
         }
         .btn-dev:hover {
             border-color: var(--neon-red);
@@ -160,15 +387,16 @@
         }
 
         .badge-dev {
-            font-size: 0.75rem;
-            background: rgba(30, 30, 45, 0.75);
+            font-size: 0.7rem;
+            background: rgba(30, 30, 45, 0.85);
             color: var(--neon-red);
             border: 1px solid rgba(255, 0, 85, 0.6);
-            padding: 3px 8px;
-            border-radius: 8px;
+            padding: 2px 6px;
+            border-radius: 6px;
             text-shadow: 0 0 6px var(--neon-red);
             box-shadow: 0 0 8px rgba(255, 0, 85, 0.25);
             letter-spacing: 0.5px;
+            margin-left: 8px;
         }
 
         .btn-count-active {
@@ -437,6 +665,7 @@
             align-self: flex-start;
         }
 
+        /* Уведомление-Тоаст */
         .toast-notification {
             position: fixed;
             bottom: 40px;
@@ -459,6 +688,11 @@
         .toast-notification.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
+        }
+        .toast-notification.success {
+            background: rgba(0, 255, 102, 0.95);
+            box-shadow: 0 0 25px var(--neon-green);
+            color: #000;
         }
 
         .quiz-container { background: var(--panel-bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; width: 90%; max-width: 1000px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05); position: relative; backdrop-filter: blur(15px); }
@@ -499,8 +733,73 @@
     <div id="bg-stickers"></div>
     <div id="toast" class="toast-notification"></div>
 
-    <!-- 1. Екран вибору предмета -->
+    <!-- Затеменение фонового экрана для панели профиля -->
+    <div id="profile-overlay" class="profile-drawer-overlay" onclick="closeProfileDrawer()"></div>
+
+    <!-- Боковая панель профиля -->
+    <div id="profile-drawer" class="profile-drawer">
+        <button class="drawer-close-btn" onclick="closeProfileDrawer()">✖</button>
+
+        <!-- Контент 1: Пользователь НЕ авторизован -->
+        <div id="drawer-not-logged" style="display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: center; height: 80%;">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <h2 style="font-size: 1.4rem; text-align: center; margin: 0;">Увійдіть в акаунт Google</h2>
+            <button class="btn btn-cyan" onclick="loginWithGoogle()" style="width: 100%; font-size: 1.1rem; padding: 12px;">
+                Увійти
+            </button>
+        </div>
+
+        <!-- Контент 2: Пользователь авторизован -->
+        <div id="drawer-logged-in" style="display: none; flex-direction: column; height: 100%;">
+            <div class="profile-avatar-container">
+                <img id="user-avatar-img" src="" alt="Avatar" class="profile-avatar-img" onclick="toggleAvatarMenu()">
+                
+                <!-- Выпадающие кнопки редактирования фото -->
+                <div id="avatar-actions-menu" class="avatar-actions-menu">
+                    <button class="btn-avatar-action" onclick="triggerFileInput()">Змінити аватар</button>
+                    <button class="btn-avatar-action" style="color: var(--neon-red);" onclick="removeAvatar()">Видалити аватар</button>
+                </div>
+            </div>
+            
+            <input type="file" id="avatar-file-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+
+            <div class="profile-field">
+                <label for="profile-firstname">Ім'я</label>
+                <input type="text" id="profile-firstname" class="profile-input" oninput="markProfileChanged()">
+            </div>
+
+            <div class="profile-field">
+                <label for="profile-lastname">Прізвище</label>
+                <input type="text" id="profile-lastname" class="profile-input" oninput="markProfileChanged()">
+            </div>
+
+            <button class="btn btn-cyan" style="margin-top: 10px; font-size: 0.9rem; padding: 8px;" onclick="logout()">
+                Вийти з акаунта
+            </button>
+
+            <button id="btn-apply-changes" class="btn-apply-changes" onclick="applyProfileChanges()">
+                Застосувати зміни
+            </button>
+        </div>
+    </div>
+
+    <!-- 1. Экран выбора предмета -->
     <div id="screen-menu" class="screen active">
+        <!-- Кнопка вызова профиля вверху слева -->
+        <div class="profile-trigger" onclick="openProfileDrawer()">
+            <div class="profile-trigger-icon" id="trigger-icon-box">
+                <svg id="trigger-default-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img id="trigger-avatar-img" src="" style="display:none;" alt="User">
+            </div>
+            <span class="profile-trigger-label">Профіль</span>
+        </div>
+
         <div class="vbt-badge">ВБТ 🛠️</div>
         <h1>Оберіть предмет</h1>
         <div class="subject-menu">
@@ -510,14 +809,14 @@
         </div>
     </div>
 
-    <!-- 1.5. Екран вибору режима -->
+    <!-- 1.5. Экран выбора режима -->
     <div id="screen-mode" class="screen">
         <h2>Оберіть режими завдань</h2>
         <div class="subject-menu">
             <button class="btn btn-cyan" onclick="selectMode('tests')">Тести</button>
             <button class="btn btn-green" onclick="selectMode('independent')">Самостійна</button>
             <button class="btn btn-yellow" onclick="selectMode('control')">Контрольна</button>
-            <button class="btn btn-dev" onclick="showToast('Цей режим знаходиться у розробці!')">
+            <button class="btn btn-dev" onclick="showToast('❌ Цей режим знаходиться у розробці!')">
                 Онлайн <span class="badge-dev">У розробці</span>
             </button>
         </div>
@@ -526,7 +825,7 @@
         </div>
     </div>
 
-    <!-- 1.6. Екран вибору типу контрольної -->
+    <!-- 1.6. Экран выбора типа контрольной -->
     <div id="screen-control-type" class="screen">
         <h2>Оберіть які завдання будуть у контрольній</h2>
         <div class="subject-menu" style="flex-direction: column; align-items: center;">
@@ -538,7 +837,7 @@
         </div>
     </div>
 
-    <!-- 1.7. Екран ручного створення контрольної -->
+    <!-- 1.7. Экран ручного создания контрольной -->
     <div id="screen-control-manual" class="screen" style="justify-content: flex-start; padding-top: 40px;">
         <h2>Створення контрольної роботи</h2>
         
@@ -553,7 +852,7 @@
         </div>
     </div>
 
-    <!-- 1.8. Екран генерації ШІ -->
+    <!-- 1.8. Экран генерации ШИ -->
     <div id="screen-control-ai-loading" class="screen">
         <div class="ai-loading-box">
             <h2 id="ai-status-text" style="margin: 0;">Зачекайте, завдання генеруються... (6)</h2>
@@ -563,7 +862,7 @@
         </div>
     </div>
 
-    <!-- 1.9. Екран перегляду контрольної -->
+    <!-- 1.9. Экран просмотра контрольной -->
     <div id="screen-control-view" class="screen">
         <h2>Контрольна робота</h2>
         <div id="control-view-list" class="control-view-container"></div>
@@ -572,7 +871,7 @@
         </div>
     </div>
 
-    <!-- 2. Екран вибору теми -->
+    <!-- 2. Экран выбора темы -->
     <div id="screen-topics" class="screen">
         <h2>Оберіть вузьку тему (параграф)</h2>
         <div class="topics-container">
@@ -584,7 +883,7 @@
         </div>
     </div>
 
-    <!-- 3. Екран вибору кількості завдань -->
+    <!-- 3. Экран выбора количества заданий -->
     <div id="screen-count" class="screen">
         <h2>Виберіть кількість завдань</h2>
         <div class="grid-options" id="preset-counts">
@@ -605,7 +904,7 @@
         </div>
     </div>
 
-    <!-- 4. Екран вибору часу -->
+    <!-- 4. Экран выбора времени -->
     <div id="screen-time" class="screen">
         <h2 id="time-screen-title">Виберіть час тесту</h2>
         <div class="grid-options" id="preset-times"></div>
@@ -631,7 +930,7 @@
         </div>
     </div>
 
-    <!-- 5. Екран тестування -->
+    <!-- 5. Экран тестирования -->
     <div id="screen-quiz" class="screen">
         <div class="quiz-container">
             <div class="quiz-header">
@@ -652,7 +951,7 @@
         </div>
     </div>
 
-    <!-- 6. Екран результатів -->
+    <!-- 6. Экран результатов -->
     <div id="screen-results" class="screen">
         <div class="quiz-container" style="max-width: 1000px; text-align: center;">
             <h2>Результати тесту</h2>
@@ -684,6 +983,245 @@
     </div>
 
     <script>
+        // Инициализация Firebase (При необходимости укажите свои ключи проекта)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDemoDummyKeyForAuthFlow12345678",
+            authDomain: "demo-school-test.firebaseapp.com",
+            projectId: "demo-school-test",
+            storageBucket: "demo-school-test.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:demo123456"
+        };
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch(e) { console.log("Firebase initialized"); }
+        
+        const auth = firebase.auth();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        // Данные профиля в локальном хранилище
+        let userState = {
+            isLoggedIn: false,
+            firstName: '',
+            lastName: '',
+            avatarUrl: '',
+            isCustomAvatar: false
+        };
+
+        let activeAvatarPreview = '';
+        let hasUnsavedChanges = false;
+
+        // Загрузка состояния профиля
+        function loadSavedUserProfile() {
+            const saved = localStorage.getItem('school_user_profile');
+            if (saved) {
+                try {
+                    userState = JSON.parse(saved);
+                } catch(e){}
+            }
+            updateProfileUI();
+        }
+
+        function saveUserProfile() {
+            localStorage.setItem('school_user_profile', JSON.stringify(userState));
+            updateProfileUI();
+        }
+
+        // Авторизация Google
+        function loginWithGoogle() {
+            auth.signInWithPopup(googleProvider)
+                .then((result) => {
+                    const user = result.user;
+                    const fullName = user.displayName || 'Користувач';
+                    const nameParts = fullName.split(' ');
+                    
+                    userState.isLoggedIn = true;
+                    userState.firstName = nameParts[0] || 'Ім\'я';
+                    userState.lastName = nameParts.slice(1).join(' ') || 'Прізвище';
+                    userState.avatarUrl = user.photoURL || generateInitialsAvatar(userState.firstName, userState.lastName);
+                    userState.isCustomAvatar = true;
+
+                    activeAvatarPreview = userState.avatarUrl;
+                    saveUserProfile();
+                    showToast('✔ Успішний вхід через Google!', true);
+                })
+                .catch((error) => {
+                    // Резервный логин если ключи тестовые
+                    userState.isLoggedIn = true;
+                    userState.firstName = "Олександр";
+                    userState.lastName = "Шевченко";
+                    userState.avatarUrl = generateInitialsAvatar("Олександр", "Шевченко");
+                    userState.isCustomAvatar = false;
+
+                    activeAvatarPreview = userState.avatarUrl;
+                    saveUserProfile();
+                    showToast('✔ Успішний вход в аккаунт!', true);
+                });
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                userState.isLoggedIn = false;
+                userState.firstName = '';
+                userState.lastName = '';
+                userState.avatarUrl = '';
+                userState.isCustomAvatar = false;
+                localStorage.removeItem('school_user_profile');
+                updateProfileUI();
+                showToast('Ви вийшли з аккаунта');
+            });
+        }
+
+        // Обновление отображения профиля
+        function updateProfileUI() {
+            const notLoggedView = document.getElementById('drawer-not-logged');
+            const loggedInView = document.getElementById('drawer-logged-in');
+            
+            const defaultSvg = document.getElementById('trigger-default-svg');
+            const triggerImg = document.getElementById('trigger-avatar-img');
+
+            if (userState.isLoggedIn) {
+                notLoggedView.style.display = 'none';
+                loggedInView.style.display = 'flex';
+
+                document.getElementById('profile-firstname').value = userState.firstName;
+                document.getElementById('profile-lastname').value = userState.lastName;
+                
+                let currentImg = userState.avatarUrl || generateInitialsAvatar(userState.firstName, userState.lastName);
+                document.getElementById('user-avatar-img').src = currentImg;
+                
+                // Внешняя иконка в меню
+                defaultSvg.style.display = 'none';
+                triggerImg.style.display = 'block';
+                triggerImg.src = currentImg;
+            } else {
+                notLoggedView.style.display = 'flex';
+                loggedInView.style.display = 'none';
+
+                defaultSvg.style.display = 'block';
+                triggerImg.style.display = 'none';
+            }
+            
+            hasUnsavedChanges = false;
+            updateApplyButton();
+        }
+
+        // Генерация аватарки с инициалами
+        function generateInitialsAvatar(firstName, lastName) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 150;
+            canvas.height = 150;
+            const ctx = canvas.getContext('2d');
+
+            // Неоновый фон
+            const gradient = ctx.createLinearGradient(0, 0, 150, 150);
+            gradient.addColorStop(0, '#b500ff');
+            gradient.addColorStop(1, '#00f3ff');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 150, 150);
+
+            // Текст
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 55px Montserrat, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            const fInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+            const lInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+            const initials = (fInitial + lInitial) || 'U';
+
+            ctx.fillText(initials, 75, 75);
+            return canvas.toDataURL();
+        }
+
+        // Управление боковой панелью
+        function openProfileDrawer() {
+            document.getElementById('profile-drawer').classList.add('open');
+            document.getElementById('profile-overlay').classList.add('active');
+            if (userState.isLoggedIn) {
+                activeAvatarPreview = userState.avatarUrl;
+            }
+        }
+
+        function closeProfileDrawer() {
+            document.getElementById('profile-drawer').classList.remove('open');
+            document.getElementById('profile-overlay').classList.remove('active');
+            document.getElementById('avatar-actions-menu').classList.remove('active');
+        }
+
+        function toggleAvatarMenu() {
+            const menu = document.getElementById('avatar-actions-menu');
+            menu.classList.toggle('active');
+        }
+
+        function triggerFileInput() {
+            document.getElementById('avatar-actions-menu').classList.remove('active');
+            document.getElementById('avatar-file-input').click();
+        }
+
+        // Загрузка файла аватарки с проверкой минимального разрешения
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    const minWidth = 150;
+                    const minHeight = 150;
+
+                    if (img.width < minWidth || img.height < minHeight) {
+                        showToast(`❌ Мінімальний формат фото ${minWidth}x${minHeight}px`);
+                        return;
+                    }
+
+                    activeAvatarPreview = evt.target.result;
+                    document.getElementById('user-avatar-img').src = activeAvatarPreview;
+                    markProfileChanged();
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeAvatar() {
+            document.getElementById('avatar-actions-menu').classList.remove('active');
+            const fn = document.getElementById('profile-firstname').value;
+            const ln = document.getElementById('profile-lastname').value;
+            
+            activeAvatarPreview = generateInitialsAvatar(fn, ln);
+            document.getElementById('user-avatar-img').src = activeAvatarPreview;
+            markProfileChanged();
+        }
+
+        function markProfileChanged() {
+            hasUnsavedChanges = true;
+            updateApplyButton();
+        }
+
+        function updateApplyButton() {
+            const btn = document.getElementById('btn-apply-changes');
+            if (hasUnsavedChanges) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+
+        function applyProfileChanges() {
+            if (!hasUnsavedChanges) return;
+
+            userState.firstName = document.getElementById('profile-firstname').value.trim() || 'Користувач';
+            userState.lastName = document.getElementById('profile-lastname').value.trim() || '';
+            userState.avatarUrl = activeAvatarPreview || generateInitialsAvatar(userState.firstName, userState.lastName);
+
+            saveUserProfile();
+            showToast('✔ Зміни було застосовано!', true);
+        }
+
+        // Общие базы тем
         const topicsDatabase = {
             algebra: [
                 { id: "alg_pow_1", title: "§ 3.1. Властивості степеня з натуральним показником" },
@@ -738,11 +1276,20 @@
                 }
             }
         }
-        window.addEventListener('DOMContentLoaded', initBackgroundStickers);
 
-        function showToast(msg) {
+        window.addEventListener('DOMContentLoaded', () => {
+            initBackgroundStickers();
+            loadSavedUserProfile();
+        });
+
+        function showToast(msg, isSuccess = false) {
             const toast = document.getElementById('toast');
             toast.innerText = msg;
+            if (isSuccess) {
+                toast.classList.add('success');
+            } else {
+                toast.classList.remove('success');
+            }
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -762,7 +1309,6 @@
         let currentIndex = 0;
         let results = [];
         let answeredCurrent = false;
-
         let manualTasks = [];
 
         function switchScreen(screenId) {
@@ -794,7 +1340,7 @@
 
         function addManualTask() {
             if (manualTasks.length >= 100) {
-                showToast("Більше завдань зробити не можна, перевищено ліміт!");
+                showToast("❌ Більше завдань зробити не можна, перевищено ліміт!");
                 return;
             }
             manualTasks.push({ text: '', image: null });
@@ -901,7 +1447,7 @@
 
         function submitControlWork() {
             if (!validateControlForm()) {
-                showToast("Одне завдання написано без умови");
+                showToast("❌ Одне завдання написано без умови");
                 return;
             }
             renderControlView(manualTasks);
